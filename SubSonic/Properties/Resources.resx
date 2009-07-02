@@ -1,0 +1,4424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CS_ClassTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%
+    //The data we need
+    string providerName = "#PROVIDER#";
+    string tableName = "#TABLE#";
+    TableSchema.Table tbl = DataService.GetSchema(tableName, providerName, TableType.Table);
+    DataProvider provider = DataService.Providers[providerName];
+    LanguageType lang = LanguageType.CSharp;
+
+    TableSchema.TableColumnCollection cols = tbl.Columns;
+    string className = tbl.ClassName;
+	string thisPK = tbl.PrimaryKey.PropertyName;
+	string varPK = tbl.PrimaryKey.ArgumentName;
+	string varPKType = Utility.GetVariableType(tbl.PrimaryKey.DataType, tbl.PrimaryKey.IsNullable, lang);
+%&gt;
+//Generated on &lt;%=DateTime.Now.ToString() %&gt; by &lt;%=Environment.UserName %&gt;
+namespace &lt;%=provider.GeneratedNamespace %&gt;{
+
+
+    /// &lt;summary&gt;
+    /// Strongly-typed collection for the &lt;%=className%&gt; class.
+    /// &lt;/summary&gt;
+
+    [Serializable]
+    public partial class &lt;%=className%&gt;Collection : ActiveList[&lt;]&lt;%= className%&gt;[&gt;] 
+    {
+        List[&lt;]Where[&gt;] wheres = new List[&lt;]Where[&gt;]();
+        List[&lt;]BetweenAnd[&gt;] betweens = new List[&lt;]BetweenAnd[&gt;]();
+        SubSonic.OrderBy orderBy;
+    	
+        public &lt;%=className%&gt;Collection OrderByAsc(string columnName) 
+	    {
+            this.orderBy = SubSonic.OrderBy.Asc(columnName);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection OrderByDesc(string columnName) 
+	    {
+            this.orderBy = SubSonic.OrderBy.Desc(columnName);
+            return this;
+        }
+
+	    public &lt;%=className%&gt;Collection WhereDatesBetween(string columnName, DateTime dateStart, DateTime dateEnd) 
+	    {
+            return BetweenAnd(columnName, dateStart, dateEnd);
+        }
+
+        public &lt;%=className%&gt;Collection Where(Where where) 
+	    {
+            wheres.Add(where);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection Where(string columnName, object value) 
+	    {
+		    if(value != DBNull.Value &amp;&amp; value != null)
+		    {	
+			    return Where(columnName, Comparison.Equals, value);
+		    }
+		    else
+		    {
+			    return Where(columnName, Comparison.Is, DBNull.Value);
+		    }
+        }
+    	
+        public &lt;%=className%&gt;Collection Where(string columnName, Comparison comp, object value) 
+	    {
+            Where where = new Where();
+            where.ColumnName = columnName;
+            where.Comparison = comp;
+            where.ParameterValue = value;
+            Where(where);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection BetweenAnd(string columnName, DateTime dateStart, DateTime dateEnd) 
+	    {
+            BetweenAnd between = new BetweenAnd();
+            between.ColumnName = columnName;
+            between.StartDate = dateStart;
+            between.EndDate = dateEnd;
+            between.StartParameterName = "start" + columnName; 
+            between.EndParameterName = "end" + columnName; 
+            betweens.Add(between);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection Load() 
+        {
+            Query qry = new Query(&lt;%=className%&gt;.Schema);
+            CheckLogicalDelete(qry);
+            foreach (Where where in wheres) 
+            {
+                qry.AddWhere(where);
+            }
+             
+            foreach (BetweenAnd between in betweens)
+            {
+                qry.AddBetweenAnd(between);
+            }
+
+            if (orderBy != null)
+            {
+                qry.OrderBy = orderBy;
+            }
+
+            IDataReader rdr = qry.ExecuteReader();
+            this.Load(rdr);
+            rdr.Close();
+            return this;
+        }
+        
+        public &lt;%=className%&gt;Collection() 
+	    {
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// This is an ActiveRecord class which wraps the &lt;%=tableName%&gt; table.
+    /// &lt;/summary&gt;
+    [Serializable]
+    public partial class &lt;%=className%&gt; : ActiveRecord[&lt;]&lt;%= className%&gt;[&gt;]
+    {
+    
+	    #region Default Settings
+	    protected static void SetSQLProps() 
+	    {
+		    GetTableSchema();
+	    }
+	    #endregion
+
+        #region Schema Accessor
+	    public static TableSchema.Table Schema
+        {
+            get
+            {
+                if (BaseSchema == null)
+                {
+                    SetSQLProps();
+                }
+                return BaseSchema;
+            }
+        }
+    	
+        private static void GetTableSchema() 
+	    {
+            if(!IsSchemaInitialized)
+            {
+                //Schema declaration
+
+				TableSchema.Table schema = new TableSchema.Table("&lt;%=tableName%&gt;", TableType.Table, DataService.GetInstance("&lt;%=providerName%&gt;"));
+                schema.Columns = new TableSchema.TableColumnCollection();
+                schema.SchemaName = "&lt;%=tbl.SchemaName%&gt;";
+
+                //columns
+                &lt;%
+                foreach(TableSchema.TableColumn col in cols)
+                {
+                    string varName = "col" + col.ArgumentName;
+                %&gt;
+                TableSchema.TableColumn &lt;%=varName %&gt; = new TableSchema.TableColumn(schema);
+                &lt;%=varName %&gt;.ColumnName = "&lt;%=col.ColumnName%&gt;";
+                &lt;%=varName %&gt;.DataType = DbType.&lt;%=col.DataType %&gt;;
+                &lt;%=varName %&gt;.MaxLength = &lt;%=col.MaxLength %&gt;;
+                &lt;%=varName %&gt;.AutoIncrement = &lt;%=col.AutoIncrement.ToString().ToLower() %&gt;;
+                &lt;%=varName %&gt;.IsNullable = &lt;%=col.IsNullable.ToString().ToLower()%&gt;;
+                &lt;%=varName %&gt;.IsPrimaryKey = &lt;%=col.IsPrimaryKey.ToString().ToLower()%&gt;;
+                &lt;%=varName %&gt;.IsForeignKey = &lt;%=col.IsForeignKey.ToString().ToLower()%&gt;;
+                &lt;%=varName %&gt;.IsReadOnly = &lt;%= col.IsReadOnly.ToString().ToLower() %&gt;;
+                &lt;% if (!String.IsNullOrEmpty(col.DefaultSetting))
+				   {					   
+				%&gt;
+						&lt;%=varName%&gt;.DefaultSetting = @"&lt;%= col.DefaultSetting%&gt;";
+				&lt;%
+					}
+                %&gt;
+
+                &lt;%
+				if(col.IsForeignKey)
+				{
+                %&gt;
+				&lt;%=varName %&gt;.ForeignKeyTableName = "&lt;%= col.ForeignKeyTableName %&gt;";
+                &lt;% } %&gt;
+                schema.Columns.Add(&lt;%=varName%&gt;);
+
+                &lt;%
+                }
+                %&gt;
+                BaseSchema = schema;
+
+                //add this schema to the provider
+                //so we can query it later
+                DataService.Providers["&lt;%=providerName %&gt;"].AddSchema("&lt;%=tableName%&gt;",schema);
+            }
+        }
+        #endregion
+        
+        #region Query Accessor
+	    public static Query CreateQuery()
+	    {
+		    return new Query(Schema);
+	    }
+	    #endregion
+	    
+	    #region .ctors
+	    public &lt;%=className %&gt;()
+	    {
+            SetSQLProps();
+            SetDefaults();
+
+            MarkNew();
+        }
+
+	    public &lt;%=className %&gt;(object keyID)
+	    {
+		    SetSQLProps();
+            SetDefaults();
+		    LoadByKey(keyID);
+	    }
+    	 
+	    public &lt;%=className %&gt;(string columnName, object columnValue)
+        {
+            SetSQLProps();
+            SetDefaults();
+            LoadByParam(columnName,columnValue);
+        }
+        
+	    #endregion
+	    
+	    #region Props
+	    
+        &lt;%
+        foreach(TableSchema.TableColumn col in cols){
+            string propName = col.PropertyName;
+            string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+        %&gt;  
+        [XmlAttribute("&lt;%=propName%&gt;")]
+        public &lt;%=varType%&gt; &lt;%=propName%&gt; 
+	    {
+		    get { return GetColumnValue[&lt;]&lt;%= varType%&gt;[&gt;]("&lt;%= col.ColumnName %&gt;"); }
+            set 
+		    {
+			    MarkDirty();
+			    SetColumnValue("&lt;%=col.ColumnName %&gt;", value);
+            }
+        }
+	    &lt;%
+	    }
+	    %&gt;
+	    #endregion
+	    
+	    &lt;%if (tbl.PrimaryKeyTables.Count &gt; 0)
+{%&gt;
+	    #region PrimaryKey Methods
+	    &lt;%
+    TableSchema.PrimaryKeyTableCollection pkTables = tbl.PrimaryKeyTables;
+	if (pkTables != null)
+	{
+		ArrayList usedMethodNames = new ArrayList();
+		foreach (TableSchema.PrimaryKeyTable pk in pkTables)
+		{
+			TableSchema.Table pkTbl = DataService.GetSchema(pk.TableName, providerName, TableType.Table);
+			if (pkTbl.PrimaryKey != null)
+			{
+				string pkClass = pk.ClassName;
+				string pkClassQualified = provider.GeneratedNamespace + "." + pkClass;
+				string pkMethod = pk.ClassNamePlural;
+				string pkColumn = pk.PropertyName;
+
+				if (Utility.IsMatch(pkClass, pkMethod))
+				{
+					pkMethod += "Records";
+				}
+
+				if (pk.ClassName == className)
+				{
+					pkMethod = "Child" + pkMethod;
+				}
+
+				if (usedMethodNames.Contains(pkMethod))
+				{
+					pkMethod += "From" + className;
+					if (usedMethodNames.Contains(pkMethod))
+					{
+						pkMethod += pkColumn;
+					}
+				}
+
+				usedMethodNames.Add(pkMethod);
+				
+				if(!String.IsNullOrEmpty(provider.RelatedTableLoadPrefix))
+				{
+					pkMethod = provider.RelatedTableLoadPrefix + pkMethod;
+				}
+
+				bool methodsNoLazyLoad = !provider.GenerateRelatedTablesAsProperties &amp;&amp; !provider.GenerateLazyLoads;
+				bool methodsLazyLoad = !provider.GenerateRelatedTablesAsProperties &amp;&amp; provider.GenerateLazyLoads;
+				bool propertiesNoLazyLoad = provider.GenerateRelatedTablesAsProperties &amp;&amp; !provider.GenerateLazyLoads;
+				bool propertiesLazyLoad = provider.GenerateRelatedTablesAsProperties &amp;&amp; provider.GenerateLazyLoads;
+
+				if (methodsNoLazyLoad)
+				{
+%&gt;
+		public &lt;%= pkClassQualified %&gt;Collection &lt;%=pkMethod%&gt;()
+		{
+			return new &lt;%=pkClassQualified%&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load();
+		}
+&lt;%
+			}
+			else if (methodsLazyLoad)
+			{
+%&gt;
+		private &lt;%= pkClassQualified %&gt;Collection col&lt;%=pkMethod%&gt;;
+		public &lt;%= pkClassQualified %&gt;Collection &lt;%=pkMethod%&gt;()
+		{
+			if(col&lt;%=pkMethod%&gt; == null)
+			{
+				col&lt;%=pkMethod%&gt; = new &lt;%= pkClassQualified %&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load();
+			}
+			return col&lt;%=pkMethod%&gt;;
+		}
+&lt;%
+			}
+			else if (propertiesNoLazyLoad)
+			{
+%&gt;
+		public &lt;%= pkClassQualified %&gt;Collection &lt;%=pkMethod%&gt;
+		{
+			get
+			{
+				return new &lt;%= pkClassQualified %&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load();
+			}
+		}
+&lt;%
+			}
+			else if (propertiesLazyLoad)
+			{
+%&gt;		
+		private &lt;%= pkClassQualified %&gt;Collection col&lt;%=pkMethod%&gt;;
+		public &lt;%= pkClassQualified %&gt;Collection &lt;%=pkMethod%&gt;
+		{
+			get
+			{
+				if(col&lt;%=pkMethod%&gt; == null)
+				{
+					col&lt;%=pkMethod%&gt; = new &lt;%= pkClassQualified %&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load();
+				}
+				return col&lt;%=pkMethod%&gt;;			
+			}
+		}
+		&lt;%
+			}
+		}
+	}
+}
+%&gt;
+		#endregion
+		&lt;%   
+	}
+%&gt;
+
+	 	
+			
+	    &lt;%if (tbl.ForeignKeys.Count &gt; 0) { %&gt;
+	    
+	    
+	    #region ForeignKey Properties
+	    &lt;%
+            TableSchema.ForeignKeyTableCollection fkTables = tbl.ForeignKeys;
+			
+            if (fkTables != null) {
+				ArrayList usedPropertyNames = new ArrayList();
+                foreach (TableSchema.ForeignKeyTable fk in fkTables) 
+				{
+                    TableSchema.Table fkTbl = DataService.GetSchema(fk.TableName, providerName, TableType.Table);
+                    string fkClass = fk.ClassName;
+					string fkClassQualified = provider.GeneratedNamespace + "." + fkClass;
+                    string fkMethod = fk.ClassName;
+                    string fkID = fk.PropertyName;
+                    
+					
+                    //it's possible this table is "relatin to itself"
+                    //check to make sure the class names are not the same
+                    //if they are, use the fk columnName
+					if (fk.ClassName == className)
+					{
+					    fkMethod = "Parent" + fk.ClassName;
+					}
+
+					if (usedPropertyNames.Contains(fk.ClassName))
+					{
+						fkMethod += "To" + fkID;
+					}
+					
+					if(tbl.GetColumn(fkMethod) != null)
+					{
+						fkMethod += "Record";
+					}
+%&gt;
+        /// &lt;summary&gt;
+        /// Returns a &lt;%=fkClass%&gt; ActiveRecord object related to this &lt;%=className%&gt;
+        /// &lt;/summary&gt;
+	    public &lt;%=fkClassQualified%&gt; &lt;%=fkMethod%&gt;
+        {
+	        get { return &lt;%=fkClassQualified%&gt;.FetchByID(this.&lt;%=fkID%&gt;); }
+	        set
+	        {
+		        MarkDirty();
+		        SetColumnValue("&lt;%=fkID%&gt;", value.&lt;%=fkTbl.PrimaryKey.PropertyName%&gt;);
+	        }
+        }
+	    
+	    &lt;%
+			usedPropertyNames.Add(fk.ClassName);
+            }
+        }
+	    %&gt;
+	    #endregion
+	    &lt;%} else {%&gt;
+	    //no foreign key tables defined (&lt;%=tbl.ForeignKeys.Count.ToString() %&gt;)
+	    &lt;%} %&gt;
+	    
+	    &lt;%if (tbl.ManyToManys.Count &gt; 0) { %&gt;
+	    #region Many To Many Helpers
+	    &lt;%
+			TableSchema.ManyToManyRelationshipCollection mm = tbl.ManyToManys;
+			if (mm != null)
+			{
+				ArrayList usedConstraints = new ArrayList();
+				foreach (TableSchema.ManyToManyRelationship m in mm)
+				{
+					if (!usedConstraints.Contains(m.ForeignTableClassName))
+					{
+						usedConstraints.Add(m.ForeignTableClassName);
+						string fkClass = m.ForeignTableClassName;
+						string fkClassQualified = provider.GeneratedNamespace + "." + fkClass;
+                
+	    %&gt;
+	     
+        public &lt;%=fkClassQualified%&gt;Collection Get&lt;%=fkClass%&gt;Collection() {
+
+            return &lt;%=className%&gt;.Get&lt;%=fkClass%&gt;Collection(this.&lt;%=thisPK%&gt;);
+
+        }
+        public static &lt;%=fkClassQualified%&gt;Collection Get&lt;%=fkClass%&gt;Collection(&lt;%= varPKType%&gt; &lt;%= varPK%&gt;) {
+
+            SubSonic.QueryCommand cmd = new SubSonic.QueryCommand(
+                "SELECT * FROM &lt;%=m.ForeignTableName%&gt; INNER JOIN &lt;%=m.MapTableName%&gt; ON "+
+                "&lt;%=m.ForeignTableName%&gt;.&lt;%=m.ForeignPrimaryKey%&gt;=&lt;%=m.MapTableName%&gt;.&lt;%=m.MapTableForeignTableKeyColumn%&gt; WHERE &lt;%=m.MapTableName%&gt;.&lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name);
+            
+            cmd.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+            
+            IDataReader rdr = SubSonic.DataService.GetReader(cmd);
+            &lt;%=fkClass%&gt;Collection coll = new &lt;%=fkClass%&gt;Collection();
+            coll.LoadAndCloseReader(rdr);
+
+            return coll;
+
+        }
+        public static void Save&lt;%=fkClass%&gt;Map(&lt;%= varPKType%&gt; &lt;%= varPK%&gt;, &lt;%=fkClass%&gt;Collection items) {
+            
+            QueryCommandCollection coll = new SubSonic.QueryCommandCollection();
+
+            //delete out the existing
+            QueryCommand cmdDel = new QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name);
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+            //add this in
+            coll.Add(cmdDel);
+			DataService.ExecuteTransaction(coll);
+
+            foreach (&lt;%=fkClass%&gt; item in items)
+            {
+				&lt;%=m.ClassName%&gt; var&lt;%=m.ClassName%&gt; = new &lt;%= m.ClassName%&gt;();
+				var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+				var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableForeignTableKeyColumn%&gt;", item.GetPrimaryKeyValue());
+				var&lt;%=m.ClassName%&gt;.Save();
+            }
+        }
+
+        public static void Save&lt;%=fkClass%&gt;Map(&lt;%= varPKType%&gt; &lt;%= varPK%&gt;, System.Web.UI.WebControls.ListItemCollection itemList) 
+        {
+            QueryCommandCollection coll = new SubSonic.QueryCommandCollection();
+
+            //delete out the existing
+             QueryCommand cmdDel = new QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name);
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+
+            //add this in
+            coll.Add(cmdDel);
+			DataService.ExecuteTransaction(coll);
+
+            foreach (System.Web.UI.WebControls.ListItem l in itemList) 
+            {
+                if (l.Selected) 
+                {
+					&lt;%=m.ClassName%&gt; var&lt;%=m.ClassName%&gt; = new &lt;%= m.ClassName%&gt;();
+					var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+					var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableForeignTableKeyColumn%&gt;", l.Value);
+					var&lt;%=m.ClassName%&gt;.Save();
+                }
+            }
+        }
+
+        public static void Save&lt;%=fkClass%&gt;Map(&lt;%= varPKType%&gt; &lt;%= varPK%&gt; , &lt;%= varPKType%&gt;[] itemList) 
+        {
+            QueryCommandCollection coll = new SubSonic.QueryCommandCollection();
+
+            //delete out the existing
+             QueryCommand cmdDel = new QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name);
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+
+            //add this in
+            coll.Add(cmdDel);
+			DataService.ExecuteTransaction(coll);
+
+            foreach (&lt;%= varPKType%&gt; item in itemList) 
+            {
+            	&lt;%=m.ClassName%&gt; var&lt;%=m.ClassName%&gt; = new &lt;%= m.ClassName%&gt;();
+				var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+				var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableForeignTableKeyColumn%&gt;", item);
+				var&lt;%=m.ClassName%&gt;.Save();
+            }
+        }
+        
+        public static void Delete&lt;%=fkClass%&gt;Map(&lt;%= varPKType%&gt; &lt;%= varPK%&gt;) 
+        {
+            QueryCommand cmdDel = new QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name);
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;);
+            DataService.ExecuteQuery(cmdDel);
+		}
+
+	    &lt;%
+			}
+		}
+	}
+	    %&gt;
+	    #endregion
+	    &lt;%} else {%&gt;
+	    //no ManyToMany tables defined (&lt;%=tbl.ManyToManys.Count.ToString() %&gt;)
+	    &lt;%} %&gt;
+
+	    #region ObjectDataSource support
+    	&lt;%
+            string insertArgs = string.Empty;
+            string updateArgs = string.Empty;
+			string seperator = ",";
+
+			foreach (TableSchema.TableColumn col in cols)
+			{
+				string propName = col.ArgumentName;
+				string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+				
+				updateArgs += varType + " " + propName + seperator;
+				if (!col.AutoIncrement)
+				{
+					insertArgs += varType + " " + propName + seperator;
+				}
+			}
+			if (insertArgs.Length &gt; 0)
+				insertArgs = insertArgs.Remove(insertArgs.Length - seperator.Length, seperator.Length);
+ 			if (updateArgs.Length &gt; 0)
+				updateArgs = updateArgs.Remove(updateArgs.Length - seperator.Length, seperator.Length);
+    	%&gt;
+    	
+	    /// &lt;summary&gt;
+	    /// Inserts a record, can be used with the Object Data Source
+	    /// &lt;/summary&gt;
+	    public static void Insert(&lt;%=insertArgs%&gt;)
+	    {
+		    &lt;%=className %&gt; item = new &lt;%=className %&gt;();
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                if (!col.AutoIncrement) { 
+            %&gt;
+            item.&lt;%=col.PropertyName%&gt; = &lt;%=col.ArgumentName%&gt;;
+            &lt;%
+                }
+              } 
+            %&gt;
+	    
+		    if (System.Web.HttpContext.Current != null)
+			    item.Save(System.Web.HttpContext.Current.User.Identity.Name);
+		    else
+			    item.Save(System.Threading.Thread.CurrentPrincipal.Identity.Name);
+	    }
+
+    	
+	    /// &lt;summary&gt;
+	    /// Updates a record, can be used with the Object Data Source
+	    /// &lt;/summary&gt;
+	    public static void Update(&lt;%=updateArgs%&gt;)
+	    {
+		    &lt;%=className %&gt; item = new &lt;%=className %&gt;();
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) 
+			{
+				%&gt;
+                item.&lt;%=col.PropertyName%&gt; = &lt;%=col.ArgumentName%&gt;;
+				&lt;%
+			} 
+            %&gt;
+		    item.IsNew = false;
+		    if (System.Web.HttpContext.Current != null)
+			    item.Save(System.Web.HttpContext.Current.User.Identity.Name);
+		    else
+			    item.Save(System.Threading.Thread.CurrentPrincipal.Identity.Name);
+	    }
+
+	    #endregion
+
+	    #region Columns Struct
+	    public struct Columns
+	    {
+		    
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                string propName = col.PropertyName;
+            %&gt;
+            public static string &lt;%=propName%&gt; = @"&lt;%=col.ColumnName%&gt;";
+            &lt;%
+              } 
+            %&gt;
+
+	    }
+	    #endregion
+    }
+}</value>
+  </data>
+  <data name="CS_DynamicScaffold" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;% 
+	string masterPage = "#MASTERPAGE#";
+	string tableName = "#TABLENAME#";
+	string className = "#CLASSNAME#";
+	string language = "#LANGUAGE#";
+
+%&gt;
+&lt;%
+	if (!String.IsNullOrEmpty(masterPage))
+	{
+%&gt;
+
+[&lt;]%@ Page Language="&lt;%= language %&gt;" Title="&lt;%= className %&gt; Scaffold" MasterPageFile="&lt;%= masterPage %&gt;" Theme="default" %[&gt;]
+[&lt;]%@ Register Assembly="SubSonic" Namespace="SubSonic" TagPrefix="cc1" %[&gt;]
+[&lt;]asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="server"[&gt;]
+	[&lt;]div[&gt;]
+		[&lt;]cc1:Scaffold ID="Scaffold1" runat="server" TableName="&lt;%= tableName %&gt;" GridViewSkinID="scaffold" EditTableItemCaptionCellCssClass="scaffoldEditLabel" ButtonCssClass="scaffoldButton" TextBoxCssClass="scaffoldTextBox"[&gt;]
+		[&lt;]/cc1:Scaffold[&gt;]
+	[&lt;]/div[&gt;]
+[&lt;]/asp:Content[&gt;]
+
+&lt;%
+	}
+	else
+	{
+%&gt;
+
+[&lt;]%@ Page Language="&lt;%= language %&gt;" Title="&lt;%=className%&gt; Scaffold" %[&gt;]
+[&lt;]%@ Register Assembly="SubSonic" Namespace="SubSonic" TagPrefix="cc1" %[&gt;]
+[&lt;]!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"[&gt;]
+[&lt;]html xmlns="http://www.w3.org/1999/xhtml" [&gt;]
+[&lt;]head id="Head1" runat="server"[&gt;]
+[&lt;]script language="javascript" type="text/javascript"[&gt;]
+
+	function CheckDelete()
+	{ 
+		  return confirm('Delete this record? This action cannot be undone...'); 
+	}
+
+	function imposeMaxLength(e, Object, MaxLen, rowIndex)
+	{
+		var keyCode = e.keyCode;
+		var counter = document.getElementById('counter' + rowIndex);
+		var charText = Object.value;
+		var charCount = charText.length;
+		var charRemain = MaxLen - charCount;
+		counter.style.visibility = 'visible';
+		if(keyCode == 8 || keyCode == 46)
+		{
+			if(charCount == MaxLen)
+			{
+				charRemain = 1;
+			}
+			else if(charCount == 0)
+			{
+				charRemain = MaxLen;
+			}
+			counter.innerHTML = charRemain;
+			return true;
+		}
+		else
+		{
+			if(charRemain [&gt;] 0)
+			{
+				counter.innerHTML = charRemain;
+				return true;
+			}
+			else
+			{
+				Object.value = charText.substring(0, MaxLen);
+				counter.innerHTML = '0';
+				return false;
+			}
+		}
+	}
+[&lt;]/script[&gt;]
+[&lt;]/head[&gt;]
+[&lt;]body[&gt;]
+	[&lt;]form id="form1" runat="server"[&gt;]    
+		[&lt;]div[&gt;]
+			[&lt;]cc1:Scaffold ID="Scaffold1" runat="server" TableName="&lt;%= tableName %&gt;" GridViewSkinID="scaffold" EditTableItemCaptionCellCssClass="scaffoldEditLabel" ButtonCssClass="scaffoldButton" TextBoxCssClass="scaffoldTextBox"[&gt;]
+			[&lt;]/cc1:Scaffold[&gt;]
+		[&lt;]/div[&gt;]
+    [&lt;]/form[&gt;]
+[&lt;]/body[&gt;]
+[&lt;]/html[&gt;]
+&lt;%	    
+	}
+%&gt;</value>
+  </data>
+  <data name="CS_GeneratedScaffoldCodeBehind" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="System.Data"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%
+    //The data we need
+    string providerName = "#PROVIDER#";
+    string tableName = "#TABLENAME#";
+    string generatedClassName = "#PAGEFILE#";
+    TableSchema.Table tbl = DataService.GetSchema(tableName, providerName, TableType.Table);
+    DataProvider provider = DataService.Providers[providerName];
+
+    //The main vars we need
+    string className = tbl.ClassName;
+%&gt;
+//Generated on &lt;%=DateTime.Now.ToString()%&gt; by &lt;%=Environment.UserName%&gt;
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using SubSonic;
+using SubSonic.Utilities;
+using &lt;%=provider.GeneratedNamespace%&gt;;
+
+namespace &lt;%=provider.GeneratedNamespace%&gt;
+{
+
+	public partial class &lt;%=generatedClassName%&gt; : System.Web.UI.Page 
+	{
+		private bool isAdd = false;
+		private const string SORT_DIRECTION = "SORT_DIRECTION";
+        private const string ORDER_BY = "ORDER_BY";
+
+    
+		protected void Page_Load(object sender, EventArgs e) 
+		{
+			if (Request.QueryString["id"] != null)
+			{
+				string id = Utility.GetParameter("id");
+				if (!String.IsNullOrEmpty(id) &amp;&amp; id != "0")
+				{
+					if (!Page.IsPostBack)
+					{
+						LoadEditor(id);
+					}
+				} 
+				else 
+				{
+					//it's an add, show the editor
+					isAdd = true;
+					ToggleEditor(true);
+					LoadDrops();
+					btnDelete.Visible = false;
+				}
+			} 
+			else 
+			{
+				ToggleEditor(false);
+				if(!Page.IsPostBack)
+				{
+					BindGrid(String.Empty);
+				}
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Loads the editor with data
+		/// &lt;/summary&gt;
+		/// &lt;param name="id"&gt;&lt;/param&gt;
+		void LoadEditor(string id) 
+		{
+			ToggleEditor(true);
+			LoadDrops();
+			if (!String.IsNullOrEmpty(id) &amp;&amp; id != "0")
+			{
+				lblID.Text = id.ToString();
+	            
+				//pull the record
+				&lt;%=className%&gt; item = new &lt;%=className%&gt;(id);
+
+				//bind the page 
+					&lt;%
+						foreach (TableSchema.TableColumn col in tbl.Columns)
+						{
+							if (!col.IsPrimaryKey)
+							{
+								bool toString = true;
+								string controlAssignment = null;
+								bool isNullableType = (col.IsNullable &amp;&amp; Utility.IsNullableDbType(col.DataType));
+
+								if (col.IsForeignKey)
+								{
+									toString = true;
+									controlAssignment = ControlValueProperty.DROP_DOWN_LIST;
+								}
+								else if (Utility.IsMatch(col.ColumnName, ReservedColumnName.CREATED_ON) || Utility.IsMatch(col.ColumnName, ReservedColumnName.MODIFIED_ON))
+								{
+									toString = true;
+									controlAssignment = ControlValueProperty.LABEL;
+								}	
+								else
+								{
+									switch (col.DataType)
+									{
+										case DbType.Binary:
+										case DbType.Byte:
+											break;
+										case DbType.DateTime:
+											toString = false;
+											controlAssignment = ControlValueProperty.CALENDAR;
+											break;
+										case DbType.Boolean:
+											toString = false;
+											controlAssignment = ControlValueProperty.CHECK_BOX;
+											break;
+										case DbType.Currency:
+										case DbType.VarNumeric:
+											toString = true;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+										case DbType.Int16:
+										case DbType.Int32:
+										case DbType.UInt16:
+										case DbType.Int64:
+										case DbType.UInt32:
+										case DbType.UInt64:
+										case DbType.Single:
+										case DbType.Decimal:
+										case DbType.Double:
+											toString = true;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+										case DbType.AnsiString:
+										case DbType.AnsiStringFixedLength:	
+										case DbType.String:
+											toString = false;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+										default:
+											toString = true;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+									}
+								}
+								string propName = col.PropertyName;
+								string controlID = "ctrl" + propName;
+
+								if (!String.IsNullOrEmpty(controlAssignment))
+								{
+									if (isNullableType)
+									{%&gt;
+						if(item.&lt;%=propName%&gt;.HasValue)
+						{
+						&lt;%
+						if (toString)
+						{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;.Value.ToString();
+						&lt;%
+						}
+						else
+						{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;.Value;
+						&lt;%
+						}%&gt;
+						}
+					&lt;%
+						}
+
+						else
+						{
+							if (toString)
+							{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;.ToString();
+						&lt;%
+						}
+						else
+						{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;;
+						&lt;%
+						}
+					}
+				}
+			}
+		}
+%&gt;			
+  
+				//set the delete confirmation
+				btnDelete.Attributes.Add("onclick", "return CheckDelete();");
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Loads the DropDownLists
+		/// &lt;/summary&gt;
+		void LoadDrops() 
+		{
+			//load the listboxes
+			&lt;%
+				foreach (TableSchema.TableColumn col in tbl.Columns)
+				{
+					string controlName = "ctrl" + col.PropertyName;
+
+					if (!col.IsPrimaryKey)
+					{
+						if(col.IsForeignKey)
+						{
+							TableSchema.Table FKTable = DataService.GetForeignKeyTable(col, tbl);
+							if(FKTable != null)
+							{
+			%&gt;
+								Query qry&lt;%= controlName %&gt; = &lt;%= FKTable.ClassName %&gt;.CreateQuery(); 
+								qry&lt;%= controlName %&gt;.OrderBy = OrderBy.Asc("&lt;%= FKTable.Columns[1].ColumnName %&gt;");
+								Utility.LoadDropDown(&lt;%= controlName %&gt;, qry&lt;%= controlName %&gt;.ExecuteReader(), true);
+			&lt;% 
+								if(col.IsNullable)
+								{
+			%&gt;						&lt;%= controlName %&gt;.Items.Insert(0, new ListItem("(Not Specified)", String.Empty));							
+			&lt;%
+								}
+							}
+						}
+					}
+				} 
+			 %&gt;
+		}
+	    
+		/// &lt;summary&gt;
+		/// Shows/Hides the Grid and Editor panels
+		/// &lt;/summary&gt;
+		/// &lt;param name="showIt"&gt;&lt;/param&gt;
+		void ToggleEditor(bool showIt) 
+		{
+			pnlEdit.Visible = showIt;
+			pnlGrid.Visible = !showIt;
+		}
+
+		protected void btnAdd_Click(object sender, EventArgs e) 
+		{
+			LoadEditor("0");
+		}
+	    
+		protected void btnDelete_Click(object sender, EventArgs e) 
+		{
+			&lt;%= className %&gt;.Delete(Utility.GetParameter("id"));
+
+			//redirect
+			Response.Redirect(Request.CurrentExecutionFilePath);
+		}
+		protected void btnSave_Click(object sender, EventArgs e) 
+		{
+			string id = Utility.GetParameter("id");
+			//bool haveError = false;
+			try 
+			{
+				BindAndSave(id);
+				lblResult.Text = "[&lt;]span style=\"font-weight:bold; color:#22bb22\"[&gt;]Customer saved.[&lt;]/span[&gt;]";
+			}
+			 catch (Exception x) 
+			 {
+				//haveError = true;
+				lblResult.Text = "[&lt;]span style=\"font-weight:bold; color:#990000\"[&gt;]Customer not saved:[&lt;]/span[&gt;] " + x.Message;
+			}
+
+			//if(!haveError)
+			//  Response.Redirect(Request.CurrentExecutionFilePath);
+		}
+
+		/// &lt;summary&gt;
+		/// Binds and saves the data
+		/// &lt;/summary&gt;
+		/// &lt;param name="id"&gt;&lt;/param&gt;
+		void BindAndSave(string id) 
+		{
+	        
+			&lt;%= className %&gt; item;
+			if (!String.IsNullOrEmpty(id) &amp;&amp; id != "0") 
+			{
+				//it's an edit
+				item = new &lt;%= className %&gt;(id);
+			}
+			else 
+			{
+				//add
+				item = new &lt;%= className %&gt;();
+			}  
+	      
+			&lt;%
+			    
+			
+				foreach (TableSchema.TableColumn col in tbl.Columns)
+				{
+					if (!col.IsPrimaryKey &amp;&amp; col.DataType != DbType.Binary &amp;&amp; col.DataType != DbType.Byte)
+					{
+						string controlID = "ctrl" + col.PropertyName;
+						string propName = col.PropertyName;
+						string converterType;
+						
+						switch (col.DataType)
+						{
+							case DbType.Currency:
+							case DbType.VarNumeric:
+								converterType = "Decimal";
+								break;
+							case DbType.AnsiString:
+							case DbType.AnsiStringFixedLength:
+								converterType = "String";
+								break;
+							default:
+								converterType = col.DataType.ToString();
+								break;
+						}
+
+						%&gt;
+						object val&lt;%= controlID %&gt; = Utility.GetDefaultControlValue(&lt;%= className %&gt;.Schema.GetColumn("&lt;%= col.ColumnName %&gt;"), &lt;%= controlID %&gt;, isAdd, false);
+						&lt;%
+
+						if (col.IsNullable)
+						{
+						%&gt;
+						if(val&lt;%= controlID %&gt; == null)
+						{
+							item.&lt;%= propName %&gt; = null;
+						}
+						else
+						{
+						&lt;%
+						}
+
+						if (col.DataType != DbType.Guid)
+						{
+						%&gt;
+							item.&lt;%= propName %&gt; = Convert.To&lt;%= converterType %&gt;(val&lt;%= controlID %&gt;);
+						&lt;%
+						}
+						else
+						{
+						%&gt;
+							item.&lt;%= propName %&gt; = new &lt;%= converterType %&gt;(val&lt;%= controlID %&gt;.ToString());
+						&lt;%
+						}
+
+						if (col.IsNullable)
+						{
+						%&gt;
+						}
+						&lt;%
+						}
+				}
+			}
+	%&gt;    
+			//bind it
+
+			item.Save(User.Identity.Name);
+		}
+
+		/// &lt;summary&gt;
+		/// Binds the GridView
+		/// &lt;/summary&gt;
+        private void BindGrid(string orderBy)
+        {
+		    TableSchema.Table tblSchema = DataService.GetTableSchema("&lt;%= tbl.Name %&gt;", "&lt;%= tbl.Provider.Name %&gt;");
+            if (tblSchema.PrimaryKey != null)
+            {
+                Query query = new Query(tblSchema);
+
+                string sortColumn = null;
+                if (!String.IsNullOrEmpty(orderBy))
+                {
+                    sortColumn = orderBy;
+                }
+                else if (ViewState[ORDER_BY] != null)
+                {
+                    sortColumn = (string)ViewState[ORDER_BY];
+                }
+
+                int colIndex = -1;
+
+                if (!String.IsNullOrEmpty(sortColumn))
+                {
+                    ViewState.Add(ORDER_BY, sortColumn);
+                    TableSchema.TableColumn col = tblSchema.GetColumn(sortColumn);
+                    if (col == null)
+                    {
+                        for (int i = 0; i &lt; tblSchema.Columns.Count; i++)
+                        {
+                            TableSchema.TableColumn fkCol = tblSchema.Columns[i];
+                            if (fkCol.IsForeignKey &amp;&amp; !String.IsNullOrEmpty(fkCol.ForeignKeyTableName))
+                            {
+                                TableSchema.Table fkTbl = DataService.GetSchema(fkCol.ForeignKeyTableName, tblSchema.Provider.Name, TableType.Table);
+                                if (fkTbl != null)
+                                {
+                                    col = fkTbl.Columns[1];
+                                    colIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (col != null &amp;&amp; col.MaxLength &lt; 2048)
+                    {
+                        if (ViewState[SORT_DIRECTION] == null || ((string)ViewState[SORT_DIRECTION]) == SqlFragment.ASC)
+                        {
+                            if (colIndex &gt; -1)
+                            {
+                                query.OrderBy = OrderBy.Asc(col, SqlFragment.JOIN_PREFIX + colIndex);
+                            }
+                            else
+                            {
+                                query.OrderBy = OrderBy.Asc(col);
+                            }
+                            ViewState[SORT_DIRECTION] = SqlFragment.ASC;
+                        }
+                        else
+                        {
+                            if (colIndex &gt; -1)
+                            {
+                                query.OrderBy = OrderBy.Desc(col, SqlFragment.JOIN_PREFIX + colIndex);
+                            }
+                            else
+                            {
+                                query.OrderBy = OrderBy.Desc(col);
+                            }
+                            ViewState[SORT_DIRECTION] = SqlFragment.DESC;
+                        }
+                    }
+                }
+
+
+                DataTable dt = query.ExecuteJoinedDataSet().Tables[0];
+                GridView1.DataSource = dt;
+
+                for (int i = 1; i &lt; tblSchema.Columns.Count; i++)
+                {
+                    BoundField field = (BoundField)GridView1.Columns[i];
+                    field.DataField = dt.Columns[i].ColumnName;
+                    field.SortExpression = dt.Columns[i].ColumnName;
+                    field.HtmlEncode = false;
+                    if (tblSchema.Columns[i].IsForeignKey)
+                    {
+                        TableSchema.Table schema;
+                        if (tblSchema.Columns[i].ForeignKeyTableName == null)
+                        {
+                            schema = DataService.GetForeignKeyTable(tblSchema.Columns[i], tblSchema);
+                        }
+                        else
+                        {
+                            schema = DataService.GetSchema(tblSchema.Columns[i].ForeignKeyTableName, tblSchema.Provider.Name, TableType.Table);
+                        }
+                        if (schema != null)
+                        {
+                            field.HeaderText = schema.DisplayName;
+                        }
+                    }
+                    else
+                    {
+                        field.HeaderText = tblSchema.Columns[i].DisplayName;
+                    }
+                }
+
+                GridView1.DataBind();
+            }
+        }
+
+		protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+		{
+			GridView1.PageIndex = e.NewPageIndex;
+			BindGrid(String.Empty);
+		}
+	    
+		protected void GridView1_DataBound(Object sender, EventArgs e)
+		{
+			GridViewRow gvrPager = GridView1.BottomPagerRow;
+			if (gvrPager == null)
+			{
+				return;
+			}
+			// get your controls from the gridview
+			DropDownList ddlPages = (DropDownList)gvrPager.Cells[0].FindControl("ddlPages");
+			Label lblPageCount = (Label)gvrPager.Cells[0].FindControl("lblPageCount");
+
+			if (ddlPages != null)
+			{
+				// populate pager
+				for (int i = 0; i &lt; GridView1.PageCount; i++) 
+				{
+					int intPageNumber = i + 1;
+					ListItem lstItem = new ListItem(intPageNumber.ToString());
+					if (i == GridView1.PageIndex)
+					{
+						lstItem.Selected = true;
+					}
+					ddlPages.Items.Add(lstItem);
+				}
+			}
+
+			int itemCount = 0;
+
+			// populate page count
+			if (lblPageCount != null) 
+			{
+
+				//pull the datasource
+				DataSet ds = GridView1.DataSource as DataSet;
+				if (ds != null)
+				{
+					itemCount = ds.Tables[0].Rows.Count;
+				}
+				string pageCount = "[&lt;]b[&gt;]" + GridView1.PageCount.ToString() + "[&lt;]/b[&gt;] (" + itemCount.ToString() + " Items)";
+				lblPageCount.Text = pageCount;
+
+			}
+
+			Button btnPrev = (Button)gvrPager.Cells[0].FindControl("btnPrev");
+			Button btnNext = (Button)gvrPager.Cells[0].FindControl("btnNext");
+			Button btnFirst = (Button)gvrPager.Cells[0].FindControl("btnFirst");
+			Button btnLast = (Button)gvrPager.Cells[0].FindControl("btnLast");
+
+			//now figure out what page we're on
+			if (GridView1.PageIndex == 0)
+			{
+				btnPrev.Enabled = false;
+				btnFirst.Enabled = false;
+			}
+			else if (GridView1.PageIndex + 1 == GridView1.PageCount)
+			{
+				btnLast.Enabled = false;
+				btnNext.Enabled = false;
+			}
+			else 
+			{
+				btnLast.Enabled = true;
+				btnNext.Enabled = true;
+				btnPrev.Enabled = true;
+				btnFirst.Enabled = true;
+			}
+		}
+	    
+		protected void ddlPages_SelectedIndexChanged(Object sender, EventArgs e) 
+		{
+			GridViewRow gvrPager = GridView1.BottomPagerRow;
+			DropDownList ddlPages = (DropDownList)gvrPager.Cells[0].FindControl("ddlPages");
+
+			GridView1.PageIndex = ddlPages.SelectedIndex;
+
+			// a method to populate your grid
+			BindGrid(String.Empty);
+		}
+
+
+        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            string columnName = e.SortExpression;
+            //rebind the grid
+            if (ViewState[SORT_DIRECTION] == null || ((string)ViewState[SORT_DIRECTION]) == SqlFragment.ASC)
+            {
+                ViewState[SORT_DIRECTION] = SqlFragment.DESC;
+            }
+            else
+            {
+                ViewState[SORT_DIRECTION] = SqlFragment.ASC;
+            }
+            BindGrid(columnName);
+        }
+	    
+		string GetSortDirection(string sortBy) 
+		{
+			string sortDir = " ASC";
+			if (ViewState["sortBy"] != null)
+			{
+				string sortedBy = ViewState["sortBy"].ToString();
+
+				if (sortedBy == sortBy) 
+				{
+					//the direction should be desc
+					sortDir = " DESC";
+
+					//reset the sorter to null
+					ViewState["sortBy"] = null;
+				}
+				else
+				{
+					//this is the first sort for this row
+					//put it to the ViewState
+					ViewState["sortBy"] = sortBy;
+				}
+			}
+			else
+			{
+				//it's null, so this is the first sort
+				ViewState["sortBy"] = sortBy;
+			}
+			return sortDir;
+		}
+	}
+}</value>
+  </data>
+  <data name="CS_GeneratedScaffoldMarkup" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="System.Data"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;% 
+	string masterPage = "#MASTERPAGE#";
+	string tableName = "#TABLENAME#";
+	string className = "#CLASSNAME#";
+	string generatedClassName = "#PAGEFILE#";
+	string language = "#LANGUAGE#";
+	string fileExtension = "#LANGEXTENSION#";
+	string providerName = "#PROVIDER#";
+	DataProvider provider = DataService.GetInstance(providerName);
+	TableSchema.Table tbl = DataService.GetSchema(tableName, provider.Name, TableType.Table);
+
+%&gt;
+
+&lt;%
+	if (String.IsNullOrEmpty(masterPage))
+	{
+%&gt;
+[&lt;]%@ Page Language="C#" Title="&lt;%=className%&gt; Scaffold" CodeFile="&lt;%=generatedClassName%&gt;.aspx&lt;%=fileExtension%&gt;" Inherits="&lt;%=provider.GeneratedNamespace%&gt;.&lt;%=generatedClassName%&gt;" %[&gt;]
+[&lt;]!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"[&gt;]
+[&lt;]html xmlns="http://www.w3.org/1999/xhtml" [&gt;]
+[&lt;]head id="Head1" runat="server"[&gt;]
+[&lt;]title[&gt;]&lt;%=className%&gt;[&lt;]/title[&gt;]
+[&lt;]script language="javascript" type="text/javascript"[&gt;]
+
+	function CheckDelete()
+	{ 
+		  return confirm('Delete this record? This action cannot be undone...'); 
+	}
+
+	function imposeMaxLength(e, Object, MaxLen, rowIndex)
+	{
+		var keyCode = e.keyCode;
+		var counter = document.getElementById('counter' + rowIndex);
+		var charText = Object.value;
+		var charCount = charText.length;
+		var charRemain = MaxLen - charCount;
+		counter.style.visibility = 'visible';
+		if(keyCode == 8 || keyCode == 46)
+		{
+			if(charCount == MaxLen)
+			{
+				charRemain = 1;
+			}
+			else if(charCount == 0)
+			{
+				charRemain = MaxLen;
+			}
+			counter.innerHTML = charRemain;
+			return true;
+		}
+		else
+		{
+			if(charRemain [&gt;] 0)
+			{
+				counter.innerHTML = charRemain;
+				return true;
+			}
+			else
+			{
+				Object.value = charText.substring(0, MaxLen);
+				counter.innerHTML = '0';
+				return false;
+			}
+		}
+	}
+[&lt;]/script[&gt;]
+[&lt;]/head[&gt;]
+[&lt;]body[&gt;]
+	[&lt;]form id="elForm" runat="server"[&gt;]
+	
+	&lt;%
+	}
+	else
+	{
+%&gt;
+[&lt;]%@ Page Language="&lt;%=language%&gt;" Title="&lt;%=className%&gt; Scaffold" CodeFile="&lt;%=generatedClassName%&gt;.aspx&lt;%=fileExtension%&gt;" Inherits="&lt;%=provider.GeneratedNamespace%&gt;.&lt;%=generatedClassName%&gt;" MasterPageFile="&lt;%= masterPage %&gt;" Theme="default" %[&gt;]
+[&lt;]asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="server"[&gt;]
+&lt;%
+	}
+%&gt;
+	
+	[&lt;]h2[&gt;]&lt;%= className %&gt;[&lt;]/h2[&gt;]
+	[&lt;]asp:Panel id="pnlGrid" runat="server"[&gt;]
+    [&lt;]asp:GridView 
+    ID="GridView1"
+    runat="server" 
+    AllowPaging="True" 
+    AllowSorting="True"
+    AutoGenerateColumns="False" 
+    OnDataBound="GridView1_DataBound" 
+    OnSorting="GridView1_Sorting"
+	OnPageIndexChanging="GridView1_PageIndexChanging"
+    DataKeyNames="&lt;%= tbl.PrimaryKey.ColumnName %&gt;" 
+    PageSize="50"
+    [&gt;]
+        [&lt;]Columns[&gt;]
+	            [&lt;]asp:HyperLinkField Text="Edit" DataNavigateUrlFields="&lt;%= tbl.PrimaryKey.ColumnName %&gt;" DataNavigateUrlFormatString="&lt;%= generatedClassName %&gt;.aspx?id={0}" /[&gt;]
+	            &lt;% 
+					foreach (TableSchema.TableColumn col in tbl.Columns)
+					{
+					    if(!col.IsPrimaryKey)
+					    {
+%&gt;
+	            [&lt;]asp:BoundField DataField="&lt;%=col.ColumnName%&gt;" HeaderText="&lt;%=col.DisplayName%&gt;" SortExpression="&lt;%=col.ColumnName%&gt;"[&gt;][&lt;]/asp:BoundField[&gt;]
+	            &lt;%
+					    }
+					}
+%&gt;
+        [&lt;]/Columns[&gt;]
+        [&lt;]EmptyDataTemplate[&gt;]
+            No &lt;%= tbl.ClassNamePlural %&gt; 
+        [&lt;]/EmptyDataTemplate[&gt;]
+        [&lt;]PagerTemplate[&gt;]
+        
+            [&lt;]div style="border-top:1px solid #666666"[&gt;]
+            [&lt;]br /[&gt;]
+           [&lt;]asp:Button ID="btnFirst" runat="server" CssClass="scaffoldButton" Text="[&lt;][&lt;] First" CommandArgument="First" CommandName="Page"/[&gt;]
+            [&lt;]asp:Button ID="btnPrev" runat="server" CssClass="scaffoldButton" Text="[&lt;] Previous" CommandArgument="Prev" CommandName="Page"/[&gt;]
+
+                Page
+                [&lt;]asp:DropDownList ID="ddlPages" runat="server" CssClass="scaffoldEditItem" AutoPostBack="True" OnSelectedIndexChanged="ddlPages_SelectedIndexChanged"[&gt;]
+                [&lt;]/asp:DropDownList[&gt;] of [&lt;]asp:Label ID="lblPageCount" runat="server"[&gt;][&lt;]/asp:Label[&gt;]
+
+            [&lt;]asp:Button ID="btnNext" runat="server" CssClass="scaffoldButton" Text="Next [&gt;]" CommandArgument="Next" CommandName="Page"/[&gt;]
+            [&lt;]asp:Button ID="btnLast" runat="server" CssClass="scaffoldButton" Text="Last [&gt;][&gt;]" CommandArgument="Last" CommandName="Page"/[&gt;]
+        [&lt;]/PagerTemplate[&gt;]
+    [&lt;]/asp:GridView[&gt;]
+	[&lt;]a href="&lt;%= generatedClassName %&gt;.aspx?id=0"[&gt;]Add New...[&lt;]/a[&gt;]
+	[&lt;]/asp:Panel[&gt;]
+	
+	[&lt;]asp:panel id="pnlEdit" Runat="server"[&gt;]
+	[&lt;]asp:Label ID="lblResult" runat="server"[&gt;][&lt;]/asp:Label[&gt;]	
+	
+	[&lt;]table class="scaffoldEditTable" cellpadding="5" cellspacing="0" Width="600px"[&gt;]
+			[&lt;]tr[&gt;]
+			[&lt;]td class="scaffoldEditItemCaption"[&gt;]&lt;%= tbl.PrimaryKey.DisplayName %&gt;[&lt;]/td[&gt;]
+			[&lt;]td class="scaffoldEditItem"[&gt;][&lt;]asp:Label id="lblID" runat="server" /[&gt;][&lt;]/td[&gt;]
+		[&lt;]/tr[&gt;]
+	&lt;%
+		foreach (TableSchema.TableColumn col in tbl.Columns)
+		{
+		    if(!col.IsPrimaryKey)
+		    {
+%&gt;
+		[&lt;]tr[&gt;]
+			[&lt;]td class="scaffoldEditItemCaption"[&gt;]&lt;%=col.DisplayName%&gt;[&lt;]/td[&gt;]
+			&lt;%
+		        string controlID = "ctrl" + col.PropertyName;
+		        string displayPrefix = String.Empty;
+		        string controlType;
+		        string controlProperties = String.Empty;
+
+		        bool isTextBox = false;
+
+		        if(col.IsForeignKey)
+		        {
+		            controlType = "DropDownList";
+		        }
+		        else
+		        {
+		            switch(col.DataType)
+		            {
+		                case DbType.Binary:
+		                case DbType.Byte:
+		                    controlType = String.Empty;
+		                    break;
+		                case DbType.Guid:
+		                case DbType.AnsiString:
+		                case DbType.String:
+		                case DbType.StringFixedLength:
+		                case DbType.Xml:
+		                case DbType.Object:
+		                case DbType.AnsiStringFixedLength:
+		                    if(Utility.IsMatch(col.ColumnName, ReservedColumnName.CREATED_BY) || Utility.IsMatch(col.ColumnName, ReservedColumnName.MODIFIED_BY))
+		                    {
+		                        controlType = "Label";
+		                    }
+		                    else
+		                    {
+		                        isTextBox = true;
+		                        controlType = "TextBox";
+		                        if(col.MaxLength &gt; 250)
+		                        {
+		                            controlProperties += "TextMode=\"MultiLine\" ";
+		                            controlProperties += "Height=\"100px\" ";
+		                            controlProperties += "Width=\"500px\" ";
+		                        }
+		                    }
+		                    break;
+		                case DbType.Date:
+		                case DbType.Time:
+		                case DbType.DateTime:
+		                    if(Utility.IsMatch(col.ColumnName, ReservedColumnName.MODIFIED_ON) || Utility.IsMatch(col.ColumnName, ReservedColumnName.CREATED_ON))
+		                    {
+		                        controlType = "Label";
+		                    }
+		                    else
+		                    {
+		                        controlType = "Calendar";
+		                    }
+		                    break;
+		                case DbType.Int16:
+		                case DbType.Int32:
+		                case DbType.UInt16:
+		                case DbType.Int64:
+		                case DbType.UInt32:
+		                case DbType.UInt64:
+		                case DbType.VarNumeric:
+		                case DbType.Single:
+		                case DbType.Currency:
+		                case DbType.Decimal:
+		                case DbType.Double:
+		                    isTextBox = true;
+		                    controlType = "TextBox";
+		                    controlProperties += "Width=\"50px\" ";
+		                    if(col.DataType == DbType.Currency)
+		                    {
+		                        displayPrefix = "$";
+		                    }
+		                    break;
+		                case DbType.Boolean:
+		                    bool isChecked = false;
+		                    if(Utility.IsMatch(col.ColumnName, ReservedColumnName.IS_ACTIVE))
+		                    {
+		                        isChecked = true;
+		                    }
+		                    controlType = "CheckBox";
+		                    controlProperties += "Checked=\"" + isChecked + "\" ";
+		                    break;
+		                default:
+		                    isTextBox = true;
+		                    controlType = "TextBox";
+		                    break;
+		            }
+		        }
+		        if(isTextBox &amp;&amp; col.MaxLength &gt; 0)
+		        {
+		            controlProperties += "MaxLength=\"" + col.MaxLength + "\" ";
+		        }
+
+
+		        string controlMarkup = String.Empty;
+		        if(!String.IsNullOrEmpty(controlType))
+		        {
+		            controlMarkup = displayPrefix + "&lt;asp:" + controlType + " ID=\"" + controlID + "\" runat=\"server\" " + controlProperties + "&gt;&lt;/asp:" + controlType + "&gt;";
+		        }
+%&gt;
+		[&lt;]td class="scaffoldEditItem"[&gt;]&lt;%=controlMarkup%&gt;[&lt;]/td[&gt;]
+		[&lt;]/tr[&gt;]
+		&lt;%
+		    }
+		}
+%&gt;
+
+		[&lt;]tr[&gt;]
+			[&lt;]td colspan="2" align="left"[&gt;]
+			[&lt;]asp:Button id="btnSave" CssClass="scaffoldButton" runat="server" Text="Save" OnClick="btnSave_Click"[&gt;][&lt;]/asp:Button[&gt;]&amp;nbsp;
+			[&lt;]input type="button" onclick="location.href='&lt;%= generatedClassName %&gt;.aspx'" class="scaffoldButton" value="Return" /[&gt;]
+			[&lt;]asp:Button id="btnDelete" CssClass="scaffoldButton" runat="server" CausesValidation="False" Text="Delete" OnClick="btnDelete_Click"[&gt;][&lt;]/asp:Button[&gt;][&lt;]/td[&gt;]
+		[&lt;]/tr[&gt;]
+	[&lt;]/table[&gt;]
+	[&lt;]/asp:panel[&gt;]
+
+&lt;%if(String.IsNullOrEmpty(masterPage))
+{
+%&gt;
+[&lt;]/form[&gt;]
+[&lt;]/body[&gt;]
+[&lt;]/html[&gt;]
+&lt;%
+}
+else 
+{
+%&gt;
+[&lt;]/asp:Content[&gt;]
+&lt;%
+}
+%&gt;</value>
+  </data>
+  <data name="CS_ODSController" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%
+    //The data we need
+	string providerName = "#PROVIDER#";
+	string tableName = "#TABLE#";
+	TableSchema.Table tbl = DataService.GetSchema(tableName, providerName, TableType.Table);
+	DataProvider provider = DataService.Providers[providerName];
+	LanguageType lang = LanguageType.CSharp;
+    
+    //The main vars we need
+    TableSchema.TableColumnCollection cols = tbl.Columns;
+
+%&gt;
+
+//Generated on &lt;%=DateTime.Now.ToString() %&gt; by &lt;%=Environment.UserName %&gt;
+namespace &lt;%=provider.GeneratedNamespace %&gt;
+{
+    /// &lt;summary&gt;
+    /// Controller class for &lt;%=tbl.Name %&gt;
+    /// &lt;/summary&gt;
+    [System.ComponentModel.DataObject]
+    public partial class &lt;%=tbl.ClassName %&gt;Controller
+    {
+        // Preload our schema..
+        &lt;%=tbl.ClassName%&gt; thisSchemaLoad = new &lt;%=tbl.ClassName%&gt;();
+
+        private string userName = string.Empty;
+        protected string UserName
+        {
+            get
+            {
+				if (userName.Length == 0) 
+				{
+    				if (System.Web.HttpContext.Current != null)
+    				{
+						userName=System.Web.HttpContext.Current.User.Identity.Name;
+					}
+					else
+					{
+						userName=System.Threading.Thread.CurrentPrincipal.Identity.Name;
+					}
+				}
+				return userName;
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, true)]
+        public &lt;%=tbl.ClassName%&gt;Collection FetchAll()
+        {
+            &lt;%=tbl.ClassName%&gt;Collection coll = new &lt;%=tbl.ClassName%&gt;Collection();
+            Query qry = new Query(&lt;%=tbl.ClassName%&gt;.Schema);
+            coll.Load(qry.ExecuteReader());
+            return coll;
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public &lt;%=tbl.ClassName%&gt;Collection FetchByID(object &lt;%=tbl.PrimaryKey.PropertyName%&gt;)
+        {
+            &lt;%=tbl.ClassName%&gt;Collection coll = new &lt;%=tbl.ClassName%&gt;Collection().Where("&lt;%=tbl.PrimaryKey.ColumnName %&gt;", &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load();
+            return coll;
+        }
+		
+		[DataObjectMethod(DataObjectMethodType.Select, false)]
+        public &lt;%=tbl.ClassName%&gt;Collection FetchByQuery(Query qry)
+        {
+            &lt;%=tbl.ClassName%&gt;Collection coll = new &lt;%=tbl.ClassName%&gt;Collection();
+            coll.Load(qry.ExecuteReader()); 
+            return coll;
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete, true)]
+        public bool Delete(object &lt;%=tbl.PrimaryKey.PropertyName%&gt;)
+        {
+            return (&lt;%=tbl.ClassName%&gt;.Delete(&lt;%=tbl.PrimaryKey.PropertyName%&gt;) == 1);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete, false)]
+        public bool Destroy(object &lt;%=tbl.PrimaryKey.PropertyName%&gt;)
+        {
+            return (&lt;%=tbl.ClassName%&gt;.Destroy(&lt;%=tbl.PrimaryKey.PropertyName%&gt;) == 1);
+        }
+
+       
+    	&lt;%
+			string insertArgs = string.Empty;
+			string updateArgs = string.Empty;
+			string seperator = ",";
+
+			foreach (TableSchema.TableColumn col in cols)
+			{
+				string propName = col.PropertyName;
+				string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+
+				updateArgs += varType + " " + propName + seperator;
+				if (!col.AutoIncrement)
+				{
+					insertArgs += varType + " " + propName + seperator;
+				}
+			}
+			if (insertArgs.Length &gt; 0)
+				insertArgs = insertArgs.Remove(insertArgs.Length - seperator.Length, seperator.Length);
+			if (updateArgs.Length &gt; 0)
+				updateArgs = updateArgs.Remove(updateArgs.Length - seperator.Length, seperator.Length);
+%&gt;
+    	
+	    /// &lt;summary&gt;
+	    /// Inserts a record, can be used with the Object Data Source
+	    /// &lt;/summary&gt;
+        [DataObjectMethod(DataObjectMethodType.Insert, true)]
+	    public void Insert(&lt;%=insertArgs%&gt;)
+	    {
+		    &lt;%=tbl.ClassName %&gt; item = new &lt;%= tbl.ClassName %&gt;();
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                if (!col.AutoIncrement) { 
+            %&gt;
+            item.&lt;%=col.PropertyName%&gt; = &lt;%=col.PropertyName%&gt;;
+            &lt;%
+                }
+              } 
+            %&gt;
+	    
+		    item.Save(UserName);
+	    }
+
+    	
+	    /// &lt;summary&gt;
+	    /// Updates a record, can be used with the Object Data Source
+	    /// &lt;/summary&gt;
+        [DataObjectMethod(DataObjectMethodType.Update, true)]
+	    public void Update(&lt;%=updateArgs%&gt;)
+	    {
+		    &lt;%=tbl.ClassName%&gt; item = new &lt;%=tbl.ClassName %&gt;();
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) 
+			{
+				%&gt;
+				item.&lt;%=col.PropertyName%&gt; = &lt;%=col.PropertyName%&gt;;
+				&lt;%
+			} 
+            %&gt;
+		    item.MarkOld();
+		    item.Save(UserName);
+	    }
+
+    }
+
+}</value>
+  </data>
+  <data name="CS_SPTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%@ Import Namespace="SubSonic.CodeGenerator" %&gt;
+&lt;%@ Import Namespace="System.Data" %&gt;
+
+&lt;%
+    string providerName = "#PROVIDER#";
+    LanguageType lang = LanguageType.CSharp;
+	DataProvider provider = DataService.GetInstance(providerName);
+    System.Collections.Generic.List&lt;StoredProcedure&gt; spList = DataService.GetSPSchemaCollection(providerName) ;
+	ArrayList classStoredProcedures = new ArrayList();
+	
+%&gt;
+namespace &lt;%=provider.GeneratedNamespace %&gt;{
+
+    public partial class &lt;%=provider.SPClassName%&gt;{
+        &lt;%foreach (StoredProcedure sp in spList)
+{
+    if(Utility.IsMatch(sp.TableName, provider.SPClassName))
+    {
+        //load up a the params
+        string argList = string.Empty;
+        bool isFirst = true;
+        foreach(StoredProcedure.Parameter p in sp.Parameters)
+        {
+            if(!isFirst)
+            {
+                argList += ", ";
+            }
+            isFirst = false;
+            string pType = Utility.GetVariableType(p.DBType, lang);
+            string arg = p.DisplayName;
+            argList += pType + " " + arg;
+        }
+%&gt;
+        /// &lt;summary&gt;
+        /// Creates an object wrapper for the &lt;%=sp.Name%&gt; Procedure
+        /// &lt;/summary&gt;
+        public static StoredProcedure &lt;%=sp.DisplayName%&gt;(&lt;%=argList%&gt;)
+        {
+            SubSonic.StoredProcedure sp = new SubSonic.StoredProcedure("&lt;%=sp.Name%&gt;" , DataService.GetInstance("&lt;%= providerName %&gt;"));
+        	&lt;%
+        foreach(StoredProcedure.Parameter p in sp.Parameters)
+        {
+            if(p.Mode == ParameterDirection.InputOutput)
+            {%&gt;
+            sp.Command.AddOutputParameter("&lt;%=p.QueryParameter%&gt;",DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;);
+        	    &lt;%
+            }
+            else
+            {%&gt;
+            sp.Command.AddParameter("&lt;%=p.QueryParameter%&gt;", &lt;%=p.DisplayName%&gt;,DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;);
+        	    &lt;%
+            }
+        }
+%&gt;
+            return sp;
+        }
+        &lt;%
+    }
+    else
+    {
+        classStoredProcedures.Add(sp);
+    }
+}
+%&gt;
+    }
+    &lt;%
+		foreach (StoredProcedure sp in classStoredProcedures)
+		{
+		    string className = sp.TableName;
+		    TableSchema.Table tbl = DataService.GetTableSchema(sp.TableName, provider.Name, TableType.Table);
+		    if(tbl != null)
+		    {
+		        className = tbl.ClassName;
+		    }
+		    string argList = string.Empty;
+		    bool isFirst = true;
+		    foreach(StoredProcedure.Parameter p in sp.Parameters)
+		    {
+		        if(!isFirst)
+		        {
+		            argList += ", ";
+		        }
+		        isFirst = false;
+		        string pType = Utility.GetVariableType(p.DBType, lang);
+		        string arg = p.DisplayName;
+		        argList += pType + " " + arg;
+		    }
+%&gt;
+		public partial class &lt;%=className%&gt;
+		{
+		/// &lt;summary&gt;
+        /// Creates an object wrapper for the &lt;%=sp.Name%&gt; Procedure
+        /// &lt;/summary&gt;
+        public static StoredProcedure &lt;%=sp.DisplayName%&gt;(&lt;%=argList%&gt;){
+		
+            SubSonic.StoredProcedure sp = new SubSonic.StoredProcedure("&lt;%=sp.Name%&gt;" , DataService.GetInstance("&lt;%= providerName %&gt;"));
+        	&lt;%
+		    foreach(StoredProcedure.Parameter p in sp.Parameters)
+		    {%&gt;
+        	    &lt;%
+		        if(p.Mode == ParameterDirection.InputOutput)
+		        {%&gt;
+            sp.Command.AddOutputParameter("&lt;%=p.QueryParameter%&gt;",DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;);
+        	    &lt;%
+		        }
+		        else
+		        {%&gt;
+            sp.Command.AddParameter("&lt;%=p.QueryParameter%&gt;", &lt;%=p.DisplayName%&gt;,DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;);
+        	    &lt;%
+		        }%&gt;
+            &lt;%
+		    }%&gt;
+            return sp;
+        }
+		
+		}
+		&lt;%
+		}
+%&gt;
+}</value>
+  </data>
+  <data name="CS_StructsTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%@ Import Namespace="SubSonic.CodeGenerator" %&gt;
+&lt;%@ Import Namespace="System.Data" %&gt;
+
+&lt;%foreach(DataProvider p in DataService.Providers){
+
+      TableSchema.Table[] tables = DataService.GetTables(p.Name);
+      TableSchema.Table[] views = DataService.GetViews(p.Name);
+
+%&gt;
+namespace &lt;%=p.GeneratedNamespace%&gt;
+{
+	#region Tables Struct
+	public partial struct Tables
+	{
+		&lt;%
+			foreach (TableSchema.Table t in tables)
+			{
+			    if(CodeService.ShouldGenerate(t.Name, p.Name))
+			    {
+%&gt;
+		public static string &lt;%= t.ClassName %&gt; = @"&lt;%= t.ClassName %&gt;";
+        &lt;%
+			}
+		}
+		%&gt;
+	}
+	#endregion
+
+    #region View Struct
+    public partial struct Views 
+    {
+		&lt;%
+			foreach (TableSchema.Table v in views)
+			{
+				if (CodeService.ShouldGenerate(v.Name, p.Name))
+				{
+%&gt;
+		public static string &lt;%= v.ClassName %&gt; = @"&lt;%= v.ClassName %&gt;";
+        &lt;%
+			}
+		}
+		%&gt;
+    }
+    #endregion
+}
+&lt;%} %&gt;
+
+
+#region Databases
+public partial struct Databases 
+{
+	&lt;%foreach (DataProvider p in DataService.Providers) { %&gt;
+	public static string &lt;%= p.Name %&gt; = @"&lt;%= p.Name%&gt;";
+    &lt;%}%&gt;
+}
+#endregion</value>
+  </data>
+  <data name="CS_ViewTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%
+    string providerName = "#PROVIDER#";
+    string viewName = "#VIEW#";
+    //The data we need
+    TableSchema.Table view = DataService.GetSchema(viewName, providerName, TableType.View);
+    LanguageType lang = LanguageType.CSharp;
+    
+    //The main vars we need
+    TableSchema.TableColumnCollection cols = view.Columns;
+    string className = view.ClassName;
+    string nSpace = DataService.Providers[providerName].GeneratedNamespace;
+
+    
+%&gt;
+namespace &lt;%=nSpace %&gt;{
+    /// &lt;summary&gt;
+    /// Strongly-typed collection for the &lt;%=className%&gt; class.
+    /// &lt;/summary&gt;
+
+    [Serializable]
+    public partial class &lt;%=className%&gt;Collection : ReadOnlyList[&lt;]&lt;%= className %&gt;[&gt;]
+    {
+        List[&lt;]Where[&gt;] wheres = new List[&lt;]Where[&gt;]();
+        List[&lt;]BetweenAnd[&gt;] betweens = new List[&lt;]BetweenAnd[&gt;]();
+        SubSonic.OrderBy orderBy;
+    	
+        public &lt;%=className%&gt;Collection OrderByAsc(string columnName) 
+        {
+            this.orderBy = SubSonic.OrderBy.Asc(columnName);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection OrderByDesc(string columnName) 
+        {
+            this.orderBy = SubSonic.OrderBy.Desc(columnName);
+            return this;
+        }
+
+        public &lt;%=className%&gt;Collection WhereDatesBetween(string columnName, DateTime dateStart, DateTime dateEnd) 
+        {
+            return BetweenAnd(columnName, dateStart, dateEnd);
+        }
+
+        public &lt;%=className%&gt;Collection Where(Where where) 
+        {
+            wheres.Add(where);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection Where(string columnName, object value) 
+        {
+            if(value != DBNull.Value &amp;&amp; value != null)
+            {	
+                return Where(columnName, Comparison.Equals, value);
+            }
+            else
+            {
+                return Where(columnName, Comparison.Is, DBNull.Value);
+            }
+        }
+    	
+        public &lt;%=className%&gt;Collection Where(string columnName, Comparison comp, object value) 
+	    {
+            Where where = new Where();
+            where.ColumnName = columnName;
+            where.Comparison = comp;
+            where.ParameterValue = value;
+            Where(where);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection BetweenAnd(string columnName, DateTime dateStart, DateTime dateEnd) 
+	    {
+            BetweenAnd between = new BetweenAnd();
+            between.ColumnName = columnName;
+            between.StartDate = dateStart;
+            between.EndDate = dateEnd;
+            between.StartParameterName = "start" + columnName; 
+            between.EndParameterName = "end" + columnName; 
+            betweens.Add(between);
+            return this;
+        }
+    	
+        public &lt;%=className%&gt;Collection Load() 
+	    {
+            Query qry = new Query(&lt;%=className%&gt;.Schema);
+            CheckLogicalDelete(qry);
+            foreach (Where where in wheres) 
+            {
+                qry.AddWhere(where);
+            }
+             
+            foreach (BetweenAnd between in betweens)
+            {
+                qry.AddBetweenAnd(between);
+            }
+
+            if (orderBy != null)
+            {
+                qry.OrderBy = orderBy;
+            }
+
+            IDataReader rdr = qry.ExecuteReader();
+            this.Load(rdr);
+            rdr.Close();
+            return this;
+        }
+        
+        public &lt;%=className%&gt;Collection() 
+        {
+            
+
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// This is  Read-only wrapper class for the &lt;%=viewName%&gt; view.
+    /// &lt;/summary&gt;
+    [Serializable]
+    public partial class &lt;%=className%&gt; : ReadOnlyRecord[&lt;]&lt;%= className %&gt;[&gt;] 
+    {
+    
+	    #region Default Settings
+	    protected static void SetSQLProps() 
+	    {
+		    GetTableSchema();
+	    }
+	    #endregion
+
+        #region Schema Accessor
+	    public static TableSchema.Table Schema
+        {
+            get
+            {
+                if (BaseSchema == null)
+                {
+                    SetSQLProps();
+                }
+                return BaseSchema;
+            }
+        }
+    	
+        private static void GetTableSchema() 
+        {
+            if(!IsSchemaInitialized)
+            {
+                //Schema declaration
+                TableSchema.Table schema = new TableSchema.Table("&lt;%=viewName%&gt;", TableType.View, DataService.GetInstance("&lt;%=providerName %&gt;"));
+                schema.Columns = new TableSchema.TableColumnCollection();
+                schema.SchemaName = "&lt;%=view.SchemaName%&gt;";
+
+                //columns
+                &lt;%
+                foreach(TableSchema.TableColumn col in cols)
+				{
+                    string varName = "col" + col.ArgumentName;
+                %&gt;
+                TableSchema.TableColumn &lt;%=varName %&gt; = new TableSchema.TableColumn(schema);
+                &lt;%=varName %&gt;.ColumnName = "&lt;%= col.ColumnName %&gt;";
+                &lt;%=varName %&gt;.DataType = DbType.&lt;%=col.DataType %&gt;;
+                &lt;%=varName %&gt;.MaxLength = &lt;%=col.MaxLength %&gt;;
+                &lt;%=varName %&gt;.AutoIncrement = false;
+                &lt;%=varName %&gt;.IsNullable = &lt;%=col.IsNullable.ToString().ToLower()%&gt;;
+                &lt;%=varName %&gt;.IsPrimaryKey = false;
+                &lt;%=varName %&gt;.IsForeignKey = false;
+                &lt;%=varName %&gt;.IsReadOnly = &lt;%= col.IsReadOnly.ToString().ToLower() %&gt;;
+                &lt;%
+				if(col.IsForeignKey)
+				{
+                %&gt;
+				&lt;%=varName %&gt;.ForeignKeyTableName = "&lt;%= col.ForeignKeyTableName %&gt;";
+                &lt;% } %&gt;
+                schema.Columns.Add(&lt;%=varName%&gt;);
+
+                &lt;%
+                }
+                %&gt;
+                
+                BaseSchema = schema;
+                //add this schema to the provider
+                //so we can query it later
+                DataService.Providers["&lt;%=providerName %&gt;"].AddSchema("&lt;%=viewName%&gt;",schema);
+            }
+        }
+        #endregion
+        
+        #region Query Accessor
+	    public static Query CreateQuery()
+	    {
+		    return new Query(Schema);
+	    }
+	    #endregion
+	    
+	    #region .ctors
+	    public &lt;%=className %&gt;()
+	    {
+            SetSQLProps();
+            SetDefaults();
+            MarkNew();
+        }
+
+	    public &lt;%=className %&gt;(object keyID)
+	    {
+		    SetSQLProps();
+		    LoadByKey(keyID);
+	    }
+    	 
+	    public &lt;%=className %&gt;(string columnName, object columnValue)
+        {
+            SetSQLProps();
+            LoadByParam(columnName,columnValue);
+        }
+        
+	    #endregion
+	    
+	    #region Props
+	    
+        &lt;%
+        foreach(TableSchema.TableColumn col in cols){
+            string propName = col.PropertyName;
+            string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+        %&gt;  
+        [XmlAttribute("&lt;%=propName%&gt;")]
+        public &lt;%=varType%&gt; &lt;%=propName%&gt; 
+	    {
+		    get
+		    {
+			    return GetColumnValue[&lt;]&lt;%= varType %&gt;[&gt;]("&lt;%=propName%&gt;");
+		    }
+            set 
+		    {
+			    MarkDirty();
+			    SetColumnValue("&lt;%=propName%&gt;", value);
+
+            }
+        }
+	    &lt;%
+	    }
+	    %&gt;
+	    #endregion
+    
+	    #region Columns Struct
+	    public struct Columns
+	    {
+		    
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                string propName = col.PropertyName;
+            %&gt;
+            public static string &lt;%=propName%&gt;  = @"&lt;%=propName%&gt;";
+            &lt;%
+              } 
+            %&gt;
+
+	    }
+	    #endregion
+    }
+}</value>
+  </data>
+  <data name="VB_ClassTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+
+&lt;%
+	//The data we need
+	string providerName = "#PROVIDER#";
+	string tableName = "#TABLE#";
+	TableSchema.Table tbl = DataService.GetSchema(tableName, providerName, TableType.Table);
+	DataProvider provider = DataService.Providers[providerName];
+	LanguageType lang = LanguageType.VB;
+
+	//The main vars we need
+	TableSchema.TableColumnCollection cols = tbl.Columns;
+	string className = tbl.ClassName;
+	string thisPK = tbl.PrimaryKey.PropertyName;
+	string varPK = tbl.PrimaryKey.ArgumentName;
+	string varPKType = Utility.GetVariableType(tbl.PrimaryKey.DataType, tbl.PrimaryKey.IsNullable, lang);
+%&gt;
+
+'Generated on &lt;%=DateTime.Now.ToString() %&gt; by &lt;%=Environment.UserName %&gt;
+Namespace &lt;%=provider.GeneratedNamespace %&gt;
+	''' &lt;summary&gt;
+	''' Strongly-typed collection for the &lt;%=className%&gt; class.
+	''' &lt;/summary&gt;
+	&lt;Serializable&gt; _
+	Public Partial Class &lt;%=className%&gt;Collection 
+	Inherits ActiveList(Of &lt;%=className%&gt;)
+		Private wheres As List(Of Where) = New List(Of Where)()
+		Private betweens As List(Of BetweenAnd) = New List(Of BetweenAnd)()
+		Private orderBy As SubSonic.OrderBy
+		Public Function OrderByAsc(ByVal columnName As String) As &lt;%=className%&gt;Collection
+			Me.orderBy = SubSonic.OrderBy.Asc(columnName)
+			Return Me
+		End Function
+
+		Public Function OrderByDesc(ByVal columnName As String) As &lt;%=className%&gt;Collection
+			Me.orderBy = SubSonic.OrderBy.Desc(columnName)
+			Return Me
+		End Function
+
+		Public Function WhereDatesBetween(ByVal columnName As String, ByVal dateStart As DateTime, ByVal dateEnd As DateTime) As &lt;%=className%&gt;Collection
+			Return BetweenAnd(columnName, dateStart, dateEnd)
+		End Function
+
+		Public Function Where(ByVal varWhere As Where) As &lt;%=className%&gt;Collection
+			wheres.Add(varWhere)
+			Return Me
+		End Function
+
+		Public Function Where(ByVal columnName As String, ByVal value As Object) As &lt;%=className%&gt;Collection
+			If Not value Is DBNull.Value AndAlso Not value Is Nothing Then
+				Return Where(columnName, Comparison.Equals, value)
+
+			Else
+				Return Where(columnName, Comparison.Is, DBNull.Value)
+			End If
+
+		End Function
+
+		Public Function Where(ByVal columnName As String, ByVal comp As Comparison, ByVal value As Object) As &lt;%=className%&gt;Collection
+			Dim _where As Where = New Where()
+			_where.ColumnName = columnName
+			_where.Comparison = comp
+			_where.ParameterValue = value
+			Me.Where(_where)
+			Return Me
+		End Function
+
+		Public Function BetweenAnd(ByVal columnName As String, ByVal dateStart As DateTime, ByVal dateEnd As DateTime) As &lt;%=className%&gt;Collection
+			Dim between As BetweenAnd = New BetweenAnd()
+			between.ColumnName = columnName
+			between.StartDate = dateStart
+			between.EndDate = dateEnd
+			between.StartParameterName = "start" + columnName 
+            between.EndParameterName = "end" + columnName 
+			betweens.Add(between)
+			Return Me
+		End Function
+
+		Public Overloads Function Load() As &lt;%=className%&gt;Collection
+			Dim qry As Query = New Query(&lt;%=className%&gt;.Schema)
+			CheckLogicalDelete(qry)
+			For Each where As Where In wheres
+				qry.AddWhere(where)
+			Next where
+
+			For Each between As BetweenAnd In betweens
+				qry.AddBetweenAnd(between)
+			Next between
+
+			If Not orderBy Is Nothing Then
+				qry.OrderBy = orderBy
+			End If
+
+			Dim rdr As IDataReader = qry.ExecuteReader()
+			MyBase.Load(rdr)
+			rdr.Close()
+			Return Me
+		End Function
+
+		Public Sub New()
+		End Sub
+
+	End Class
+
+	''' &lt;summary&gt;
+	''' This is an ActiveRecord class which wraps the &lt;%=tableName%&gt; table.
+	''' &lt;/summary&gt;
+	&lt;Serializable&gt; _
+	Public Partial Class &lt;%=className%&gt; 
+	Inherits ActiveRecord(Of &lt;%=className%&gt;)
+		#Region "Default Settings"
+		Protected Shared Sub SetSQLProps()
+			GetTableSchema()
+		End Sub
+
+		#End Region
+		
+		#Region "Schema Accessor"
+		Public Shared ReadOnly Property Schema() As TableSchema.Table
+			Get
+				If BaseSchema Is Nothing Then
+					SetSQLProps()
+				End If
+
+				Return BaseSchema
+			End Get
+
+		End Property
+
+		Private Shared Sub GetTableSchema()
+			If (Not IsSchemaInitialized) Then
+				'Schema declaration
+				Dim schema As TableSchema.Table = New TableSchema.Table("&lt;%=tableName%&gt;", TableType.Table, DataService.GetInstance("&lt;%=providerName%&gt;"))
+				schema.Columns = New TableSchema.TableColumnCollection()
+				schema.SchemaName = "&lt;%=tbl.SchemaName %&gt;"
+				'columns
+				
+                &lt;%
+                foreach(TableSchema.TableColumn col in cols)
+                {
+                    string varName = "col" +  col.ArgumentName;
+                %&gt;
+                Dim &lt;%=varName %&gt; As TableSchema.TableColumn = New TableSchema.TableColumn(schema)
+                &lt;%=varName %&gt;.ColumnName = "&lt;%=col.ColumnName%&gt;"
+                &lt;%=varName %&gt;.DataType = DbType.&lt;%=col.DataType %&gt;
+                &lt;%=varName %&gt;.MaxLength = &lt;%=col.MaxLength %&gt;
+                &lt;%=varName %&gt;.AutoIncrement = &lt;%=col.AutoIncrement.ToString().ToLower() %&gt;
+                &lt;%=varName %&gt;.IsNullable = &lt;%=col.IsNullable.ToString().ToLower()%&gt;
+                &lt;%=varName %&gt;.IsPrimaryKey = &lt;%=col.IsPrimaryKey.ToString().ToLower()%&gt;
+                &lt;%=varName %&gt;.IsForeignKey = &lt;%=col.IsForeignKey.ToString().ToLower()%&gt;
+                &lt;%=varName %&gt;.IsReadOnly = &lt;%= col.IsReadOnly.ToString().ToLower() %&gt;
+                &lt;% if (!String.IsNullOrEmpty(col.DefaultSetting))
+				   {					   
+				%&gt;
+						&lt;%=varName%&gt;.DefaultSetting = "&lt;%= col.DefaultSetting%&gt;"
+				&lt;%
+					}
+                %&gt;
+                &lt;%
+					if(col.IsForeignKey)
+					{
+                %&gt;
+				&lt;%=varName %&gt;.ForeignKeyTableName = "&lt;%= col.ForeignKeyTableName %&gt;"
+                &lt;% } %&gt;
+                schema.Columns.Add(&lt;%=varName%&gt;)
+
+                &lt;%
+                }
+                %&gt;
+
+				BaseSchema = schema
+				
+				'add this schema to the provider
+                'so we can query it later
+                DataService.Providers("&lt;%=providerName %&gt;").AddSchema("&lt;%=tableName%&gt;",schema)
+
+			End If
+
+		End Sub
+
+		#End Region
+		
+		#Region "Query Accessor"
+		Public Shared Function CreateQuery() As Query
+			Return New Query(Schema)
+		End Function
+
+		#End Region
+		
+		#Region ".ctors"
+		Public Sub New()
+			SetSQLProps()
+			SetDefaults()
+			
+			MarkNew()
+		End Sub
+
+		Public Sub New(ByVal keyID As Object)
+			SetSQLProps()
+			SetDefaults()
+			LoadByKey(keyID)
+		End Sub
+
+		Public Sub New(ByVal columnName As String, ByVal columnValue As Object)
+			SetSQLProps()
+			SetDefaults()
+			LoadByParam(columnName,columnValue)
+		End Sub
+
+		#End Region
+		#Region "Props"
+		
+		
+        &lt;%
+        foreach(TableSchema.TableColumn col in cols){
+            string propName = col.PropertyName;
+            string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+        %&gt;  
+        &lt;XmlAttribute("&lt;%=propName%&gt;")&gt; _
+        Public Property &lt;%=propName%&gt; As &lt;%=varType%&gt; 
+			Get
+				Return GetColumnValue(Of &lt;%= varType %&gt;)("&lt;%=col.ColumnName%&gt;")
+			End Get
+		    
+			Set
+				MarkDirty()
+				SetColumnValue("&lt;%=col.ColumnName%&gt;", Value)
+			End Set
+		End Property
+		
+	    &lt;%
+	    }
+	    %&gt;
+		
+
+		#End Region
+		
+		
+			    
+	    &lt;%if (tbl.PrimaryKeyTables.Count &gt; 0)
+{%&gt;
+	    #Region "PrimaryKey Methods"
+	    &lt;%
+    TableSchema.PrimaryKeyTableCollection pkTables = tbl.PrimaryKeyTables;
+    if(pkTables != null)
+    {
+        ArrayList usedMethodNames = new ArrayList();
+        foreach(TableSchema.PrimaryKeyTable pk in pkTables)
+        {
+            TableSchema.Table pkTbl = DataService.GetSchema(pk.TableName, providerName, TableType.Table);
+            if(pkTbl.PrimaryKey != null)
+            {
+                string pkClass = pk.ClassName;
+				string pkClassQualified = provider.GeneratedNamespace + "." + pkClass;
+                string pkMethod = pk.ClassNamePlural;
+                string pkColumn = pk.PropertyName;
+
+                if(Utility.IsMatch(pkClass, pkMethod))
+                {
+                    pkMethod += "Records";
+                }
+
+                if(pk.ClassName == className)
+                {
+                    pkMethod = "Child" + pkMethod;
+                }
+
+                if(usedMethodNames.Contains(pkMethod))
+                {
+                    pkMethod += "From" + className;
+                    if(usedMethodNames.Contains(pkMethod))
+                    {
+                        pkMethod += pkColumn;
+                    }
+                }
+
+                usedMethodNames.Add(pkMethod);
+                
+                if(!String.IsNullOrEmpty(provider.RelatedTableLoadPrefix))
+				{
+					pkMethod = provider.RelatedTableLoadPrefix + pkMethod;
+				}
+
+                bool methodsNoLazyLoad = !provider.GenerateRelatedTablesAsProperties &amp;&amp; !provider.GenerateLazyLoads;
+                bool methodsLazyLoad = !provider.GenerateRelatedTablesAsProperties &amp;&amp; provider.GenerateLazyLoads;
+                bool propertiesNoLazyLoad = provider.GenerateRelatedTablesAsProperties &amp;&amp; !provider.GenerateLazyLoads;
+                bool propertiesLazyLoad = provider.GenerateRelatedTablesAsProperties &amp;&amp; provider.GenerateLazyLoads;
+				
+                if(methodsNoLazyLoad)
+                {
+%&gt;
+			Public Function &lt;%=pkMethod%&gt;() As &lt;%=pkClassQualified%&gt;Collection 
+	
+				Return New &lt;%=pkClassQualified%&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load()
+	
+			End Function
+			&lt;%
+                }
+                else if(methodsLazyLoad)
+                {
+%&gt;
+			Dim col&lt;%=pkMethod%&gt; As &lt;%=pkClassQualified%&gt;Collection 
+			Public Function &lt;%=pkMethod%&gt;() As &lt;%=pkClassQualified%&gt;Collection 
+	
+				If(col&lt;%=pkMethod%&gt; Is Nothing)
+					col&lt;%=pkMethod%&gt; = New &lt;%=pkClassQualified%&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load()
+				End If
+				
+				Return col&lt;%=pkMethod%&gt; 
+				
+			End Function
+&lt;%
+                }
+                else if(propertiesNoLazyLoad)
+                {
+%&gt;
+			Public ReadOnly Property &lt;%=pkMethod%&gt;() As &lt;%=pkClassQualified%&gt;Collection 
+
+				Get
+					Return New &lt;%=pkClassQualified%&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load()
+				End Get
+				
+			End Property
+&lt;%
+                }
+                else if(propertiesLazyLoad)
+                {
+%&gt;	
+			Dim col&lt;%=pkMethod%&gt; As &lt;%=pkClassQualified%&gt;Collection 
+			Public ReadOnly Property &lt;%=pkMethod%&gt;() As &lt;%=pk.ClassName%&gt;Collection 
+				
+				Get
+					If(col&lt;%=pkMethod%&gt; Is Nothing)
+						col&lt;%=pkMethod%&gt; = New &lt;%=pkClassQualified%&gt;Collection().Where(&lt;%=pkTbl.ClassName%&gt;.Columns.&lt;%=pkColumn%&gt;, &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load()
+					End If
+					
+					Return col&lt;%=pkMethod%&gt;
+				End Get
+				
+			End Property
+		&lt;%
+                }
+            }
+        }
+    }
+%&gt;
+		#End Region
+		&lt;%
+}
+%&gt;
+
+		
+		
+		
+		
+		
+	    &lt;%if (tbl.ForeignKeys.Count &gt; 0) { %&gt;
+	    #Region "ForeignKey Methods"
+	    &lt;%
+			TableSchema.ForeignKeyTableCollection fkTables = tbl.ForeignKeys;
+
+			if (fkTables != null)
+			{
+				ArrayList usedPropertyNames = new ArrayList();
+				foreach (TableSchema.ForeignKeyTable fk in tbl.ForeignKeys)
+				{
+					TableSchema.Table fkTbl = DataService.GetSchema(fk.TableName, providerName, TableType.Table);
+					string fkClass = fk.ClassName;
+					string fkClassQualified = provider.GeneratedNamespace + "." + fkClass;
+					string fkMethod = fk.ClassName;
+					string fkID = fk.PropertyName;
+
+
+					//it's possible this table is "relatin to itself"
+					//check to make sure the class names are not the same
+					//if they are, use the fk columnName
+					if (fk.ClassName == className)
+					{
+						fkMethod = "Parent" + fk.ClassName;
+					}
+
+					if (usedPropertyNames.Contains(fk.ClassName))
+					{
+						fkMethod += "To" + fkID;
+					}
+
+					if (tbl.GetColumn(fkMethod) != null)
+					{
+						fkMethod += "Record";
+					}
+	    %&gt;
+
+		''' &lt;summary&gt;
+		''' Returns a &lt;%=fkClass%&gt; ActiveRecord object related to this &lt;%=className%&gt;
+		''' &lt;/summary&gt;
+
+		Public Property &lt;%=fkMethod%&gt;() As &lt;%=fkClassQualified%&gt;
+			Get
+				Return &lt;%=fkClassQualified%&gt;.FetchByID(Me.&lt;%=fkID%&gt;)
+			End Get
+
+			Set
+				MarkDirty()
+				SetColumnValue("&lt;%=fkID%&gt;", Value.&lt;%=fkTbl.PrimaryKey.PropertyName%&gt;)
+			End Set
+
+		End Property
+
+	    &lt;%
+			usedPropertyNames.Add(fk.ClassName);
+		}
+	}
+	    %&gt;
+	    #End Region
+	    &lt;%} else {%&gt;
+	    'no foreign key tables defined (&lt;%=tbl.ForeignKeys.Count.ToString() %&gt;)
+	    &lt;%} %&gt;
+		
+
+
+
+
+	    &lt;%if (tbl.ManyToManys.Count &gt; 0) { %&gt;
+	    #Region "Many To Many Helpers"
+	    &lt;%
+			TableSchema.ManyToManyRelationshipCollection mm = tbl.ManyToManys;
+			if (mm != null)
+			{
+				ArrayList usedConstraints = new ArrayList();
+				foreach (TableSchema.ManyToManyRelationship m in mm)
+				{
+					if (!usedConstraints.Contains(m.ForeignTableClassName))
+					{
+						usedConstraints.Add(m.ForeignTableClassName);
+						string fkClass = m.ForeignTableClassName;
+						string fkClassQualified = provider.GeneratedNamespace + "." + fkClass;
+                
+	    %&gt;
+	     
+        Public Function Get&lt;%=fkClass%&gt;Collection() As &lt;%=fkClassQualified%&gt;Collection 
+	        Return &lt;%=className%&gt;.Get&lt;%=fkClass%&gt;Collection(Me.&lt;%=thisPK%&gt;)
+		End Function
+		
+        Public Shared Function Get&lt;%=fkClass%&gt;Collection(ByVal &lt;%= varPK%&gt; As &lt;%= varPKType%&gt;) As &lt;%=fkClassQualified%&gt;Collection
+        
+            Dim cmd As SubSonic.QueryCommand = New SubSonic.QueryCommand("SELECT * FROM &lt;%=m.ForeignTableName%&gt; INNER JOIN &lt;%=m.MapTableName%&gt; ON &lt;%=m.ForeignTableName%&gt;.&lt;%=m.ForeignPrimaryKey%&gt;=&lt;%=m.MapTableName%&gt;.&lt;%=m.MapTableForeignTableKeyColumn%&gt; WHERE &lt;%=m.MapTableName%&gt;.&lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name)
+            
+            cmd.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+            Dim rdr As IDataReader = SubSonic.DataService.GetReader(cmd)
+            Dim coll As &lt;%=fkClass%&gt;Collection = New &lt;%=fkClass%&gt;Collection()
+            coll.LoadAndCloseReader(rdr)
+
+            Return coll
+            
+        End Function
+        
+        Public Shared Sub Save&lt;%=fkClass%&gt;Map(ByVal &lt;%= varPK%&gt; As &lt;%= varPKType%&gt;, ByVal items As &lt;%=fkClass%&gt;Collection)
+        
+            Dim coll As QueryCommandCollection = New SubSonic.QueryCommandCollection()
+
+            'delete out the existing
+            Dim cmdDel As QueryCommand = New QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name)
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+            'add this in
+            coll.Add(cmdDel)
+			DataService.ExecuteTransaction(coll)
+
+            For Each item As &lt;%=fkClass%&gt; In items 
+				Dim var&lt;%=m.ClassName%&gt; As &lt;%=m.ClassName%&gt; = New &lt;%= m.ClassName%&gt;()
+				var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+				var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableForeignTableKeyColumn%&gt;", item.GetPrimaryKeyValue())
+				var&lt;%=m.ClassName%&gt;.Save()
+			Next
+			
+        End Sub
+        
+        
+        Public Shared Sub Save&lt;%=fkClass%&gt;Map(ByVal &lt;%= varPK%&gt; As &lt;%= varPKType%&gt;, ByVal itemList As System.Web.UI.WebControls.ListItemCollection)
+        
+            Dim coll As QueryCommandCollection = New SubSonic.QueryCommandCollection()
+
+            'delete out the existing
+            Dim cmdDel As QueryCommand = New QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name)
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+
+            'add this in
+            coll.Add(cmdDel)
+            DataService.ExecuteTransaction(coll)
+
+            For Each l As System.Web.UI.WebControls.ListItem In itemList 
+            
+                If l.Selected
+				    
+					Dim var&lt;%=m.ClassName%&gt; As &lt;%=m.ClassName%&gt; = New &lt;%= m.ClassName%&gt;()
+					var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+					var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableForeignTableKeyColumn%&gt;", l.Value)
+					var&lt;%=m.ClassName%&gt;.Save()
+				    
+                End If
+
+            Next
+
+        End Sub
+        
+        Public Shared Sub Save&lt;%=fkClass%&gt;Map(ByVal &lt;%= varPK%&gt; As &lt;%= varPKType%&gt;, ByVal itemList() As &lt;%= varPKType%&gt;) 
+        
+            Dim coll As QueryCommandCollection = New SubSonic.QueryCommandCollection()
+
+            'delete out the existing
+            Dim cmdDel As QueryCommand = New QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name)
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+
+            'add this in
+            coll.Add(cmdDel)
+			DataService.ExecuteTransaction(coll)
+            
+            For Each item As &lt;%= varPKType%&gt; In itemList
+            
+                	Dim var&lt;%=m.ClassName%&gt; As &lt;%=m.ClassName%&gt; = New &lt;%= m.ClassName%&gt;()
+					var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+					var&lt;%=m.ClassName%&gt;.SetColumnValue("&lt;%=m.MapTableForeignTableKeyColumn%&gt;", item)
+					var&lt;%=m.ClassName%&gt;.Save()
+
+            Next
+            
+        End Sub
+        
+		Public Shared Sub Delete&lt;%=fkClass%&gt;Map(ByVal &lt;%= varPK%&gt; As &lt;%= varPKType%&gt;) 
+		
+            Dim cmdDel As QueryCommand = New QueryCommand("DELETE FROM &lt;%=m.MapTableName%&gt; WHERE &lt;%=m.MapTableLocalTableKeyColumn%&gt;=@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%=className%&gt;.Schema.Provider.Name)
+            cmdDel.AddParameter("@&lt;%=m.MapTableLocalTableKeyColumn%&gt;", &lt;%= varPK%&gt;)
+            DataService.ExecuteQuery(cmdDel)
+
+        End Sub
+	      
+	      
+	      
+	    &lt;%
+			}
+		}
+	}
+	    %&gt;
+	    #End Region
+	    &lt;%} else {%&gt;
+	    'no ManyToMany tables defined (&lt;%=tbl.ManyToManys.Count.ToString() %&gt;)
+	    &lt;%} %&gt;
+
+		
+		#Region "ObjectDataSource support"
+		&lt;%
+            string insertArgs = string.Empty;
+            string updateArgs = string.Empty;
+			string seperator = ",";
+
+			foreach (TableSchema.TableColumn col in cols)
+			{
+				string propName = col.ArgumentName;
+				string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+				
+				updateArgs += "ByVal " + propName + " As " + varType + seperator;
+				if (!col.AutoIncrement)
+				{
+					insertArgs += "ByVal " + propName + " As " + varType + seperator;
+				}
+			}
+			if (insertArgs.Length &gt; 0)
+				insertArgs = insertArgs.Remove(insertArgs.Length - seperator.Length, seperator.Length);
+ 			if (updateArgs.Length &gt; 0)
+				updateArgs = updateArgs.Remove(updateArgs.Length - seperator.Length, seperator.Length);
+    	%&gt;
+		''' &lt;summary&gt;
+		''' Inserts a record, can be used with the Object Data Source
+		''' &lt;/summary&gt;
+		Public Shared Sub Insert(&lt;%=insertArgs%&gt;)
+			Dim item As &lt;%=className%&gt; = New &lt;%=className%&gt;()
+			&lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+				if (!col.AutoIncrement)
+				{ 
+            %&gt;
+            item.&lt;%=col.PropertyName%&gt; = &lt;%=col.ArgumentName%&gt;
+            &lt;%
+                }
+              } 
+            %&gt;
+			If Not System.Web.HttpContext.Current Is Nothing Then
+				item.Save(System.Web.HttpContext.Current.User.Identity.Name)
+			Else
+				item.Save(System.Threading.Thread.CurrentPrincipal.Identity.Name)
+			End If
+		End Sub
+
+		''' &lt;summary&gt;
+		''' Updates a record, can be used with the Object Data Source
+		''' &lt;/summary&gt;
+		Public Shared Sub Update(&lt;%=updateArgs%&gt;)
+			Dim item As &lt;%=className%&gt; = New &lt;%=className%&gt;()
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) 
+			{
+				%&gt;
+                item.&lt;%=col.PropertyName%&gt; = &lt;%=col.ArgumentName%&gt;
+				&lt;%
+			} 
+            %&gt;
+			item.IsNew = False
+			If Not System.Web.HttpContext.Current Is Nothing Then
+				item.Save(System.Web.HttpContext.Current.User.Identity.Name)
+			Else
+				item.Save(System.Threading.Thread.CurrentPrincipal.Identity.Name)
+			End If
+		End Sub
+
+		#End Region
+		#Region "Columns Struct"
+		Public Structure Columns
+			Dim x as Integer
+			&lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                string propName = col.PropertyName;
+            %&gt;
+            Public Shared &lt;%=propName%&gt; As String = "&lt;%=col.ColumnName%&gt;"
+            &lt;%
+              } 
+            %&gt;
+		End Structure
+
+		#End Region
+	End Class
+
+End Namespace</value>
+  </data>
+  <data name="VB_DynamicScaffold" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;% 
+	string masterPage = "#MASTERPAGE#";
+	string tableName = "#TABLENAME#";
+	string className = "#CLASSNAME#";
+
+%&gt;
+&lt;%
+	if (!String.IsNullOrEmpty(masterPage))
+	{
+%&gt;
+
+[&lt;]%@ Page Language="VB" Title="&lt;%= className %&gt; Scaffold" MasterPageFile="&lt;%= masterPage %&gt;" Theme="default" %[&gt;]
+[&lt;]%@ Register Assembly="SubSonic" Namespace="SubSonic" TagPrefix="cc1" %[&gt;]
+[&lt;]asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="server"[&gt;]
+	[&lt;]div[&gt;]
+		[&lt;]cc1:Scaffold ID="Scaffold1" runat="server" TableName="&lt;%= tableName %&gt;" GridViewSkinID="scaffold" EditTableItemCaptionCellCssClass="scaffoldEditLabel" ButtonCssClass="scaffoldButton" TextBoxCssClass="scaffoldTextBox"[&gt;]
+		[&lt;]/cc1:Scaffold[&gt;]
+	[&lt;]/div[&gt;]
+[&lt;]/asp:Content[&gt;]
+
+&lt;%
+	}
+	else
+	{
+%&gt;
+
+[&lt;]%@ Page Language="VB" Title="&lt;%=className%&gt; Scaffold" %[&gt;]
+[&lt;]%@ Register Assembly="SubSonic" Namespace="SubSonic" TagPrefix="cc1" %[&gt;]
+[&lt;]!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"[&gt;]
+[&lt;]html xmlns="http://www.w3.org/1999/xhtml" [&gt;]
+[&lt;]head id="Head1" runat="server"[&gt;]
+[&lt;]script language="javascript" type="text/javascript"[&gt;]
+
+	function CheckDelete()
+	{ 
+		  return confirm('Delete this record? This action cannot be undone...'); 
+	}
+
+	function imposeMaxLength(e, Object, MaxLen, rowIndex)
+	{
+		var keyCode = e.keyCode;
+		var counter = document.getElementById('counter' + rowIndex);
+		var charText = Object.value;
+		var charCount = charText.length;
+		var charRemain = MaxLen - charCount;
+		counter.style.visibility = 'visible';
+		if(keyCode == 8 || keyCode == 46)
+		{
+			if(charCount == MaxLen)
+			{
+				charRemain = 1;
+			}
+			else if(charCount == 0)
+			{
+				charRemain = MaxLen;
+			}
+			counter.innerHTML = charRemain;
+			return true;
+		}
+		else
+		{
+			if(charRemain [&gt;] 0)
+			{
+				counter.innerHTML = charRemain;
+				return true;
+			}
+			else
+			{
+				Object.value = charText.substring(0, MaxLen);
+				counter.innerHTML = '0';
+				return false;
+			}
+		}
+	}
+[&lt;]/script[&gt;]
+[&lt;]/head[&gt;]
+[&lt;]body[&gt;]
+	[&lt;]form id="form1" runat="server"[&gt;]    
+		[&lt;]div[&gt;]
+			[&lt;]cc1:Scaffold ID="Scaffold1" runat="server" TableName="&lt;%= tableName %&gt;" GridViewSkinID="scaffold" EditTableItemCaptionCellCssClass="scaffoldEditLabel" ButtonCssClass="scaffoldButton" TextBoxCssClass="scaffoldTextBox"[&gt;]
+			[&lt;]/cc1:Scaffold[&gt;]
+		[&lt;]/div[&gt;]
+    [&lt;]/form[&gt;]
+[&lt;]/body[&gt;]
+[&lt;]/html[&gt;]
+&lt;%	    
+	}
+%&gt;</value>
+  </data>
+  <data name="VB_GeneratedScaffoldCodeBehind" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="System.Data"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%
+    //The data we need
+    string providerName = "#PROVIDER#";
+    string tableName = "#TABLENAME#";
+    string generatedClassName = "#PAGEFILE#";
+    TableSchema.Table tbl = DataService.GetSchema(tableName, providerName, TableType.Table);
+    DataProvider provider = DataService.Providers[providerName];
+
+    //The main vars we need
+    string className = tbl.ClassName;
+%&gt;
+'Generated on &lt;%=DateTime.Now.ToString()%&gt; by &lt;%=Environment.UserName%&gt;
+Imports System
+Imports System.Data
+Imports System.Configuration
+Imports System.Collections
+Imports System.Web
+Imports System.Web.Security
+Imports System.Web.UI
+Imports System.Web.UI.WebControls
+Imports System.Web.UI.WebControls.WebParts
+Imports System.Web.UI.HtmlControls
+Imports SubSonic
+Imports SubSonic.Utilities
+Imports &lt;%=provider.GeneratedNamespace%&gt;
+
+Namespace &lt;%=provider.GeneratedNamespace%&gt;
+
+	Public Partial Class &lt;%=generatedClassName%&gt; 
+	Inherits System.Web.UI.Page 
+	
+		Private isAdd As Boolean = False
+		Private Const SORT_DIRECTION As String = "SORT_DIRECTION"
+		Private Const ORDER_BY As String = "ORDER_BY"
+    
+		Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs)
+			If Request.QueryString("id") &lt;&gt; Nothing Then
+				Dim id As String = Utility.GetParameter("id")
+				If Not String.IsNullOrEmpty(id) AndAlso id &lt;&gt; "0" Then
+					If Not Page.IsPostBack Then
+						LoadEditor(id)
+					End If
+				Else
+					'it's an add, show the editor
+					isAdd = True
+					ToggleEditor(True)
+					LoadDrops()
+					btnDelete.Visible = False
+				End If
+			Else
+				ToggleEditor(False)
+				If Not Page.IsPostBack Then
+					BindGrid(String.Empty)
+				End If
+			End If
+		End Sub
+
+
+		''' &lt;summary&gt;
+		''' Loads the editor with data
+		''' &lt;/summary&gt;
+		''' &lt;param name="id"&gt;&lt;/param&gt;
+		Sub LoadEditor(ByVal id As String)
+			ToggleEditor(True)
+			LoadDrops()
+			If Not [String].IsNullOrEmpty(id) AndAlso id &lt;&gt; "0" Then
+				lblID.Text = id.ToString()
+	            
+				'pull the record
+				Dim item As &lt;%=className%&gt;  = New &lt;%=className%&gt;(id)
+
+				'bind the page 
+					&lt;%
+						foreach (TableSchema.TableColumn col in tbl.Columns)
+						{
+							if (!col.IsPrimaryKey)
+							{
+								bool toString = true;
+								string controlAssignment = null;
+								bool isNullableType = (col.IsNullable &amp;&amp; Utility.IsNullableDbType(col.DataType));
+
+								if (col.IsForeignKey)
+								{
+									toString = true;
+									controlAssignment = ControlValueProperty.DROP_DOWN_LIST;
+								}
+								else if(Utility.IsMatch(col.ColumnName, ReservedColumnName.CREATED_ON) || Utility.IsMatch(col.ColumnName, ReservedColumnName.MODIFIED_ON))
+								{
+									toString = true;
+									controlAssignment = ControlValueProperty.LABEL;
+								}
+								else
+								{
+									switch (col.DataType)
+									{
+										case DbType.Binary:
+										case DbType.Byte:
+											break;
+										case DbType.DateTime:
+											toString = false;
+											controlAssignment = ControlValueProperty.CALENDAR;
+											break;
+										case DbType.Boolean:
+											toString = false;
+											controlAssignment = ControlValueProperty.CHECK_BOX;
+											break;
+										case DbType.Currency:
+										case DbType.VarNumeric:
+											toString = true;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+										case DbType.Int16:
+										case DbType.Int32:
+										case DbType.UInt16:
+										case DbType.Int64:
+										case DbType.UInt32:
+										case DbType.UInt64:
+										case DbType.Single:
+										case DbType.Decimal:
+										case DbType.Double:
+											toString = true;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+										case DbType.AnsiString:
+										case DbType.AnsiStringFixedLength:	
+										case DbType.String:
+											toString = false;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+										default:
+											toString = true;
+											controlAssignment = ControlValueProperty.TEXT_BOX;
+											break;
+									}
+								}
+								string propName = col.PropertyName;
+								string controlID = "ctrl" + propName;
+
+								if (!String.IsNullOrEmpty(controlAssignment))
+								{
+									if (isNullableType)
+									{%&gt;
+						If item.&lt;%=propName%&gt;.HasValue Then
+						&lt;%
+						if (toString)
+						{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;.Value.ToString()
+						&lt;%
+						}
+						else
+						{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;.Value
+						&lt;%
+						}%&gt;
+						End If
+					&lt;%
+						}
+
+						else
+						{
+							if (toString)
+							{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;.ToString()
+						&lt;%
+						}
+						else
+						{%&gt;
+							&lt;%=controlID%&gt;.&lt;%=controlAssignment%&gt; = item.&lt;%=propName%&gt;
+						&lt;%
+						}
+					}
+				}
+			}
+		}
+%&gt;			
+  
+				'set the delete confirmation
+				btnDelete.Attributes.Add("onclick", "return CheckDelete();")
+			End If
+		End Sub
+
+		' &lt;summary&gt;
+		' Loads the DropDownLists
+		' &lt;/summary&gt;
+		Private Sub LoadDrops() 
+			'load the listboxes
+			&lt;%
+				foreach (TableSchema.TableColumn col in tbl.Columns)
+				{
+					string controlName = "ctrl" + col.PropertyName;
+
+					if (!col.IsPrimaryKey)
+					{
+						if(col.IsForeignKey)
+						{
+							TableSchema.Table FKTable = DataService.GetForeignKeyTable(col, tbl);
+							if(FKTable != null)
+							{
+			%&gt;
+								Dim qry&lt;%= controlName %&gt; As Query = &lt;%= FKTable.ClassName %&gt;.CreateQuery() 
+								qry&lt;%= controlName %&gt;.OrderBy = OrderBy.Asc("&lt;%= FKTable.Columns[1].ColumnName %&gt;")
+								Utility.LoadDropDown(&lt;%= controlName %&gt;, qry&lt;%= controlName %&gt;.ExecuteReader(), True)
+			&lt;% 
+								if(col.IsNullable)
+								{
+			%&gt;						&lt;%= controlName %&gt;.Items.Insert(0, new ListItem("(Not Specified)", String.Empty))							
+			&lt;%
+								}
+							}
+						}
+					}
+				} 
+			 %&gt;
+		End Sub
+	    
+		''' &lt;summary&gt;
+		''' Shows/Hides the Grid and Editor panels
+		''' &lt;/summary&gt;
+		''' &lt;param name="showIt"&gt;&lt;/param&gt;
+		Sub ToggleEditor(ByVal showIt As Boolean)
+			pnlEdit.Visible = showIt
+			pnlGrid.Visible = Not showIt
+		End Sub
+
+		Protected Sub btnAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+			LoadEditor("0")
+		End Sub
+		
+		Protected Sub btnDelete_Click(ByVal sender As Object, ByVal e As EventArgs)
+			&lt;%= className %&gt;.Delete(Utility.GetParameter("id"))
+
+			'redirect
+			Response.Redirect(Request.CurrentExecutionFilePath)
+		End Sub
+		
+		Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+			Dim id As String = Utility.GetParameter("id")
+			'bool haveError = false;
+			Try
+				BindAndSave(id)
+				lblResult.Text = "[&lt;]span style=""font-weight:bold; color:#22bb22""[&gt;]Customer saved.[&lt;]/span[&gt;]"
+			Catch x As Exception
+				'haveError = true;
+				lblResult.Text = "[&lt;]span style=""font-weight:bold; color:#990000""[&gt;]Customer not saved:[&lt;]/span[&gt;] " + x.Message
+			End Try
+
+			'if(!haveError)
+			'  Response.Redirect(Request.CurrentExecutionFilePath);
+		End Sub
+
+
+		'&lt;summary&gt;
+		'Binds and saves the data
+		'&lt;/summary&gt;
+		'&lt;param name="id"&gt;&lt;/param&gt;
+		Private Sub BindAndSave(ByVal id As String) 
+		
+			Dim item As &lt;%= className %&gt;
+			If Not String.IsNullOrEmpty(id) AndAlso id &lt;&gt; "0" Then 
+				'it's an edit
+				item = New &lt;%= className %&gt;(id)
+			Else
+				'add
+				item = New &lt;%= className %&gt;()
+			End If  
+	      
+			&lt;%
+			    
+			
+				foreach (TableSchema.TableColumn col in tbl.Columns)
+				{
+					if (!col.IsPrimaryKey &amp;&amp; col.DataType != DbType.Binary &amp;&amp; col.DataType != DbType.Byte)
+					{
+						string controlID = "ctrl" + col.PropertyName;
+						string propName = col.PropertyName;
+						string converterType;
+
+						switch (col.DataType)
+						{
+							case DbType.Currency:
+							case DbType.VarNumeric:
+								converterType = "Decimal";
+								break;
+							case DbType.AnsiString:
+							case DbType.AnsiStringFixedLength:
+								converterType = "String";
+								break;
+							default:
+								converterType = col.DataType.ToString();
+								break;
+						}
+						
+						%&gt;
+						Dim val&lt;%= controlID %&gt; As Object = Utility.GetDefaultControlValue(&lt;%= className %&gt;.Schema.GetColumn("&lt;%= col.ColumnName %&gt;"), &lt;%= controlID %&gt;, isAdd, False)
+						&lt;%
+
+						if (col.IsNullable)
+						{
+						%&gt;
+						If val&lt;%= controlID %&gt; Is Nothing Then
+							item.&lt;%= propName %&gt; = Nothing
+						Else
+						&lt;%
+						}
+
+						if (col.DataType != DbType.Guid)
+						{
+						%&gt;
+							item.&lt;%= propName %&gt; = Convert.To&lt;%= converterType %&gt;(val&lt;%= controlID %&gt;)
+						&lt;%
+						}
+						else
+						{
+						%&gt;
+							item.&lt;%= propName %&gt; = New &lt;%= converterType %&gt;(val&lt;%= controlID %&gt;.ToString())
+						&lt;%
+						}
+
+						if (col.IsNullable)
+						{
+						%&gt;
+						End If
+						&lt;%
+						}
+				}
+			}
+	%&gt;    
+			'bind it
+
+			item.Save(User.Identity.Name)
+		End Sub
+
+		''' &lt;summary&gt;
+		''' Binds the GridView
+		''' &lt;/summary&gt;
+		Private Sub BindGrid(ByVal orderBy As String)
+
+			Dim tblSchema As TableSchema.Table = DataService.GetTableSchema("&lt;%= tbl.Name %&gt;", "&lt;%= tbl.Provider.Name %&gt;")
+			If Not tblSchema.PrimaryKey Is Nothing Then
+				Dim tbls As String() = tblSchema.Provider.GetForeignKeyTables(tblSchema.Name)
+				For Each tbl As String In tbls
+					DataService.GetTableSchema(tbl, tblSchema.Provider.Name)
+				Next
+				Dim query As New Query(tblSchema)
+
+				Dim sortColumn As String = Nothing
+				If Not [String].IsNullOrEmpty(orderBy) Then
+					sortColumn = orderBy
+		ElseIf ViewState(ORDER_BY) &lt;&gt; Nothing Then
+					sortColumn = DirectCast(ViewState(ORDER_BY), String)
+				End If
+
+				Dim colIndex As Integer = -1
+
+				If Not [String].IsNullOrEmpty(sortColumn) Then
+					ViewState.Add(ORDER_BY, sortColumn)
+					Dim col As TableSchema.TableColumn = tblSchema.GetColumn(sortColumn)
+					If col Is Nothing Then
+						Dim iCount As Integer = 0
+						While iCount &lt; tblSchema.Columns.Count
+							Dim fkCol As TableSchema.TableColumn = tblSchema.Columns(iCount)
+							If fkCol.IsForeignKey AndAlso Not [String].IsNullOrEmpty(fkCol.ForeignKeyTableName) Then
+								Dim fkTbl As TableSchema.Table = DataService.GetSchema(fkCol.ForeignKeyTableName, tblSchema.Provider.Name, TableType.Table)
+								If Not fkTbl is Nothing Then
+									col = fkTbl.Columns(1)
+									colIndex = iCount
+									Exit While
+								End If
+							End If
+							iCount = iCount + 1
+						End While
+					End If
+					If Not col Is Nothing AndAlso col.MaxLength &lt; 2048 Then
+						If ViewState(SORT_DIRECTION) = Nothing OrElse (DirectCast(ViewState(SORT_DIRECTION), String)) = SqlFragment.ASC Then
+							If colIndex &gt; -1 Then
+								query.OrderBy = SubSonic.OrderBy.Asc(col, SqlFragment.JOIN_PREFIX + colIndex)
+							Else
+								query.OrderBy = SubSonic.OrderBy.Asc(col)
+							End If
+							ViewState(SORT_DIRECTION) = SqlFragment.ASC
+						Else
+							If colIndex &gt; -1 Then
+								query.OrderBy = SubSonic.OrderBy.Desc(col, SqlFragment.JOIN_PREFIX + colIndex)
+							Else
+								query.OrderBy = SubSonic.OrderBy.Desc(col)
+							End If
+							ViewState(SORT_DIRECTION) = SqlFragment.DESC
+						End If
+					End If
+				End If
+
+
+				Dim dt As DataTable = query.ExecuteJoinedDataSet().Tables(0)
+				GridView1.DataSource = dt
+
+				Dim i As Integer = 1
+				While i &lt; tblSchema.Columns.Count
+					Dim field As BoundField = DirectCast(GridView1.Columns(i), BoundField)
+					field.DataField = dt.Columns(i).ColumnName
+					field.SortExpression = dt.Columns(i).ColumnName
+					field.HtmlEncode = False
+					If tblSchema.Columns(i).IsForeignKey Then
+						Dim schema As TableSchema.Table
+						If tblSchema.Columns(i).ForeignKeyTableName = Nothing Then
+							schema = DataService.GetForeignKeyTable(tblSchema.Columns(i), tblSchema)
+						Else
+							schema = DataService.GetSchema(tblSchema.Columns(i).ForeignKeyTableName, tblSchema.Provider.Name, TableType.Table)
+						End If
+						If Not schema Is Nothing Then
+							field.HeaderText = schema.DisplayName
+						End If
+					Else
+						field.HeaderText = tblSchema.Columns(i).DisplayName
+					End If
+					i = i + 1
+				End While
+
+				GridView1.DataBind()
+			End If
+		End Sub
+
+
+		Protected Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs)
+			GridView1.PageIndex = e.NewPageIndex
+			BindGrid(String.Empty)
+		End Sub
+
+		Protected Sub GridView1_DataBound(ByVal sender As Object, ByVal e As EventArgs)
+			Dim gvrPager As GridViewRow = GridView1.BottomPagerRow
+			If gvrPager Is Nothing Then
+				Return
+			End If
+			' get your controls from the gridview
+			Dim ddlPages As DropDownList = DirectCast(gvrPager.Cells(0).FindControl("ddlPages"), DropDownList)
+			Dim lblPageCount As Label = DirectCast(gvrPager.Cells(0).FindControl("lblPageCount"), Label)
+
+			If Not ddlPages Is Nothing Then
+				' populate pager
+				Dim i As Integer = 0
+				While i &lt; GridView1.PageCount
+					Dim intPageNumber As Integer = i + 1
+					Dim lstItem As New ListItem(intPageNumber.ToString())
+					If i = GridView1.PageIndex Then
+						lstItem.Selected = True
+					End If
+					ddlPages.Items.Add(lstItem)
+					i = i + 1
+				End While
+			End If
+
+			Dim itemCount As Integer = 0
+
+			' populate page count
+			If Not lblPageCount Is Nothing Then
+
+				'pull the datasource
+				Dim ds As DataSet = TryCast(GridView1.DataSource, DataSet)
+				If Not ds Is Nothing Then
+					itemCount = ds.Tables(0).Rows.Count
+				End If
+				Dim pageCount As String = "[&lt;]b[&gt;]" + GridView1.PageCount.ToString() + "[&lt;]/b[&gt;] (" + itemCount.ToString() + " Items)"
+
+				lblPageCount.Text = pageCount
+			End If
+
+			Dim btnPrev As Button = DirectCast(gvrPager.Cells(0).FindControl("btnPrev"), Button)
+			Dim btnNext As Button = DirectCast(gvrPager.Cells(0).FindControl("btnNext"), Button)
+			Dim btnFirst As Button = DirectCast(gvrPager.Cells(0).FindControl("btnFirst"), Button)
+			Dim btnLast As Button = DirectCast(gvrPager.Cells(0).FindControl("btnLast"), Button)
+
+			'now figure out what page we're on
+			If GridView1.PageIndex = 0 Then
+				btnPrev.Enabled = False
+				btnFirst.Enabled = False
+		ElseIf GridView1.PageIndex + 1 = GridView1.PageCount Then
+				btnLast.Enabled = False
+				btnNext.Enabled = False
+			Else
+				btnLast.Enabled = True
+				btnNext.Enabled = True
+				btnPrev.Enabled = True
+				btnFirst.Enabled = True
+			End If
+		End Sub
+
+		Protected Sub ddlPages_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+			Dim gvrPager As GridViewRow = GridView1.BottomPagerRow
+			Dim ddlPages As DropDownList = DirectCast(gvrPager.Cells(0).FindControl("ddlPages"), DropDownList)
+
+			GridView1.PageIndex = ddlPages.SelectedIndex
+
+			' a method to populate your grid
+			BindGrid(String.Empty)
+		End Sub
+
+
+		Protected Sub GridView1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs)
+			Dim columnName As String = e.SortExpression
+			'rebind the grid
+			If ViewState(SORT_DIRECTION) = Nothing OrElse ViewState(SORT_DIRECTION).ToString() = SqlFragment.ASC Then
+				ViewState(SORT_DIRECTION) = SqlFragment.DESC
+			Else
+				ViewState(SORT_DIRECTION) = SqlFragment.ASC
+			End If
+			BindGrid(columnName)
+		End Sub
+
+		Function GetSortDirection(ByVal sortBy As String) As String
+			Dim sortDir As String = " ASC"
+			If ViewState("sortBy") &lt;&gt; Nothing Then
+				Dim sortedBy As String = ViewState("sortBy").ToString()
+
+				If sortedBy = sortBy Then
+					'the direction should be desc
+					sortDir = " DESC"
+
+					'reset the sorter to null
+					ViewState("sortBy") = Nothing
+				Else
+					'this is the first sort for this row
+					'put it to the ViewState
+					ViewState("sortBy") = sortBy
+				End If
+			Else
+				'it's null, so this is the first sort
+				ViewState("sortBy") = sortBy
+			End If
+			Return sortDir
+		End Function
+	End Class
+End Namespace</value>
+  </data>
+  <data name="VB_GeneratedScaffoldMarkup" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="System.Data"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;% 
+	string masterPage = "#MASTERPAGE#";
+	string tableName = "#TABLENAME#";
+	string className = "#CLASSNAME#";
+	string generatedClassName = "#PAGEFILE#";
+	string fileExtension = "#LANGEXTENSION#";
+	string providerName = "#PROVIDER#";
+	DataProvider provider = DataService.GetInstance(providerName);
+	TableSchema.Table tbl = DataService.GetSchema(tableName, provider.Name, TableType.Table);
+
+%&gt;
+
+&lt;%
+	if (String.IsNullOrEmpty(masterPage))
+	{
+%&gt;
+[&lt;]%@ Page Language="VB" Title="&lt;%=className%&gt; Scaffold" CodeFile="&lt;%=generatedClassName%&gt;.aspx&lt;%=fileExtension%&gt;" Inherits="&lt;%=provider.GeneratedNamespace%&gt;.&lt;%=generatedClassName%&gt;" %[&gt;]
+[&lt;]!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"[&gt;]
+[&lt;]html xmlns="http://www.w3.org/1999/xhtml" [&gt;]
+[&lt;]head id="Head1" runat="server"[&gt;]
+[&lt;]title[&gt;]&lt;%=className%&gt;[&lt;]/title[&gt;]
+[&lt;]script language="javascript" type="text/javascript"[&gt;]
+
+	function CheckDelete()
+	{ 
+		  return confirm('Delete this record? This action cannot be undone...'); 
+	}
+
+	function imposeMaxLength(e, Object, MaxLen, rowIndex)
+	{
+		var keyCode = e.keyCode;
+		var counter = document.getElementById('counter' + rowIndex);
+		var charText = Object.value;
+		var charCount = charText.length;
+		var charRemain = MaxLen - charCount;
+		counter.style.visibility = 'visible';
+		if(keyCode == 8 || keyCode == 46)
+		{
+			if(charCount == MaxLen)
+			{
+				charRemain = 1;
+			}
+			else if(charCount == 0)
+			{
+				charRemain = MaxLen;
+			}
+			counter.innerHTML = charRemain;
+			return true;
+		}
+		else
+		{
+			if(charRemain [&gt;] 0)
+			{
+				counter.innerHTML = charRemain;
+				return true;
+			}
+			else
+			{
+				Object.value = charText.substring(0, MaxLen);
+				counter.innerHTML = '0';
+				return false;
+			}
+		}
+	}
+[&lt;]/script[&gt;]
+[&lt;]/head[&gt;]
+[&lt;]body[&gt;]
+	[&lt;]form id="elForm" runat="server"[&gt;]
+	
+	&lt;%
+	}
+	else
+	{
+%&gt;
+[&lt;]%@ Page Language="VB" Title="&lt;%=className%&gt; Scaffold" CodeFile="&lt;%=generatedClassName%&gt;.aspx&lt;%=fileExtension%&gt;" Inherits="&lt;%=provider.GeneratedNamespace%&gt;.&lt;%=generatedClassName%&gt;" MasterPageFile="&lt;%= masterPage %&gt;" Theme="default" %[&gt;]
+[&lt;]asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="server"[&gt;]
+&lt;%
+	}
+%&gt;
+	
+	[&lt;]h2[&gt;]&lt;%= className %&gt;[&lt;]/h2[&gt;]
+	[&lt;]asp:Panel id="pnlGrid" runat="server"[&gt;]
+    [&lt;]asp:GridView 
+    ID="GridView1"
+    runat="server" 
+    AllowPaging="True" 
+    AllowSorting="True"
+    AutoGenerateColumns="False" 
+    OnDataBound="GridView1_DataBound" 
+    OnSorting="GridView1_Sorting"
+	OnPageIndexChanging="GridView1_PageIndexChanging"
+    DataKeyNames="&lt;%= tbl.PrimaryKey.ColumnName %&gt;" 
+    PageSize="50"
+    [&gt;]
+        [&lt;]Columns[&gt;]
+	            [&lt;]asp:HyperLinkField Text="Edit" DataNavigateUrlFields="&lt;%= tbl.PrimaryKey.ColumnName %&gt;" DataNavigateUrlFormatString="&lt;%= generatedClassName %&gt;.aspx?id={0}" /[&gt;]
+	            &lt;% 
+					foreach (TableSchema.TableColumn col in tbl.Columns)
+					{
+					    if(!col.IsPrimaryKey)
+					    {
+%&gt;
+	            [&lt;]asp:BoundField DataField="&lt;%=col.ColumnName%&gt;" HeaderText="&lt;%=col.DisplayName%&gt;" SortExpression="&lt;%=col.ColumnName%&gt;"[&gt;][&lt;]/asp:BoundField[&gt;]
+	            &lt;%
+					    }
+					}
+%&gt;
+        [&lt;]/Columns[&gt;]
+        [&lt;]EmptyDataTemplate[&gt;]
+            No &lt;%= tbl.ClassNamePlural %&gt; 
+        [&lt;]/EmptyDataTemplate[&gt;]
+        [&lt;]PagerTemplate[&gt;]
+        
+            [&lt;]div style="border-top:1px solid #666666"[&gt;]
+            [&lt;]br /[&gt;]
+           [&lt;]asp:Button ID="btnFirst" runat="server" CssClass="scaffoldButton" Text="[&lt;][&lt;] First" CommandArgument="First" CommandName="Page"/[&gt;]
+            [&lt;]asp:Button ID="btnPrev" runat="server" CssClass="scaffoldButton" Text="[&lt;] Previous" CommandArgument="Prev" CommandName="Page"/[&gt;]
+
+                Page
+                [&lt;]asp:DropDownList ID="ddlPages" runat="server" CssClass="scaffoldEditItem" AutoPostBack="True" OnSelectedIndexChanged="ddlPages_SelectedIndexChanged"[&gt;]
+                [&lt;]/asp:DropDownList[&gt;] of [&lt;]asp:Label ID="lblPageCount" runat="server"[&gt;][&lt;]/asp:Label[&gt;]
+
+            [&lt;]asp:Button ID="btnNext" runat="server" CssClass="scaffoldButton" Text="Next [&gt;]" CommandArgument="Next" CommandName="Page"/[&gt;]
+            [&lt;]asp:Button ID="btnLast" runat="server" CssClass="scaffoldButton" Text="Last [&gt;][&gt;]" CommandArgument="Last" CommandName="Page"/[&gt;]
+        [&lt;]/PagerTemplate[&gt;]
+    [&lt;]/asp:GridView[&gt;]
+	[&lt;]a href="&lt;%= generatedClassName %&gt;.aspx?id=0"[&gt;]Add New...[&lt;]/a[&gt;]
+	[&lt;]/asp:Panel[&gt;]
+	
+	[&lt;]asp:panel id="pnlEdit" Runat="server"[&gt;]
+	[&lt;]asp:Label ID="lblResult" runat="server"[&gt;][&lt;]/asp:Label[&gt;]	
+	
+	[&lt;]table class="scaffoldEditTable" cellpadding="5" cellspacing="0" Width="600px"[&gt;]
+			[&lt;]tr[&gt;]
+			[&lt;]td class="scaffoldEditItemCaption"[&gt;]&lt;%= tbl.PrimaryKey.DisplayName %&gt;[&lt;]/td[&gt;]
+			[&lt;]td class="scaffoldEditItem"[&gt;][&lt;]asp:Label id="lblID" runat="server" /[&gt;][&lt;]/td[&gt;]
+		[&lt;]/tr[&gt;]
+	&lt;%
+		foreach (TableSchema.TableColumn col in tbl.Columns)
+		{
+		    if(!col.IsPrimaryKey)
+		    {
+%&gt;
+		[&lt;]tr[&gt;]
+			[&lt;]td class="scaffoldEditItemCaption"[&gt;]&lt;%=col.DisplayName%&gt;[&lt;]/td[&gt;]
+			&lt;%
+		        string controlID = "ctrl" + col.PropertyName;
+		        string displayPrefix = String.Empty;
+		        string controlType;
+		        string controlProperties = String.Empty;
+
+		        bool isTextBox = false;
+
+		        if(col.IsForeignKey)
+		        {
+		            controlType = "DropDownList";
+		        }
+		        else
+		        {
+		            switch(col.DataType)
+		            {
+		                case DbType.Binary:
+		                case DbType.Byte:
+		                    controlType = String.Empty;
+		                    break;
+		                case DbType.Guid:
+		                case DbType.AnsiString:
+		                case DbType.String:
+		                case DbType.StringFixedLength:
+		                case DbType.Xml:
+		                case DbType.Object:
+		                case DbType.AnsiStringFixedLength:
+		                    if(Utility.IsMatch(col.ColumnName, ReservedColumnName.CREATED_BY) || Utility.IsMatch(col.ColumnName, ReservedColumnName.MODIFIED_BY))
+		                    {
+		                        controlType = "Label";
+		                    }
+		                    else
+		                    {
+		                        isTextBox = true;
+		                        controlType = "TextBox";
+		                        if(col.MaxLength &gt; 250)
+		                        {
+		                            controlProperties += "TextMode=\"MultiLine\" ";
+		                            controlProperties += "Height=\"100px\" ";
+		                            controlProperties += "Width=\"500px\" ";
+		                        }
+		                    }
+		                    break;
+		                case DbType.Date:
+		                case DbType.Time:
+		                case DbType.DateTime:
+		                    if(Utility.IsMatch(col.ColumnName, ReservedColumnName.MODIFIED_ON) || Utility.IsMatch(col.ColumnName, ReservedColumnName.CREATED_ON))
+		                    {
+		                        controlType = "Label";
+		                    }
+		                    else
+		                    {
+		                        controlType = "Calendar";
+		                    }
+		                    break;
+		                case DbType.Int16:
+		                case DbType.Int32:
+		                case DbType.UInt16:
+		                case DbType.Int64:
+		                case DbType.UInt32:
+		                case DbType.UInt64:
+		                case DbType.VarNumeric:
+		                case DbType.Single:
+		                case DbType.Currency:
+		                case DbType.Decimal:
+		                case DbType.Double:
+		                    isTextBox = true;
+		                    controlType = "TextBox";
+		                    controlProperties += "Width=\"50px\" ";
+		                    if(col.DataType == DbType.Currency)
+		                    {
+		                        displayPrefix = "$";
+		                    }
+		                    break;
+		                case DbType.Boolean:
+		                    bool isChecked = false;
+		                    if(Utility.IsMatch(col.ColumnName, ReservedColumnName.IS_ACTIVE))
+		                    {
+		                        isChecked = true;
+		                    }
+		                    controlType = "CheckBox";
+		                    controlProperties += "Checked=\"" + isChecked + "\" ";
+		                    break;
+		                default:
+		                    isTextBox = true;
+		                    controlType = "TextBox";
+		                    break;
+		            }
+		        }
+		        if(isTextBox &amp;&amp; col.MaxLength &gt; 0)
+		        {
+		            controlProperties += "MaxLength=\"" + col.MaxLength + "\" ";
+		        }
+
+
+		        string controlMarkup = String.Empty;
+		        if(!String.IsNullOrEmpty(controlType))
+		        {
+		            controlMarkup = displayPrefix + "&lt;asp:" + controlType + " ID=\"" + controlID + "\" runat=\"server\" " + controlProperties + "&gt;&lt;/asp:" + controlType + "&gt;";
+		        }
+%&gt;
+		[&lt;]td class="scaffoldEditItem"[&gt;]&lt;%=controlMarkup%&gt;[&lt;]/td[&gt;]
+		[&lt;]/tr[&gt;]
+		&lt;%
+		    }
+		}
+%&gt;
+
+		[&lt;]tr[&gt;]
+			[&lt;]td colspan="2" align="left"[&gt;]
+			[&lt;]asp:Button id="btnSave" CssClass="scaffoldButton" runat="server" Text="Save" OnClick="btnSave_Click"[&gt;][&lt;]/asp:Button[&gt;]&amp;nbsp;
+			[&lt;]input type="button" onclick="location.href='&lt;%= generatedClassName %&gt;.aspx'" class="scaffoldButton" value="Return" /[&gt;]
+			[&lt;]asp:Button id="btnDelete" CssClass="scaffoldButton" runat="server" CausesValidation="False" Text="Delete" OnClick="btnDelete_Click"[&gt;][&lt;]/asp:Button[&gt;][&lt;]/td[&gt;]
+		[&lt;]/tr[&gt;]
+	[&lt;]/table[&gt;]
+	[&lt;]/asp:panel[&gt;]
+
+&lt;%if(String.IsNullOrEmpty(masterPage))
+{
+%&gt;
+[&lt;]/form[&gt;]
+[&lt;]/body[&gt;]
+[&lt;]/html[&gt;]
+&lt;%
+}
+else 
+{
+%&gt;
+[&lt;]/asp:Content[&gt;]
+&lt;%
+}
+%&gt;</value>
+  </data>
+  <data name="VB_ODSController" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#" %&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%
+    //The data we need
+	string providerName = "#PROVIDER#";
+	string tableName = "#TABLE#";
+	TableSchema.Table tbl = DataService.GetSchema(tableName, providerName, TableType.Table);
+	DataProvider provider = DataService.Providers[providerName];
+	LanguageType lang = LanguageType.VB;
+    
+    //The main vars we need
+    TableSchema.TableColumnCollection cols = tbl.Columns;
+
+%&gt;
+
+'Generated on &lt;%=DateTime.Now.ToString() %&gt; by &lt;%=Environment.UserName %&gt;
+Namespace &lt;%=provider.GeneratedNamespace %&gt;
+
+    ''' &lt;summary&gt;
+    ''' Controller class for &lt;%=tbl.Name %&gt;
+    ''' &lt;/summary&gt;
+		[&lt;]System.ComponentModel.DataObject()[&gt;] Public Partial Class &lt;%=tbl.ClassName %&gt;Controller
+    
+        ' Preload our schema..
+        Dim thisSchemaLoad As &lt;%=tbl.ClassName%&gt; = New &lt;%=tbl.ClassName%&gt;()
+
+        Private strUserName As String = String.Empty
+        Protected ReadOnly Property UserName() As String
+            Get
+				If strUserName.Length = 0 Then
+		        
+    				If Not System.Web.HttpContext.Current Is Nothing Then
+						strUserName = System.Web.HttpContext.Current.User.Identity.Name
+					Else
+		        		strUserName = System.Threading.Thread.CurrentPrincipal.Identity.Name
+					End If
+					Return strUserName
+				End If
+				Return strUserName
+			End Get
+        End Property
+
+        [&lt;]DataObjectMethod(DataObjectMethodType.Select, True)[&gt;] Public Function FetchAll() As &lt;%=tbl.ClassName%&gt;Collection
+        
+            Dim coll As &lt;%=tbl.ClassName%&gt;Collection = New &lt;%=tbl.ClassName%&gt;Collection()
+            Dim qry As Query = New Query(&lt;%=tbl.ClassName%&gt;.Schema)
+            coll.Load(qry.ExecuteReader())
+            Return coll
+            
+        End Function
+
+        [&lt;]DataObjectMethod(DataObjectMethodType.Select, True)[&gt;] Public Function FetchByID(ByVal &lt;%=tbl.PrimaryKey.PropertyName%&gt; As Object) As &lt;%=tbl.ClassName%&gt;Collection 
+        
+            Dim coll As &lt;%=tbl.ClassName%&gt;Collection = New &lt;%=tbl.ClassName%&gt;Collection().Where("&lt;%=tbl.PrimaryKey.ColumnName %&gt;", &lt;%=tbl.PrimaryKey.PropertyName%&gt;).Load()
+            Return coll
+        
+        End Function
+        
+        [&lt;]DataObjectMethod(DataObjectMethodType.Select, True)[&gt;] Public Function FetchByQuery(ByVal qry As SubSonic.Query) As &lt;%=tbl.ClassName%&gt;Collection 
+        
+            Dim coll As &lt;%=tbl.ClassName%&gt;Collection = New &lt;%=tbl.ClassName%&gt;Collection()
+            coll.Load(qry.ExecuteReader())
+            Return coll
+        
+        End Function
+
+        [&lt;]DataObjectMethod(DataObjectMethodType.Delete, True)[&gt;] Public Function Delete(ByVal &lt;%=tbl.PrimaryKey.PropertyName%&gt; As Object) as Boolean
+        
+            Return (&lt;%=tbl.ClassName%&gt;.Delete(&lt;%=tbl.PrimaryKey.PropertyName%&gt;) = 1)
+        
+        End Function
+
+        [&lt;]DataObjectMethod(DataObjectMethodType.Delete, False)[&gt;] Public Function Destroy(ByVal &lt;%=tbl.PrimaryKey.PropertyName%&gt; As Object) as Boolean
+        
+            Return (&lt;%=tbl.ClassName%&gt;.Destroy(&lt;%=tbl.PrimaryKey.PropertyName%&gt;) = 1)
+        
+        End Function
+
+       
+    	&lt;%
+			string insertArgs = string.Empty;
+			string updateArgs = string.Empty;
+			string seperator = ",";
+
+			foreach (TableSchema.TableColumn col in cols)
+			{
+				string propName = col.PropertyName;
+				string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+
+				updateArgs += "ByVal " + propName + " As " + varType + seperator;
+				if (!col.AutoIncrement)
+				{
+					insertArgs += "ByVal " + propName + " As " + varType + seperator;
+				}
+			}
+			if (insertArgs.Length &gt; 0)
+				insertArgs = insertArgs.Remove(insertArgs.Length - seperator.Length, seperator.Length);
+			if (updateArgs.Length &gt; 0)
+				updateArgs = updateArgs.Remove(updateArgs.Length - seperator.Length, seperator.Length);
+    	%&gt;
+    	
+	    ''' &lt;summary&gt;
+	    ''' Inserts a record, can be used with the Object Data Source
+	    ''' &lt;/summary&gt;
+        [&lt;]DataObjectMethod(DataObjectMethodType.Insert, True)[&gt;] Public Sub Insert(&lt;%=insertArgs%&gt;)
+	   
+		    Dim item As &lt;%=tbl.ClassName %&gt; = New &lt;%= tbl.ClassName %&gt;()
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                if (!col.AutoIncrement) { 
+            %&gt;
+            item.&lt;%=col.PropertyName%&gt; = &lt;%=col.PropertyName%&gt;
+            &lt;%
+                }
+              } 
+            %&gt;
+	    
+		    item.Save(UserName)
+	   
+	   End Sub
+
+    	
+	    ''' &lt;summary&gt;
+	    ''' Updates a record, can be used with the Object Data Source
+	    ''' &lt;/summary&gt;
+        [&lt;]DataObjectMethod(DataObjectMethodType.Update, True)[&gt;] Public Sub Update(&lt;%=updateArgs%&gt;)
+	    
+		    Dim item As &lt;%=tbl.ClassName%&gt; = New &lt;%=tbl.ClassName %&gt;()
+		    &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) 
+			{
+				%&gt;
+				item.&lt;%=col.PropertyName%&gt; = &lt;%=col.PropertyName%&gt;
+				&lt;%
+			} 
+            %&gt;
+		    item.MarkOld()
+		    item.Save(UserName)
+	    
+	    End Sub
+
+    End Class
+
+End Namespace</value>
+  </data>
+  <data name="VB_SPTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%@ Import Namespace="SubSonic.CodeGenerator" %&gt;
+&lt;%@ Import Namespace="System.Data" %&gt;
+
+&lt;%
+	string providerName = "#PROVIDER#";
+	LanguageType lang = LanguageType.VB;
+	DataProvider provider = DataService.GetInstance(providerName);
+    System.Collections.Generic.List&lt;StoredProcedure&gt; spList = DataService.GetSPSchemaCollection(providerName);
+	ArrayList classStoredProcedures = new ArrayList();
+	
+%&gt;
+
+Namespace &lt;%=provider.GeneratedNamespace %&gt;
+    Public Partial Class &lt;%=provider.SPClassName%&gt;
+        &lt;%foreach (StoredProcedure sp in spList)
+{
+    if(Utility.IsMatch(sp.TableName, provider.SPClassName))
+    {
+        //load up a the params
+        string argList = string.Empty;
+        bool isFirst = true;
+        foreach(StoredProcedure.Parameter p in sp.Parameters)
+        {
+            if(!isFirst)
+            {
+                argList += ", ";
+            }
+            isFirst = false;
+            string pType = Utility.GetVariableType(p.DBType, lang);
+            string arg = p.DisplayName;
+			argList += "ByVal " + p.DisplayName + " As " + pType;
+        }
+              %&gt;
+        ''' &lt;summary&gt;
+        ''' Creates an object wrapper for the &lt;%=sp.Name %&gt; Procedure
+        ''' &lt;/summary&gt;
+        Public Shared Function &lt;%=sp.DisplayName%&gt;(&lt;%=argList %&gt;) As StoredProcedure 
+            Dim sp As New SubSonic.StoredProcedure("&lt;%=sp.Name%&gt;" , DataService.GetInstance("&lt;%= providerName %&gt;"))
+            &lt;%foreach (StoredProcedure.Parameter p in sp.Parameters) {%&gt;
+        	    &lt;%if (p.Mode == ParameterDirection.InputOutput) { %&gt;
+            sp.Command.AddOutputParameter("&lt;%=p.QueryParameter %&gt;",DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;)
+        	    &lt;%} else { %&gt;
+            sp.Command.AddParameter("&lt;%=p.QueryParameter%&gt;", &lt;%=p.DisplayName%&gt;,DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;)
+        	    &lt;%} %&gt;
+            &lt;%} %&gt;
+            Return sp
+        End Function
+        &lt;%    }
+			  else
+			  {
+				  classStoredProcedures.Add(sp);
+			  }
+		  }%&gt;
+    End Class
+        &lt;%
+			foreach (StoredProcedure sp in classStoredProcedures)
+			{
+				string className = sp.TableName;
+				TableSchema.Table tbl = DataService.GetTableSchema(sp.TableName, provider.Name, TableType.Table);
+				if (tbl != null)
+				{
+					className = tbl.ClassName;
+				}
+				string argList = string.Empty;
+				bool isFirst = true;
+				foreach (StoredProcedure.Parameter p in sp.Parameters)
+				{
+					if (!isFirst)
+					{
+						argList += ", ";
+					}
+					isFirst = false;
+					string pType = Utility.GetVariableType(p.DBType, lang);
+					string arg = p.DisplayName;
+					argList += "ByVal " + p.DisplayName + " As " + pType;
+				}
+%&gt;
+	Public Partial Class &lt;%= className%&gt;
+        ''' &lt;summary&gt;
+        ''' Creates an object wrapper for the &lt;%=sp.Name%&gt; Procedure
+        ''' &lt;/summary&gt;
+        Public Shared Function &lt;%=sp.DisplayName%&gt;(&lt;%=argList%&gt;) As StoredProcedure 
+            Dim sp As New SubSonic.StoredProcedure("&lt;%=sp.Name%&gt;" , DataService.GetInstance("&lt;%= providerName %&gt;"))
+            &lt;%foreach (StoredProcedure.Parameter p in sp.Parameters)
+			  {%&gt;
+        	    &lt;%if (p.Mode == ParameterDirection.InputOutput)
+			   { %&gt;
+            sp.Command.AddOutputParameter("&lt;%=p.QueryParameter%&gt;",DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;)
+        	    &lt;%}
+			   else
+			   { %&gt;
+            sp.Command.AddParameter("&lt;%=p.QueryParameter%&gt;", &lt;%=p.DisplayName%&gt;,DbType.&lt;%=Enum.GetName(typeof(DbType), p.DBType)%&gt;)
+        	    &lt;%} %&gt;
+            &lt;%} %&gt;
+            Return sp
+        End Function
+    End Class
+        		&lt;%
+			}
+%&gt;
+End Namespace</value>
+  </data>
+  <data name="VB_StructsTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+&lt;%@ Import Namespace="SubSonic.CodeGenerator" %&gt;
+&lt;%@ Import Namespace="System.Data" %&gt;
+
+
+
+&lt;%foreach(DataProvider p in DataService.Providers){
+
+      TableSchema.Table[] tables = DataService.GetTables(p.Name);
+      TableSchema.Table[] views = DataService.GetViews(p.Name);
+
+%&gt;
+Namespace &lt;%=p.GeneratedNamespace%&gt;
+	#Region "Tables Struct"
+	Public Partial Structure Tables
+		Dim x As Integer
+		&lt;%
+			foreach (TableSchema.Table t in tables)
+			{
+			    if(CodeService.ShouldGenerate(t.Name, p.Name))
+			    {
+%&gt;
+		Public Shared  &lt;%= t.ClassName %&gt; As String = "&lt;%= t.ClassName %&gt;"
+        &lt;%
+			    }
+			}
+%&gt;
+	End Structure
+	#End Region
+
+    #region "View Struct"
+    Public Partial Structure Views
+		Dim x As Integer
+		&lt;%
+			foreach (TableSchema.Table v in views)
+			{
+				if (CodeService.ShouldGenerate(v.Name, p.Name))
+				{
+%&gt;
+		Public Shared &lt;%= v.ClassName %&gt; As String = "&lt;%= v.ClassName %&gt;"
+        &lt;%
+			}
+		}
+%&gt;
+    End Structure
+    #End Region
+End Namespace
+&lt;%} %&gt;
+
+#Region "Databases"
+Public Partial Structure Databases
+	Dim x As Integer
+	&lt;%foreach (DataProvider p in DataService.Providers) { %&gt;
+	Public Shared &lt;%= p.Name %&gt; As String = "&lt;%= p.Name%&gt;"
+    &lt;%}%&gt;
+End Structure
+#End Region</value>
+  </data>
+  <data name="VB_ViewTemplate" xml:space="preserve">
+    <value>&lt;%@ Page Language="C#"%&gt;
+&lt;%@ Import namespace="SubSonic.Utilities"%&gt;
+&lt;%@ Import Namespace="SubSonic" %&gt;
+
+&lt;%
+	string providerName = "#PROVIDER#";
+	string viewName = "#VIEW#";
+	//The data we need
+	TableSchema.Table view = DataService.GetSchema(viewName, providerName, TableType.View);
+	LanguageType lang = LanguageType.VB;
+
+	//The main vars we need
+	TableSchema.TableColumnCollection cols = view.Columns;
+	string className = view.ClassName;
+	string nSpace = DataService.Providers[providerName].GeneratedNamespace;
+
+    
+%&gt;
+Namespace &lt;%=nSpace %&gt;
+    ''' &lt;summary&gt;
+    ''' Strongly-typed collection for the &lt;%=className%&gt; class.
+    ''' &lt;/summary&gt;
+    &lt;Serializable()&gt; _
+    Public Partial Class &lt;%=className%&gt;Collection 
+    Inherits ReadOnlyList(Of &lt;%= className %&gt;)
+        
+        #Region "Collection"
+        Private wheres As List(Of Where)  = new List(Of Where)
+        Private betweens As List(Of BetweenAnd) = new List(Of BetweenAnd) 
+        
+        Private orderBy As SubSonic.OrderBy
+    	
+        Public Function OrderByAsc(ByVal columnName As String) As &lt;%=className%&gt;Collection
+            Me.orderBy = SubSonic.OrderBy.Asc(columnName)
+            Return Me
+    	End Function
+    	
+        Public Function OrderByDesc(ByVal columnName As String) As &lt;%=className%&gt;Collection
+            Me.orderBy = SubSonic.OrderBy.Desc(columnName)
+            Return Me
+        End Function
+        
+        Public Function WhereDatesBetween(ByVal columnName As String, ByVal dateStart As DateTime, ByVal dateEnd As DateTime) As &lt;%=className%&gt;Collection 
+            Return BetweenAnd(columnName, dateStart, dateEnd)
+        End Function
+        
+        Public Function Where(ByVal varWhere As Where) As &lt;%=className%&gt;Collection 
+            wheres.Add(varWhere)
+            Return Me
+    	End Function
+    	
+        Public Function Where(ByVal columnName As String, ByVal value As Object) As &lt;%=className%&gt;Collection 
+            If (value IsNot DBNull.Value And value IsNot Nothing) Then
+                Return Where(columnName, Comparison.Equals, value)
+            Else
+                Return Where(columnName, Comparison.Is, DBNull.Value)
+            End If
+    	End Function
+    	
+        Public Function Where(ByVal columnName As String, ByVal comp As Comparison, ByVal value As Object) As &lt;%=className%&gt;Collection
+            Dim varWhere As New Where()
+            varWhere.ColumnName = columnName
+            varWhere.Comparison = comp
+            varWhere.ParameterValue = value
+            Where(varWhere)
+            Return Me
+    	End Function
+    	
+        Public Function BetweenAnd(ByVal columnName As String, ByVal dateStart As DateTime, ByVal dateEnd As DateTime) As &lt;%=className%&gt;Collection 
+	        Dim between As New BetweenAnd()
+			between.ColumnName = columnName
+			between.StartDate = dateStart
+			between.EndDate = dateEnd
+			between.StartParameterName = "start" + columnName 
+            between.EndParameterName = "end" + columnName 
+            betweens.Add(between)
+            Return Me
+        End Function
+    	
+        Public Overloads Function Load() As &lt;%=className%&gt;Collection
+            Dim qry As New Query(&lt;%=className%&gt;.Schema)
+            CheckLogicalDelete(qry)
+            For Each where As Where In wheres
+                qry.AddWhere(where)
+            Next
+                  
+            For Each between As BetweenAnd In betweens
+                qry.AddBetweenAnd(between)
+            Next
+            
+            If (orderBy IsNot Nothing) Then
+                qry.OrderBy = orderBy
+            End If
+
+            Dim rdr As IDataReader = qry.ExecuteReader()
+            MyBase.Load(rdr)
+            rdr.Close()
+            Return Me
+        End Function
+        
+        Public Sub New()
+        End Sub
+        #End Region
+    End Class
+
+    ''' &lt;summary&gt;
+    ''' This is  Read-only wrapper class for the &lt;%=viewName%&gt; view.
+    ''' &lt;/summary&gt;
+    &lt;Serializable()&gt; _
+    Public Partial Class &lt;%=className%&gt; 
+    Inherits ReadOnlyRecord(Of &lt;%= className %&gt;)
+    
+	    #Region "Default Settings"
+	    Protected Shared Sub SetSQLProps()
+	        GetTableSchema()
+	    End Sub
+	    #End Region
+
+        #Region "Schema Accessor"
+        Public Shared ReadOnly Property Schema() As TableSchema.Table
+            Get
+                If (BaseSchema Is Nothing) Then
+                    SetSQLProps()
+                End If
+                Return BaseSchema
+            End Get
+        End Property
+	    
+	    Private Shared Sub GetTableSchema()
+	        If (Not IsSchemaInitialized) Then
+	            'Schema declaration
+				Dim schema As TableSchema.Table = New TableSchema.Table("&lt;%=viewName%&gt;", TableType.View, DataService.GetInstance("&lt;%=providerName%&gt;"))
+				schema.Columns = New TableSchema.TableColumnCollection()
+				schema.SchemaName = "&lt;%=view.SchemaName %&gt;"
+                
+                'Columns
+                &lt;%
+                string propertyName = string.Empty;
+                foreach(TableSchema.TableColumn col in cols){
+                    string varName = "col" + col.ArgumentName;
+                %&gt;
+                Dim &lt;%=varName %&gt; As New TableSchema.TableColumn(schema)
+                &lt;%=varName %&gt;.ColumnName = "&lt;%=propertyName%&gt;"
+                &lt;%=varName %&gt;.DataType = DbType.&lt;%=col.DataType %&gt;
+                &lt;%=varName %&gt;.MaxLength = &lt;%=col.MaxLength %&gt;
+                &lt;%=varName %&gt;.AutoIncrement = False
+                &lt;%=varName %&gt;.IsNullable = &lt;%=col.IsNullable.ToString().ToLower()%&gt;
+                &lt;%=varName %&gt;.IsPrimaryKey = False
+                &lt;%=varName %&gt;.IsForeignKey = False
+                &lt;%=varName %&gt;.IsReadOnly = &lt;%= col.IsReadOnly.ToString().ToLower() %&gt;
+                 &lt;%
+				if(col.IsForeignKey)
+				{
+                %&gt;
+				&lt;%=varName %&gt;.ForeignKeyTableName = "&lt;%= col.ForeignKeyTableName %&gt;"
+                &lt;% } %&gt;
+                schema.Columns.Add(&lt;%=varName%&gt;)
+                &lt;%
+                }
+                %&gt;
+                BaseSchema = schema
+				
+				'add this schema to the provider
+                'so we can query it later
+                DataService.Providers("&lt;%=providerName %&gt;").AddSchema("&lt;%=viewName%&gt;",schema)
+	        End If
+	    End Sub
+	    #End Region
+	    
+        #Region "Query Accessor"
+        Public Shared Function CreateQuery As Query
+            Return New Query(Schema)
+        End Function
+	    #End Region
+	    
+	    #Region ".ctors"
+	    Public Sub New()
+	        SetSQLProps()
+            SetDefaults()
+            MarkNew()
+	    End Sub
+	    
+	    Public Sub New(ByVal keyID As Object)
+	        SetSQLProps()
+		    LoadByKey(keyID)
+	    End Sub
+    	
+    	Public Sub new(ByVal columnName As String, ByVal columnValue As Object)
+    	    SetSQLProps()
+            LoadByParam(columnName , columnValue)
+    	End Sub
+	    #End Region
+	    
+	    #Region "Props"
+	    &lt;%
+        foreach(TableSchema.TableColumn col in cols){
+            string propName = col.PropertyName;
+            string varType = Utility.GetVariableType(col.DataType, col.IsNullable, lang);
+        %&gt;  
+        &lt;XmlAttribute("&lt;%=propName%&gt;")&gt; _
+        Public Property &lt;%=propName%&gt;() As &lt;%=varType%&gt; 
+		    Get
+			    Return GetColumnValue(Of &lt;%= varType %&gt;)("&lt;%=propName%&gt;")
+			End Get
+            Set(ByVal value As &lt;%=varType%&gt;)
+                MarkDirty()
+			    SetColumnValue("&lt;%=propName%&gt;", value)
+            End Set
+        End Property
+	    &lt;%
+	    }
+	    %&gt;
+	    #End Region
+    
+	    #Region "Columns Struct"
+	    Public Structure Columns
+			Dim x as Integer
+	        &lt;% 
+		    foreach (TableSchema.TableColumn col in cols) {
+                string propName = col.PropertyName;
+            %&gt;
+            Public Shared &lt;%=propName%&gt; As String = "&lt;%=propName%&gt;"
+            &lt;%
+              } 
+            %&gt;
+	    End Structure
+	    #End Region
+    End Class
+End Namespace</value>
+  </data>
+</root>

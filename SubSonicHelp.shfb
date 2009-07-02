@@ -1,0 +1,70 @@
+﻿<project schemaVersion="1.6.0.7">
+    <assemblies>
+        <assembly assemblyPath=".\SubSonic\bin\Release\SubSonic.dll" xmlCommentsPath=".\SubSonic\bin\Release\SubSonic.xml" commentsOnly="False" />
+        <assembly assemblyPath=".\SubSonic.Migrations\bin\Release\SubSonic.Migrations.dll" xmlCommentsPath=".\SubSonic.Migrations\bin\Release\SubSonic.Migrations.xml" commentsOnly="False" />
+    </assemblies>
+    <namespaceSummaries>
+        <namespaceSummaryItem name="" isDocumented="False" />
+        <namespaceSummaryItem name="Northwind" isDocumented="False" />
+        <namespaceSummaryItem name="Pubs" isDocumented="False" />
+        <namespaceSummaryItem name="SubCommander" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.CodeGenerator" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.Controls" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.Parser" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.QueryEngine" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.Sugar" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.Tests" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.Utilities" isDocumented="True" />
+        <namespaceSummaryItem name="SubSonic.WebUtility" isDocumented="True" />
+    </namespaceSummaries>
+    <dependencies>
+        <dependencyItem depPath=".\Dependencies\*.*" />
+    </dependencies>
+    <componentConfigurations>
+        <component id="Code Block Component" enabled="False" configuration="&lt;component id=&quot;Code Block Component&quot; type=&quot;SandcastleBuilder.Components.CodeBlockComponent&quot; assembly=&quot;{@SHFBFolder}SandcastleBuilder.Components.dll&quot;&gt;&#xD;&#xA;&lt;!-- Base path for relative filenames in source attributes&#xD;&#xA;                 (optional) --&gt;&lt;basePath value=&quot;{@ProjectFolder}&quot; /&gt;&lt;!-- Connect to language filter (optional).  If omitted,&#xD;&#xA;                 language filtering is enabled by default. --&gt;&lt;languageFilter value=&quot;true&quot; /&gt;&lt;!-- Code colorizer options (required).&#xD;&#xA;                 Attributes:&#xD;&#xA;                    Language syntax configuration file (required)&#xD;&#xA;                    XSLT style file (required)&#xD;&#xA;                    &quot;Copy&quot; image file URL (required)&#xD;&#xA;                    Default language (optional)&#xD;&#xA;                    Enable line numbering (optional)&#xD;&#xA;                    Enable outlining (optional)&#xD;&#xA;                    Tab size override (optional, 0 = Use syntax file setting)&#xD;&#xA;                    Use language name as default title (optional) --&gt;&lt;colorizer syntaxFile=&quot;{@SHFBFolder}Colorizer\highlight.xml&quot; styleFile=&quot;{@SHFBFolder}Colorizer\highlight.xsl&quot; copyImageUrl=&quot;../icons/CopyCode.gif&quot; language=&quot;cs&quot; numberLines=&quot;false&quot; outlining=&quot;false&quot; tabSize=&quot;0&quot; defaultTitle=&quot;true&quot; /&gt;&#xD;&#xA;&lt;/component&gt;" />
+        <component id="IntelliSense Component" enabled="True" configuration="&lt;component id=&quot;IntelliSense Component&quot; type=&quot;SandcastleBuilder.Components.IntelliSenseComponent&quot; assembly=&quot;{@SHFBFolder}SandcastleBuilder.Components.dll&quot;&gt;&#xD;&#xA;&lt;!-- Output options (optional)&#xD;&#xA;                 Attributes:&#xD;&#xA;                    Include Namespaces (false by default)&#xD;&#xA;                    Namespaces filename (&quot;Namespaces&quot; if not specified or empty)&#xD;&#xA;                    Directory (current folder if not specified or empty) --&gt;&lt;output includeNamespaces=&quot;false&quot; namespacesFile=&quot;Namespaces&quot; folder=&quot;{@OutputFolder}&quot; /&gt;&#xD;&#xA;&lt;/component&gt;" />
+        <component id="Post-transform Component" enabled="True" configuration="&lt;component id=&quot;Post-transform Component&quot; type=&quot;SandcastleBuilder.Components.PostTransformComponent&quot; assembly=&quot;{@SHFBFolder}SandcastleBuilder.Components.dll&quot;&gt;&#xD;&#xA;&lt;!-- Code colorizer files (required).&#xD;&#xA;                 Attributes:&#xD;&#xA;                    Stylesheet file (required)&#xD;&#xA;                    Script file (required)&#xD;&#xA;                    &quot;Copy&quot; image file (required) --&gt;&lt;colorizer stylesheet=&quot;{@SHFBFolder}Colorizer\highlight.css&quot; scriptFile=&quot;{@SHFBFolder}Colorizer\highlight.js&quot; copyImage=&quot;{@SHFBFolder}Colorizer\CopyCode.gif&quot; /&gt;&lt;!-- Base output path for the files (required).  This should match&#xD;&#xA;                 the parent folder of the output path of the HTML files (see&#xD;&#xA;                 SaveComponent). --&gt;&lt;outputPath value=&quot;Output\&quot; /&gt;&lt;!-- Logo image file (optional).  Filename is required. The height,&#xD;&#xA;                 width, altText, placement, and alignment attributes are&#xD;&#xA;                 optional. --&gt;&lt;logoFile filename=&quot;&quot; height=&quot;0&quot; width=&quot;0&quot; altText=&quot;&quot; placement=&quot;left&quot; alignment=&quot;left&quot; /&gt;&#xD;&#xA;&lt;/component&gt;" />
+    </componentConfigurations>
+    <ProjectSummary />
+    <MissingTags>AutoDocumentCtors, TypeParameter</MissingTags>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="C:\Program Files\HTML Help Workshop\" />
+    <HtmlHelp2xCompilerPath path="C:\Program Files\Visual Studio 2005 SDK\2007.02\VisualStudioIntegration\Archive\HelpIntegration\" />
+    <OutputPath>C:\subsonichelp\</OutputPath>
+    <SandcastlePath path="C:\Program Files\Sandcastle\" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>True</KeepLogFile>
+    <BuildLogFile path="" />
+    <HelpFileFormat>Help1xAnd2xAndWebsite</HelpFileFormat>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <IndentHtml>False</IndentHtml>
+    <Preliminary>False</Preliminary>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>SubSonic Class Reference</HelpTitle>
+    <HtmlHelpName>Documentation</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref>http://subsonicproject.com</CopyrightHref>
+    <CopyrightText>Copyright 2006-2008, The SubSonic Project.</CopyrightText>
+    <FeedbackEMailAddress />
+    <FeedbackEMailLinkText />
+    <HeaderText />
+    <FooterText />
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>Msdn</SdkLinkType>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>vs2005</PresentationStyle>
+    <NamingMethod>Guid</NamingMethod>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <IncludeStopWordList>True</IncludeStopWordList>
+    <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+</project>

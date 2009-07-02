@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<configSections>
+		<section name="SubSonicService" type="SubSonic.SubSonicSection, SubSonic" allowDefinition="MachineToApplication" restartOnExternalChanges="true" requirePermission="false"/>
+	</configSections>
+	<connectionStrings>
+[#CONNECTION_STRINGS#]	</connectionStrings>
+	<SubSonicService defaultProvider="[#DEFAULT_PROVIDER#]" enableTrace="[#ENABLE_TRACE#]" templateDirectory="[#TEMPLATE_DIRECTORY#]">
+		<providers>
+			<clear/>
+[#PROVIDERS#]		</providers>
+	</SubSonicService>
+</configuration>

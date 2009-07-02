@@ -1,0 +1,218 @@
+html, body {
+	background: rgb(240,240,240) url(img/bg.png);
+	color: rgb(100,100,100);
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size: 9pt;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+.Fade {
+	background: rgb(240,240,240) url(img/bg_fade.png) top left repeat-x;
+	height: 292px;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	z-index: 3;
+}
+.frame
+{
+	width:885px; 
+	height:600px; 
+	border:solid 0px #808080
+}
+
+a {
+	color: rgb(100,120,140);
+	text-decoration: none;
+}
+a:hover {
+	color: rgb(140,160,180);
+	text-decoration: underline;
+}
+blockquote {
+	background: rgb(250,250,250) url(img/blockquote_bg.png) 5px center no-repeat;
+	border: 1px solid rgb(235,235,235);
+	display: block;
+	margin: 0px;
+	min-height: 18px;
+	padding: 8px 8px 8px 40px;
+}
+code {
+	background-color: rgb(250,250,250);
+	border: 1px solid rgb(235,235,235);
+	display: block;
+	padding: 6px;
+	white-space: pre;
+}
+ol {
+
+	margin: 0px;
+	padding: 0px 20px;
+}
+ol li {
+	padding-bottom: 8px
+}
+ol span {
+	color: rgb(100,100,100);
+}
+ul {
+	margin: 0px;
+	padding: 0px;
+}
+ul li {
+	background: url(img/arrow.gif) left 2px no-repeat;
+	list-style: none;
+	padding-left: 20px;
+	padding-bottom: 5px
+}
+.FormCaption
+{
+	padding:8px 0px 0px 0px
+}
+
+.Wrapper {
+background-color: rgb(255,255,255);
+border-left: 1px solid rgb(200,200,200);
+border-right: 1px solid rgb(200,200,200);
+min-height: 100%;
+margin: 0px auto;
+margin-bottom: -35px;
+min-height: 100%;
+position: relative;
+width: 80% !important;
+width: 900px;
+min-width: 900px;
+z-index: 200;
+}
+
+.Header {
+	background: rgb(220,0,0) url(img/header_bg.png);
+	border-bottom: 1px solid rgb(200,200,200);
+	color: rgb(240,240,240);
+	height: 60px;
+	padding: 10px 20px;
+}
+.Header a {
+	color: rgb(255,255,255);
+}
+.HeaderLeft {
+	float: left;
+	font-size: 36px;
+	font-weight: bold;
+	line-height: 60px;
+}
+.HeaderLeft a:hover {
+	text-decoration: none;
+}
+.HeaderRight 
+{
+	font-family: "Franklin Gothic Medium";
+	color: rgb(200,200,200);
+	float: right;
+	font-size: 1.8em
+}
+.Menu {
+	background: rgb(217,217,217) url(img/menu_bg.png);
+	font-size: 11px;
+	height: 24px;
+	line-height: 24px;
+}
+.Menu ul {
+	margin: 0px;
+	padding: 0px 6px;
+	list-style: none;
+}
+.Menu ul li {
+	background-image: none;
+	float: left;
+	padding: 0px;
+}
+.Menu ul li a {
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+	display: block;
+	margin: 0px 3px;
+	padding: 0px 6px;
+	text-align: center;
+}
+.Menu ul li a:hover {
+	background: transparent url(img/menu_bg_over.png) center repeat-x;
+	border-left: 1px solid rgb(200,200,200);
+	border-right: 1px solid rgb(200,200,200);
+	color: rgb(160,160,160);
+	text-decoration: none;
+}
+.FormText {
+	border: 1px solid rgb(220,220,220);
+	font-size: 11px;
+	height: 14px;
+}
+.FormSubmit {
+	background: rgb(212,209,203) url(img/submit_bg.png) center;
+	border-bottom: 1px solid rgb(190,190,190);
+	border-left: 1px solid rgb(220,220,220);
+	border-right: 1px solid rgb(190,190,190);
+	border-top: 1px solid rgb(220,220,220);
+	color: rgb(80,80,80);
+	font-size: 11px;
+	height: 18px;
+	margin-bottom: -1px;
+}
+.Content {
+	padding: 10px;
+}
+.ContentFull {
+	width: 885px;
+}
+
+.ContentLeft {
+	float: left;
+	width: 210px;
+
+}
+.ContentRight {
+	float: right;
+	width: 660px;
+}
+.Box {
+	border: 1px solid rgb(220,220,220);
+}
+.BoxTitle {
+	background: rgb(240,240,240) url(img/box_title_bg.png);
+	border: 1px solid rgb(255,255,255);
+	color: rgb(140,80,80);
+	font-weight: bold;
+	height: 30px;
+	line-height: 24px;
+	padding: 0px 6px;
+}
+.BoxContent {
+	padding: 0px 6px 6px 6px;
+}
+.FooterWrapper {
+	background-color: rgb(255,255,255);
+	border-left: 1px solid rgb(200,200,200);
+	border-right: 1px solid rgb(200,200,200);
+	bottom: 0px;
+	clear: both;
+	font-size: 10px;
+	height: 24px;
+	line-height: 24px;
+	margin: 0px auto;
+	padding: 10px 0px 0px 0px;
+	position: relative;
+	text-align: center;
+	width: 80% !important;
+	width: 900px;
+	min-width: 900px;
+	z-index: 300;
+}
+
+.Footer {
+	background-color: rgb(240,240,240);
+	border-top: 1px solid rgb(200,200,200);
+	padding: 0px 6px;
+}

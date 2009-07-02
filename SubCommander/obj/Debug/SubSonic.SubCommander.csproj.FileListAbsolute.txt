@@ -1,0 +1,16 @@
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\sonic.exe.config
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\sonic.exe
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\sonic.pdb
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\Microsoft.SqlServer.Smo.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\SubSonic.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\SubSonic.Migrations.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\System.Data.SQLite.dll
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\SubSonic.pdb
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\SubSonic.Migrations.pdb
+D:\@SubSonic\SubSonic\SubCommander\obj\Debug\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic\SubCommander\obj\Debug\sonic.exe
+D:\@SubSonic\SubSonic\SubCommander\obj\Debug\sonic.pdb
+D:\@SubSonic\SubSonic\SubCommander\bin\Debug\MySql.Data.dll

@@ -1,0 +1,9 @@
+D:\@SubSonic\SubSonic\SubSonic\bin\Debug\SubSonic.dll
+D:\@SubSonic\SubSonic\SubSonic\bin\Debug\SubSonic.pdb
+D:\@SubSonic\SubSonic\SubSonic\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\@SubSonic\SubSonic\SubSonic\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\@SubSonic\SubSonic\SubSonic\bin\Debug\System.Data.SQLite.DLL
+D:\@SubSonic\SubSonic\SubSonic\obj\Debug\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic\SubSonic\obj\Debug\SubSonic.dll
+D:\@SubSonic\SubSonic\SubSonic\obj\Debug\SubSonic.pdb
+D:\@SubSonic\SubSonic\SubSonic\bin\Debug\MySql.Data.dll

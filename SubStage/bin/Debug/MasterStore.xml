@@ -1,0 +1,101 @@
+<?xml version="1.0" standalone="yes"?>
+<MasterStore xmlns="http://subsonicproject.com/schemas/MasterStore.xsd">
+  <Projects>
+    <ProjectId>0</ProjectId>
+    <Name>Northwind</Name>
+    <OriginalLocation />
+    <DefaultProvider>0</DefaultProvider>
+    <TemplateDirectory />
+    <EnableTrace>false</EnableTrace>
+  </Projects>
+  <ProviderTypes>
+    <ProviderTypeId>1</ProviderTypeId>
+    <DisplayName>SQL Server</DisplayName>
+    <InternalName>SqlDataProvider</InternalName>
+  </ProviderTypes>
+  <ProviderTypes>
+    <ProviderTypeId>2</ProviderTypeId>
+    <DisplayName>MySql (MyISAM)</DisplayName>
+    <InternalName>MySqlDataProvider</InternalName>
+  </ProviderTypes>
+  <ProviderTypes>
+    <ProviderTypeId>3</ProviderTypeId>
+    <DisplayName>MySql (InnoDB)</DisplayName>
+    <InternalName>MySqlInnoDBDataProvider</InternalName>
+  </ProviderTypes>
+  <ProviderTypes>
+    <ProviderTypeId>4</ProviderTypeId>
+    <DisplayName>Oracle</DisplayName>
+    <InternalName>OracleDataProvider</InternalName>
+  </ProviderTypes>
+  <ProviderTypes>
+    <ProviderTypeId>5</ProviderTypeId>
+    <DisplayName>Enterprise Library</DisplayName>
+    <InternalName>ELib3DataProvider</InternalName>
+  </ProviderTypes>
+  <ProviderTypes>
+    <ProviderTypeId>6</ProviderTypeId>
+    <DisplayName>SQLite</DisplayName>
+    <InternalName>SQLiteDataProvider</InternalName>
+  </ProviderTypes>
+  <ProviderTypes>
+    <ProviderTypeId>7</ProviderTypeId>
+    <DisplayName>SQL CE</DisplayName>
+    <InternalName>SqlCEProvider</InternalName>
+  </ProviderTypes>
+  <Providers>
+    <ProviderId>0</ProviderId>
+    <Name>Northwind</Name>
+    <ProjectId>0</ProjectId>
+    <ProviderTypeId>1</ProviderTypeId>
+    <ConnectionStringId>0</ConnectionStringId>
+    <AppendWith>X</AppendWith>
+    <AdditionalNamespaces />
+    <ExcludeProcedureList />
+    <ExcludeTableList />
+    <ExtractClassNameFromSPName>false</ExtractClassNameFromSPName>
+    <FixDatabaseObjectCasing>true</FixDatabaseObjectCasing>
+    <FixPluralClassNames>true</FixPluralClassNames>
+    <GenerateLazyLoads>false</GenerateLazyLoads>
+    <GenerateNullableProperties>true</GenerateNullableProperties>
+    <GenerateODSControllers>true</GenerateODSControllers>
+    <GenerateRelatedTablesAsProperties>false</GenerateRelatedTablesAsProperties>
+    <GeneratedNamespace>Northwind</GeneratedNamespace>
+    <IncludeProcedureList>*</IncludeProcedureList>
+    <IncludeTableList>*</IncludeTableList>
+    <ManyToManySuffix>_Map</ManyToManySuffix>
+    <RegexDictionaryReplace />
+    <RegexIgnoreCase>false</RegexIgnoreCase>
+    <RegexMatchExpression />
+    <RegexReplaceExpression />
+    <RelatedTableLoadPrefix />
+    <RemoveUnderscores>false</RemoveUnderscores>
+    <SetPropertyDefaultsFromDatabase>false</SetPropertyDefaultsFromDatabase>
+    <SPClassName>SPs</SPClassName>
+    <SPStartsWith />
+    <StoredProcedureBaseClass>StoredProcedure</StoredProcedureBaseClass>
+    <StripColumnText />
+    <StripParamText />
+    <StripSPText />
+    <StripTableText />
+    <StripViewText />
+    <TableBaseClass>ActiveRecord</TableBaseClass>
+    <UseExtendedProperties>false</UseExtendedProperties>
+    <UseSPs>true</UseSPs>
+    <UseUTC>false</UseUTC>
+    <ViewBaseClass>ReadOnlyRecord</ViewBaseClass>
+    <ViewStartsWith />
+  </Providers>
+  <ConnectionStrings>
+    <ConnectionStringId>0</ConnectionStringId>
+    <Name>Northwind</Name>
+    <ConnectionString>Data Source=(local); Database=Northwind; Integrated Security=true;</ConnectionString>
+  </ConnectionStrings>
+  <SubStageConfiguration>
+    <SubStageConfigurationId>0</SubStageConfigurationId>
+    <CodeGenerationLanguage>C#</CodeGenerationLanguage>
+    <CodeGenerationPath>D:\@SubSonic\SubSonic\SubStage\bin\Debug\GeneratedCode\</CodeGenerationPath>
+    <WebServerPort>41572</WebServerPort>
+    <WebServerRootPath />
+  </SubStageConfiguration>
+</MasterStore>

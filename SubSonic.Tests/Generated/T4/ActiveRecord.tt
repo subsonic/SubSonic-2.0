@@ -1,0 +1,106 @@
+﻿<#@ template language="C#" debug="True" hostspecific="True"  #>
+<#@ include file="Utility.tt" #>
+using System; 
+using System.Text; 
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.Common;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration; 
+using System.Xml; 
+using System.Xml.Serialization;
+using SubSonic; 
+using SubSonic.Utilities;
+
+<#
+Init();
+DataTable tables=GetTables();
+#>
+
+namespace <#=Namespace#>
+{
+
+<#  foreach(DataRow row in tables.Rows){
+    string tableName=row["TABLE_NAME"].ToString();
+    string tableType=row["TABLE_TYPE"].ToString();
+    string className=CleanName(Inflector.MakeSingular(tableName));
+    string schema=row["TABLE_SCHEMA"].ToString();
+    DataTable columns=GetColumns(tableName);
+
+    DataRow PK=GetPK(tableName);
+    string pkName="";
+    if(PK!=null)
+        pkName=PK["COLUMN_NAME"].ToString();
+#>
+    
+	/// <summary>
+	/// Strongly-typed collection for the <#=className#> class.
+	/// </summary>
+    [Serializable]
+	public partial class <#=className#>Collection : ActiveList<<#=className#>, <#=className#>Collection>
+	{	   
+		public <#=className#>Collection() {}
+	}
+    
+    /// <summary>
+	/// This is an ActiveRecord class which wraps the <#=className#> table.
+	/// </summary>
+	[Serializable]
+    public class <#=className#> : ActiveRecord<<#=className#>>, IActiveRecord{
+    
+        private static void GetTableSchema() 
+		{
+			if(!IsSchemaInitialized)
+			{
+				//Schema declaration
+				TableSchema.Table schema = new TableSchema.Table("<#=tableName#>", TableType.Table, DataService.GetInstance("<#=ConnectionStringName#>"));
+				schema.Columns = new TableSchema.TableColumnCollection();
+				schema.SchemaName = @"<#=schema#>";
+				
+				//columns
+<#              foreach(DataRow dr in columns.Rows){
+                    string sqlType=dr["data_type"].ToString();
+                    string sysType=GetSysType(sqlType);
+                    string colName=dr["column_name"].ToString();
+                    string isPk=pkName==colName ? "true" : "false";
+                    string isAutoIncrement=IsAutoIncrement(colName);
+                    string maxLength=dr["CHARACTER_MAXIMUM_LENGTH"].ToString();
+                    if(maxLength=="")
+                        maxLength="0";
+                            
+                    bool isNullable=dr["IS_NULLABLE"].ToString()=="YES";
+                    DbType dbType=GetDbType(sqlType);
+#>				
+				
+				
+				TableSchema.TableColumn colvar<#=colName#> = new TableSchema.TableColumn(schema);
+				colvar<#=colName#>.ColumnName = "<#=colName#>";
+				colvar<#=colName#>.DataType = DbType.<#=dbType#>;
+				colvar<#=colName#>.MaxLength = <#=maxLength#>;
+				colvar<#=colName#>.AutoIncrement = true;
+				colvar<#=colName#>.IsNullable = <#=isNullable.ToString().ToLower()#>;
+				colvar<#=colName#>.IsPrimaryKey = <#=isPk#>;
+				colvar<#=colName#>.IsForeignKey = false;
+				colvar<#=colName#>.IsReadOnly = false;
+				schema.Columns.Add(colvar<#=colName#>);
+
+				
+				
+				
+<#              }#>
+            }
+        }
+    
+    
+    }
+
+
+<#  }#>
+}
+
+
+<#
+Dispose();
+#>

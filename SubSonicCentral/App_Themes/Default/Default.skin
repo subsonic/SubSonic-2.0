@@ -1,0 +1,43 @@
+<asp:GridView runat="server" SkinID="scaffold" Style="border-right: gainsboro 1px solid;
+    border-top: gainsboro 1px solid; font-size: 8pt; border-left: gainsboro 1px solid;
+    color: dimgray; border-bottom: gainsboro 1px solid; font-family: verdana" BackColor="White" BorderColor="#999999" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical">
+    <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
+    <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
+    <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />
+    <SelectedRowStyle BackColor="#ffffcc" Font-Bold="True" ForeColor="White" />
+    <HeaderStyle BackColor="gainsboro" Font-Bold="True" ForeColor="black"  />
+    <AlternatingRowStyle BackColor="white" />
+</asp:GridView>
+<asp:Image runat="server" Imageurl="images/headers/h_favorites.gif" skinid="HeadersRecentCategories" />
+<asp:Image runat="server" Imageurl="images/headers/h_recent.gif" skinid="HeadersRecentProducts" />
+<asp:Image runat="server" Imageurl="images/headers/checkout.gif" skinid="HeadersCheckout" />
+<asp:Image runat="server" Imageurl="images/headers/receipt.gif" skinid="HeadersReceipt" />
+<asp:Image runat="server" Imageurl="images/headers/billing.gif" skinid="HeadersBilling" />
+<asp:Image runat="server" Imageurl="images/headers/checkout_confirm.gif" skinid="HeadersCheckoutConfirm" />
+
+<asp:Hyperlink runat="server" Imageurl="images/button-proceedcheckout.gif" skinid="Checkout" />
+<asp:Hyperlink runat="server" skinid="HeaderCartText" NavigateUrl="~/basket.aspx" Text="My Cart" />
+<asp:Hyperlink runat="server" skinid="HeaderMyOrders" NavigateUrl="~/myorders.aspx" Text="My Orders" />
+
+<asp:Image runat="server" Imageurl="images/button-go.gif" skinid="doSearch" />
+<asp:ImageButton runat="server" Imageurl="images/button-addtocart.gif" skinid="AddToCart" />
+<asp:LinkButton runat="server" skinid="HeaderLogout" Text="Log out" />
+<asp:WebPartZone runat="server" Width="100%" PartChromeType="TitleOnly"  BorderColor="#CCCCCC" Font-Names="Verdana" Padding="6">
+    <EditVerb Text="Modify" ImageUrl="~/images/icons/edit.gif"/>
+    <DeleteVerb Text="Delete" ImageUrl="~/images/icons/delete.gif"/>
+    <MinimizeVerb ImageUrl="~/images/icons/minus.gif"/>
+    <CloseVerb ImageUrl="~/images/icons/cancel.gif"/>
+    <PartChromeStyle BackColor="White" BorderStyle="Dashed" Font-Names="Verdana" ForeColor="White" />
+    <MenuLabelHoverStyle ForeColor="#E2DED6" />
+    <EmptyZoneTextStyle Font-Size="0.8em" />
+    <MenuLabelStyle ForeColor="Black" />
+    <MenuVerbHoverStyle BackColor="#F7F6F3" BorderColor="#CCCCCC" BorderStyle="Solid"
+        BorderWidth="1px" ForeColor="#333333" />
+    <HeaderStyle Font-Size="10px" ForeColor="#666666" HorizontalAlign="Center" />
+    <MenuVerbStyle BorderColor="AliceBLue" BorderStyle="Solid" BorderWidth="1px" ForeColor="Black" />
+    <PartStyle Font-Size="0.8em" ForeColor="#333333" />
+    <TitleBarVerbStyle Font-Size="12px" Font-Underline="False" ForeColor="White" Font-Names="Verdana"/>
+    <MenuPopupStyle BackColor="AliceBlue" BorderColor="SteelBlue" BorderWidth="1px" Font-Names="Verdana"
+        Font-Size="0.6em" />
+    <PartTitleStyle  CssClass="GridHeader" />
+</asp:WebPartZone>

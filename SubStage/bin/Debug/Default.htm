@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<style type="text/css">	
+	html { overflow: hidden; }
+	</style>
+
+	<script type="text/javascript">
+		if (top != self)
+		{
+			top.location.href = location.href;
+		};
+		
+		var iLoopCounter = 2;
+		var iMaxLoop = 1000;
+		var iIntervalId;
+		
+		function BeginPageLoad() 
+		{
+		    dtNow = new Date();
+            epochNow = dtNow.getTime();
+			location.href = "Scaffold.aspx?nocache=" + epochNow;
+			iIntervalId = window.setInterval("iLoopCounter=UpdateProgress(iLoopCounter, iMaxLoop)", 100);
+		}
+	
+		function EndPageLoad()
+		{
+			window.clearInterval(iIntervalId);
+		}
+	
+		function UpdateProgress(iCurrentLoopCounter, iMaximumLoops)
+		{
+			iCurrentLoopCounter += 2;
+			var progressBar = document.getElementById('progressBar');
+			var rVal;
+			if (iCurrentLoopCounter <= iMaximumLoops)
+			{
+				
+				progressBar.style.width = iCurrentLoopCounter+"px";
+				rVal = iCurrentLoopCounter;
+			}
+			else
+			{
+				progressBar.style.width = "1px";		
+				rVal = 1;
+			}
+			
+			var thisWidth = pageWidth();
+			var nonProgressWidth = thisWidth - (iCurrentLoopCounter);
+			var leftPadding = (nonProgressWidth - (nonProgressWidth % 2)) / 2;
+			progressBar.style.marginLeft = leftPadding+"px";
+			SetVerticalLocation();
+			progressBar.style.visibility = "visible";
+			return rVal;
+		}
+		
+		function SetVerticalLocation()
+		{
+			var thisHeight = pageHeight();
+		    var topPadding = (thisHeight - (thisHeight % 2)) / 2;
+		    var pbarWrapper = document.getElementById('progressWrapper');
+		    pbarWrapper.style.paddingTop = topPadding+"px";
+		}
+		
+		function pageWidth() {return window.innerWidth != null? window.innerWidth: document.documentElement && document.documentElement.clientWidth ? document.documentElement.clientWidth:document.body != null? document.body.clientWidth:null;}
+		function pageHeight() {return window.innerHeight != null? window.innerHeight: document.documentElement && document.documentElement.clientHeight ? document.documentElement.clientHeight:document.body != null? document.body.clientHeight:null;}
+
+		function Setup()
+		{
+		    if (self != top)
+		    {
+		    top.location = self.location;
+		    }
+		    SetVerticalLocation();
+		}
+	</script>
+
+</head>
+<body onload="Setup();BeginPageLoad();" onunload="EndPageLoad();" style="margin: 0px; padding: 0px; background-color: #ffffff; overflow: hidden">
+	<div id="progressWrapper" style="height: 15px; width: 100%">
+		<div id="progressBar" style="background-color: #D7DAE3; text-align: center; border: solid 1px #A7A6AA;width:0px;visibility:hidden">&nbsp;</div>
+	</div>
+	<div style="width:100%;text-align:center;color:#2f4f4f;font-family:'Franklin Gothic Medium', 'Segoe UI', Tahoma, Verdana, Arial, Sans-Serif;margin-top: 5px">(Loading)</div>
+</body>
+</html>

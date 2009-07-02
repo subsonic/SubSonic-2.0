@@ -1,0 +1,80 @@
+﻿<#@ template language="C#" debug="True" hostspecific="True" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.Common" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="EnvDTE" #>
+<#+
+//Thanks to Rodrigo Diniz for this! 
+
+const string Namespace = "NorthwindTT";
+const string ConnectionStringName="Northwind";
+const string ProviderName="System.Data.SqlClient";
+
+//this is a list of tables you don't want generated
+string[] ExcludeTables= new string[]{"sysdiagrams","SubSonicSchemaInfo"};
+
+
+string _connectionString="";
+public string ConnectionString{
+	get {
+	    if(String.IsNullOrEmpty(_connectionString))
+	        _connectionString=GetConfigSetting(ConnectionStringName);
+	    return _connectionString;
+	}
+}
+
+public EnvDTE.Project GetCurrentProject()  {
+  
+        IServiceProvider hostServiceProvider = (IServiceProvider)Host;
+        if (hostServiceProvider == null)
+            throw new Exception("Host property returned unexpected value (null)");
+
+        EnvDTE.DTE dte = (EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
+        if (dte == null)
+            throw new Exception("Unable to retrieve EnvDTE.DTE");
+
+        Array activeSolutionProjects = (Array)dte.ActiveSolutionProjects;
+        if (activeSolutionProjects == null)
+            throw new Exception("DTE.ActiveSolutionProjects returned null");
+
+        EnvDTE.Project dteProject = (EnvDTE.Project)activeSolutionProjects.GetValue(0);
+        if (dteProject == null)
+            throw new Exception("DTE.ActiveSolutionProjects[0] returned null");
+
+        return dteProject;
+  }
+  public string GetConfigSetting(string key)
+  {
+   System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+   doc.Load(GetConfigPath());
+ 
+   System.Xml.XmlNode node = doc.SelectSingleNode("//configuration/connectionStrings/add[@name='"+key+ "']");
+   if(node == null)
+     return null;
+   else
+     return node.Attributes["connectionString"].Value;
+  }
+  public string   GetConfigPath(){
+	  EnvDTE.Project project = GetCurrentProject();
+	   foreach(EnvDTE.ProjectItem item in project.ProjectItems)
+       {
+         // if it is the configuration, then open it up
+         if(string.Compare(item.Name, "App.config", true) == 0 || string.Compare(item.Name, "Web.config", true) == 0)
+         {
+          System.IO.FileInfo info =
+            new System.IO.FileInfo(project.FullName);
+			return info.Directory.FullName + "\\" + item.Name;
+         }
+       }
+       return "";
+  }
+
+#>

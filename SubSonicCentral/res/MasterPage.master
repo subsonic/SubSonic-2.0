@@ -1,0 +1,66 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title>SubSonic</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<!--[if IE]><link href="ie.css" rel="stylesheet" type="text/css" /><![endif]-->
+	<meta http-equiv="Content-Type" content="text/xhtml; CHARSET=ISO-8859-1" />
+	<meta name="description" content="Site description goes here" />
+	<meta name="keywords" content="Keywords go here" />
+</head>
+<body>
+	<form id="form1" runat="server">
+		<div class="Fade">
+		</div>
+		<div class="Wrapper">
+			<div class="Header">
+				<div class="HeaderLeft">
+					<img src="~/res/img/newlogo.png" runat="server" alt="" />
+				</div>
+				<div class="HeaderRight">
+					SubSonic Central
+				</div>
+				<div style="clear: both;">
+				</div>
+			</div>
+			<div class="Menu">
+				<ul>
+					<li><a href="~/Default.aspx" runat="server">Home</a></li>
+					<li><a href="~/AutoScaffold.aspx" runat="server">AutoScaffold</a></li>
+					<li><a href="~/Generators.aspx" runat="server">Generators</a></li>
+					<li><a href="~/Configuration.aspx" runat="server">Config Builder</a></li>
+					<li><a href="~/Examples.aspx" runat="server">Examples</a></li>
+					<li><a href="~/Documentation.aspx" runat="server">Documentation</a></li>
+				</ul>
+				<div style="clear: both;">
+				</div>
+			</div>
+
+			<div class="Content">
+				<asp:ContentPlaceHolder ID="cphFull" runat="server">
+				</asp:ContentPlaceHolder>
+				<div class="ContentLeft">
+					<asp:ContentPlaceHolder ID="cphLeft" runat="server">
+					</asp:ContentPlaceHolder>
+				</div>
+				<div class="ContentRight">
+					<asp:ContentPlaceHolder ID="cphRight" runat="server">
+					</asp:ContentPlaceHolder>
+				</div>
+				<div style="clear: both;">
+				</div>
+			</div>
+		</div>
+		<div class="FooterWrapper">
+			<div class="Footer">
+				<div style="text-align: center">
+					Copyright &copy; 2006-<%=DateTime.Now.Year.ToString() %> SubSonic Project. All rights reserved.
+				</div>
+				<div style="clear: both;">
+				</div>
+			</div>
+		</div>
+	</form>
+</body>
+</html>

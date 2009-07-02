@@ -1,0 +1,43 @@
+﻿body
+{
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size: 9pt;
+}
+
+td
+{
+    font-family:verdana;
+    font-size:9pt;
+    vertical-align:top;
+}
+.ulNav
+{
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-top: 2px;
+    padding-top: 2px
+}
+.liNav
+{
+    list-style-type: none;
+    text-indent: 10px;
+    white-space:nowrap;
+    line-height:1.5em
+}
+.header
+{
+    font-size:24px;
+    background-color:white;
+    height:65px;
+    padding-left:10px;
+    vertical-align:middle;
+    font-weight:bold
+    
+}
+
+.side
+{
+    width:100px;
+    border:dashed 0px whitesmoke;
+    height:90%;
+}

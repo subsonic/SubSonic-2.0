@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0A4E9B5C-9805-483F-92A4-831BE2788443}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LoadTester</RootNamespace>
+    <AssemblyName>LoadTester</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SubSonic, Version=2.1.0.0, Culture=neutral, PublicKeyToken=eadb47849839a332, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Debug\SubSonic.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Generated\AllStructs.cs" />
+    <Compile Include="Generated\AlphabeticalListOfProduct.cs" />
+    <Compile Include="Generated\Category.cs" />
+    <Compile Include="Generated\CategoryController.cs" />
+    <Compile Include="Generated\CategorySalesFor1997.cs" />
+    <Compile Include="Generated\CurrentProductList.cs" />
+    <Compile Include="Generated\Customer.cs" />
+    <Compile Include="Generated\CustomerAndSuppliersByCity.cs" />
+    <Compile Include="Generated\CustomerController.cs" />
+    <Compile Include="Generated\CustomerCustomerDemo.cs" />
+    <Compile Include="Generated\CustomerCustomerDemoController.cs" />
+    <Compile Include="Generated\CustomerDemographic.cs" />
+    <Compile Include="Generated\CustomerDemographicController.cs" />
+    <Compile Include="Generated\Employee.cs" />
+    <Compile Include="Generated\EmployeeController.cs" />
+    <Compile Include="Generated\EmployeeTerritory.cs" />
+    <Compile Include="Generated\EmployeeTerritoryController.cs" />
+    <Compile Include="Generated\Invoice.cs" />
+    <Compile Include="Generated\Order.cs" />
+    <Compile Include="Generated\OrderController.cs" />
+    <Compile Include="Generated\OrderDetail.cs" />
+    <Compile Include="Generated\OrderDetailController.cs" />
+    <Compile Include="Generated\OrderDetailsExtended.cs" />
+    <Compile Include="Generated\OrdersQry.cs" />
+    <Compile Include="Generated\OrderSubtotal.cs" />
+    <Compile Include="Generated\Product.cs" />
+    <Compile Include="Generated\ProductCategoryMap.cs" />
+    <Compile Include="Generated\ProductCategoryMapController.cs" />
+    <Compile Include="Generated\ProductController.cs" />
+    <Compile Include="Generated\ProductsAboveAveragePrice.cs" />
+    <Compile Include="Generated\ProductSalesFor1997.cs" />
+    <Compile Include="Generated\ProductsByCategory.cs" />
+    <Compile Include="Generated\QuarterlyOrder.cs" />
+    <Compile Include="Generated\Region.cs" />
+    <Compile Include="Generated\RegionController.cs" />
+    <Compile Include="Generated\SalesByCategory.cs" />
+    <Compile Include="Generated\SalesTotalsByAmount.cs" />
+    <Compile Include="Generated\Shipper.cs" />
+    <Compile Include="Generated\ShipperController.cs" />
+    <Compile Include="Generated\StoredProcedures.cs" />
+    <Compile Include="Generated\SubSonicSchemaInfo.cs" />
+    <Compile Include="Generated\SubSonicSchemaInfoController.cs" />
+    <Compile Include="Generated\SummaryOfSalesByQuarter.cs" />
+    <Compile Include="Generated\SummaryOfSalesByYear.cs" />
+    <Compile Include="Generated\Supplier.cs" />
+    <Compile Include="Generated\SupplierController.cs" />
+    <Compile Include="Generated\Territory.cs" />
+    <Compile Include="Generated\TerritoryController.cs" />
+    <Compile Include="Generated\TextEntry.cs" />
+    <Compile Include="Generated\TextEntryController.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

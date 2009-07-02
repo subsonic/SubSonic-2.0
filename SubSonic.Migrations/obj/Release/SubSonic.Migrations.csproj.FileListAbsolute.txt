@@ -1,0 +1,13 @@
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\SubSonic.Migrations.xml
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\SubSonic.Migrations.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\SubSonic.Migrations.pdb
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\SubSonic.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\System.Data.SQLite.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\MySql.Data.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\SubSonic.pdb
+D:\@SubSonic\SubSonic\SubSonic.Migrations\bin\Release\SubSonic.xml
+D:\@SubSonic\SubSonic\SubSonic.Migrations\obj\Release\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic\SubSonic.Migrations\obj\Release\SubSonic.Migrations.dll
+D:\@SubSonic\SubSonic\SubSonic.Migrations\obj\Release\SubSonic.Migrations.pdb

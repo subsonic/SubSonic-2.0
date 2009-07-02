@@ -1,0 +1,83 @@
+body
+{
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size: 9pt;
+}
+
+td
+{
+    vertical-align:top;
+}
+
+.scaffoldGrid
+{
+	border: solid 1px #dcdcdc;
+	font-size: 8pt;
+	font-weight: normal;
+}
+
+.scaffoldWrapper
+{
+	
+}
+
+.scaffoldEditTable
+{
+
+}
+
+.scaffoldEditTableLabel
+{
+	
+}
+
+.scaffoldEditItem
+{
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size:8pt;
+	white-space: nowrap
+}
+
+.scaffoldEditItemCaption
+{
+	font-size:9pt;
+    background-color:#f5f5f5;
+    font-weight:bold;
+	text-align: right;
+	padding-right:6px;
+	white-space: nowrap
+}
+
+.scaffoldLabel
+{
+
+}
+
+.scaffoldButton
+{
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size:8pt;
+	margin:3px;
+	border: solid 1px #dcdcdc;
+	width: 100px;
+}
+
+.scaffoldTextBox
+{	
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size:8pt;
+	border: solid 1px #dcdcdc;	
+}
+
+.scaffoldCheckBox
+{	
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size:8pt;
+}
+
+.scaffoldDropDown
+{	
+	font-family: "Franklin Gothic Medium", "Segoe UI", Tahoma, Verdana, Arial, Sans-Serif;
+	font-size:8pt;
+	border: solid 1px #dcdcdc;	
+}

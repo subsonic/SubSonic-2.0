@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTester", "LoadTester\LoadTester.csproj", "{0A4E9B5C-9805-483F-92A4-831BE2788443}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A4E9B5C-9805-483F-92A4-831BE2788443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A4E9B5C-9805-483F-92A4-831BE2788443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A4E9B5C-9805-483F-92A4-831BE2788443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4E9B5C-9805-483F-92A4-831BE2788443}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,61 @@
+<Configuration>
+  <SettingsComponent>
+    <string>
+      <setting name="TeamCity.Toolbar.Shown">-TeamCity;</setting>
+    </string>
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Generated/d:T4/f:Utility.tt" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Generated/d:T4/f:Settings.tt" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Generated/d:T4/f:ActiveRecord.cs" caret="0" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:ActiveRecord/f:ReadOnlyRecord.cs" caret="2539" fromTop="23" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:ActiveRecord/f:IReadOnlyRecord.cs" caret="0" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:ActiveRecord/f:RecordBase.cs" caret="13330" fromTop="23" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:ActiveRecord/f:AbstractRecord.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Migrations/f:MigrationTests.cs" caret="0" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:SqlQuery/d:SqlGenerators/f:ANSISqlGenerator.cs" caret="743" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:Migrations/f:Migration.cs" caret="432" fromTop="9" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:SqlQuery/f:SqlQuery.cs" caret="20659" fromTop="15" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:DataProviders/f:SqlDataProvider.cs" caret="9989" fromTop="23" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:Sql Tools/f:Connection.cs" caret="7464" fromTop="18" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:AssemblyCleaner.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:ETL.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:ManyToMany.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:MultiProvider.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:TransactionTests.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:SqlQuery/f:TransactionTests.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:SqlQuery/f:InsertTests.cs" caret="0" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:SqlQuery/f:Insert.cs" caret="0" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:SqlQuery/f:Join.cs" caret="2326" fromTop="5" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:SqlQuery/f:SelectTests.cs" caret="5529" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:SqlGenerators/f:MySqlGeneratorTests.cs" caret="925" fromTop="19" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:App.config" caret="887" fromTop="12" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Generated/d:Southwind/f:StoredProcedures.cs" caret="0" fromTop="0" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Generated/d:SouthwindRepository/f:StoredProcedures.cs" caret="0" fromTop="0" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:DataProviders/f:DataProvider.cs" caret="0" fromTop="0" />
+      <File id="70994833-7CC8-46FF-8CD3-DF6387E7700E/f:Program.cs" caret="519" fromTop="20" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:Generated/d:NorthwindRepository/f:Region.cs" caret="892" fromTop="8" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:App.config" caret="970" fromTop="15" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/f:App.config" caret="1110" fromTop="16" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:SqlQuery/f:SelectTests.cs" caret="8293" fromTop="235" />
+      <File id="CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8/d:SqlQuery/f:SelectTests.cs" caret="8814" fromTop="257" />
+      <File id="EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D/d:DataProviders/f:SqlDataProvider.cs" caret="19256" fromTop="22" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerMSTest>
+    <UseTestRunConfigFromMetadataFile>False</UseTestRunConfigFromMetadataFile>
+  </UnitTestRunnerMSTest>
+</Configuration>

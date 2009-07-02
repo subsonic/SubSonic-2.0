@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SubSonic.Migrations</name>
+    </assembly>
+    <members>
+        <member name="T:SubSonic.Migrations.Migrator">
+            <summary>
+            The Migrator class is responsible for running through a collection of migrationFiles 
+            and applying them towards the specified provider.
+            
+            This class is very similiar to the Rails Migrator class.  They did something very 
+            interesting with a static method acting as a mini-factory for itself, notice how
+            the static Migrate() method in turn creates a Migrator instance and calls methods
+            on that.  Thought that was very neat, so I borrowed it.
+            </summary>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.#ctor(SubSonic.Migration.MigrationDirection,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="direction">Direction to migrate.</param>
+            <param name="providerName">Name of the provider.</param>
+            <param name="migrationDirectory">Directory to find the migrations.</param>
+            <param name="toVersion">Version to migrate up to.</param>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.Migrate(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Begins the migration.
+            </summary>
+            <param name="providerName">Name of the provider.</param>
+            <param name="migrationDirectory">Directory to find the migrations.</param>
+            <param name="toVersion">Version to migrate to.</param>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.Up(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Migreate Up
+            </summary>
+            <param name="providerName">Name of the provider.</param>
+            <param name="migrationDirectory">Directory to find the migrations.</param>
+            <param name="toVersion">Version to migrate up to.</param>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.Down(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Migreate Down
+            </summary>
+            <param name="providerName">Name of the provider.</param>
+            <param name="migrationDirectory">Directory to find the migrations.</param>
+            <param name="toVersion">Version to migrate down to.</param>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.Migrate">
+            <summary>
+            Start migration.
+            </summary>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.GetMigrationVersion(System.String)">
+            <summary>
+            Gets the version of the migration file.
+            </summary>
+            <param name="migration">Migration file name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.GetCurrentVersion(System.String)">
+            <summary>
+            Gets the current schema version for the named provider.
+            </summary>
+            <param name="providerName">Name of the provider.</param>
+            <returns>Current version of the schema as stored in the schema info table.</returns>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.IncrementVersion">
+            <summary>
+            Increments the version.
+            </summary>
+        </member>
+        <member name="M:SubSonic.Migrations.Migrator.DecrementVersion">
+            <summary>
+            Decrements the version.
+            </summary>
+        </member>
+        <member name="T:SubSonic.CodeRunner">
+            <summary>
+            Runs and executes code for use with our scripted bits - like Migrations
+            </summary>
+        </member>
+        <member name="M:SubSonic.CodeRunner.RunAndExecute(SubSonic.ICodeLanguage,System.String,System.String,System.Object[])">
+            <summary>
+            Executes the passed-in code
+            </summary>
+            <param name="lang">ICodeLanguage</param>
+            <param name="sourceCode">the code</param>
+            <param name="methodName">the entry point method</param>
+            <param name="parameters">the params</param>
+        </member>
+        <member name="M:SubSonic.CodeRunner.GetTypeName(System.String,SubSonic.ICodeLanguage)">
+            <summary>
+            Gets the name of the type.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="lang">The lang.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
