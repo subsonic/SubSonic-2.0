@@ -14,3 +14,4 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 Code in the "Linq" directory was created by Matt Warren under MS-PL. Using SubSonic means that you agree with the terms of this license:
 http://www.opensource.org/licenses/ms-pl.html
 
++++
