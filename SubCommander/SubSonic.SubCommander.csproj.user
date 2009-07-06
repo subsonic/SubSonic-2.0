@@ -1,5 +1,0 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartArguments>migrate /migrationDirectory D:\@SubSonic\MigrationSample\MigrationSample\Migrations /config D:\@SubSonic\MigrationSample\MigrationSample</StartArguments>
-  </PropertyGroup>
-</Project>

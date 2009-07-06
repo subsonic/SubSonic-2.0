@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Tests", "SubSonic.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Migrations", "SubSonic.Migrations\SubSonic.Migrations.csproj", "{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{70994833-7CC8-46FF-8CD3-DF6387E7700E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.SubStage", "SubStage\SubSonic.SubStage.csproj", "{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,8 +42,8 @@ Global
 		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|.NET.Build.0 = Debug|Any CPU
 		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|Mixed Platforms.Build.0 = Release|Any CPU
+		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Release (SQL Server Only)|.NET.ActiveCfg = Release (SQL Server Only)|Any CPU
 		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Release (SQL Server Only)|.NET.Build.0 = Release (SQL Server Only)|Any CPU
 		{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}.Release (SQL Server Only)|Any CPU.ActiveCfg = Release (SQL Server Only)|Any CPU
@@ -66,8 +66,8 @@ Global
 		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|.NET.Build.0 = Debug|Any CPU
 		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|Mixed Platforms.Build.0 = Release|Any CPU
+		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{39AED956-4929-4A20-9641-6612B9998B31}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{39AED956-4929-4A20-9641-6612B9998B31}.Release (SQL Server Only)|.NET.ActiveCfg = Release|Any CPU
 		{39AED956-4929-4A20-9641-6612B9998B31}.Release (SQL Server Only)|.NET.Build.0 = Release|Any CPU
 		{39AED956-4929-4A20-9641-6612B9998B31}.Release (SQL Server Only)|Any CPU.ActiveCfg = Release|Any CPU
@@ -113,8 +113,8 @@ Global
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|.NET.Build.0 = Debug|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|Mixed Platforms.Build.0 = Release|Any CPU
+		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Release (SQL Server Only)|.NET.ActiveCfg = Release|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Release (SQL Server Only)|Any CPU.ActiveCfg = Release|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Release (SQL Server Only)|Any CPU.Build.0 = Release|Any CPU
@@ -126,26 +126,26 @@ Global
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug (SQL Server Only)|.NET.ActiveCfg = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug (SQL Server Only)|Any CPU.ActiveCfg = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug (SQL Server Only)|Any CPU.Build.0 = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug (SQL Server Only)|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug (SQL Server Only)|Mixed Platforms.Build.0 = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release (SQL Server Only)|.NET.ActiveCfg = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release (SQL Server Only)|Any CPU.ActiveCfg = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release (SQL Server Only)|Any CPU.Build.0 = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release (SQL Server Only)|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release (SQL Server Only)|Mixed Platforms.Build.0 = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release|.NET.ActiveCfg = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{70994833-7CC8-46FF-8CD3-DF6387E7700E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug (SQL Server Only)|.NET.ActiveCfg = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug (SQL Server Only)|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug (SQL Server Only)|Any CPU.Build.0 = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug (SQL Server Only)|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug (SQL Server Only)|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release (SQL Server Only)|.NET.ActiveCfg = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release (SQL Server Only)|Any CPU.ActiveCfg = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release (SQL Server Only)|Any CPU.Build.0 = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release (SQL Server Only)|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release (SQL Server Only)|Mixed Platforms.Build.0 = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release|.NET.ActiveCfg = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DF52AAF1-1F9F-454F-842A-D73B1AD8F22D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
