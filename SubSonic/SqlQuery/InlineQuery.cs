@@ -282,11 +282,11 @@ namespace SubSonic
 
         private static List<string> ParseParameters(string sql)
         {
-            List<string> result = new List<string>();
 			//bferrier altered this so Inline Query works with Oracle
             Regex paramReg = new Regex(@"@\w*|:\w*");
 
             MatchCollection matches = paramReg.Matches(String.Concat(sql, " "));
+            List<string> result = new List<string>(matches.Count);
             foreach(Match m in matches)
                 result.Add(m.Value);
 

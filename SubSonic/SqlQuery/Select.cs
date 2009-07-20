@@ -74,12 +74,17 @@ namespace SubSonic
                 Provider = columns[0].Table.Provider;
                 ProviderName = columns[0].Table.Provider.Name;
                 SQLCommand = SqlFragment.SELECT;
-                //user entered an array
-                StringBuilder sb = new StringBuilder();
-                foreach(TableSchema.TableColumn col in columns)
-                    sb.AppendFormat("{0}|", col.QualifiedName);
 
-                SelectColumnList = sb.ToString().Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+                SelectColumnList = new string[columns.Length];
+                for (int i = 0; i < columns.Length; i++)
+                    SelectColumnList[i] = columns[i].QualifiedName;
+
+                //user entered an array
+                //StringBuilder sb = new StringBuilder();
+                //foreach(TableSchema.TableColumn col in columns)
+                //    sb.AppendFormat("{0}|", col.QualifiedName);
+
+                //SelectColumnList = sb.ToString().Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
@@ -95,6 +100,8 @@ namespace SubSonic
             {
                 //user entered a single string column list: "col1, col2, col3"
                 SelectColumnList = columns[0].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < SelectColumnList.Length; i++)
+                    SelectColumnList[i] = SelectColumnList[i].Trim();
             }
             else
             {
