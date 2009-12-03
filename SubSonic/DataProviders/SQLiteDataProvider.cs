@@ -1,17 +1,5 @@
-/*
- * SubSonic - http://subsonicproject.com
- * 
- * The contents of this file are subject to the Mozilla Public
- * License Version 1.1 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of
- * the License at http://www.mozilla.org/MPL/
- * 
- * Software distributed under the License is distributed on an 
- * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
- * implied. See the License for the specific language governing
- * rights and limitations under the License.
-*/
 #if ALLPROVIDERS
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +8,7 @@ using System.Data.Common;
 using System.Data.SQLite;
 using System.Text;
 using SubSonic.Utilities;
+using System.Diagnostics;
 
 namespace SubSonic
 {
@@ -33,16 +22,33 @@ namespace SubSonic
     /// 
     /// Release of Version 0.1 - 18/07/2007 - CodeForNothing
     /// Code complete (v0.3) - 23/07/2007 - CodeForNothing
+    ///
+    /// Code changes Jan 19 2009 - Paul Shaffer
+    ///    It still won't do many-to-many tables.
+    ///
+    /// Code changes Apr 11 2009 - Paul Shaffer
+    ///    There is an accompanying test project 'Subsonic.Test_sqlite' with a SQLite version
+    ///    of the Northwind database.
+    ///    Results: 222 run, 222 passed, 0 failed, 0 inconclusive, 8 skipped (8 ignored)
+    ///    The tests that are failing are related to SharedDBConnection scope, it currently
+    ///    doesn't appear to work with SQLite.
+    ///
+    ///    The only way I could find to pass most of the tests without locking 
+    ///    errors was to never close the connection. This is exactly the opposite
+    ///    approach taken in the sql server provider. SQLite only allows 1 shared
+    ///    connection at a time, and there is some problem with repeated open/close
+    ///    cycles on the database file here.
+    ///
     /// </summary>
-    public class SQLiteDataProvider : DataProvider
+    public class SQLiteDataProvider: DataProvider   
     {
-        private string _catalog = "main";
-        private DataTable _columns;
-
-        private SQLiteConnection _conn;
+        private DataTable _types = null;
+        private DataTable _columns = null;
         private DataTable _foreignkeys;
-        private DataTable _types;
-        
+        private DataTable _indexes;
+        private string _catalog = "main";
+        private SQLiteConnection _conn;
+
         /// <summary>
         /// Gets the type of the named provider.
         /// </summary>
@@ -53,9 +59,24 @@ namespace SubSonic
         }
 
         /// <summary>
+        /// Force-reloads a provider's schema
+        /// </summary>
+        public override void ReloadSchema()
+        {
+            if(_types != null)
+                _types.Clear();
+            if(_columns != null)
+                _columns.Clear();
+            if(_foreignkeys != null)
+                _foreignkeys.Clear();
+            if(_indexes != null)
+                _indexes.Clear();
+        }
+
+
+        /// <summary>
         /// Catalog of the current database. main by default.
         /// </summary>
-        /// <value>The catalog.</value>
         public string Catalog
         {
             get { return _catalog; }
@@ -65,56 +86,65 @@ namespace SubSonic
         /// <summary>
         /// Load and cache all foreign keys
         /// </summary>
-        /// <value>All foreign keys.</value>
         /// <returns></returns>
         private DataTable AllForeignKeys
         {
             get
             {
-                using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
-                    _foreignkeys = con.GetSchema("FOREIGNKEYS");
+                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
+                SQLiteConnection con = (SQLiteConnection)CreateConnection();
+                _foreignkeys = con.GetSchema("FOREIGNKEYS");
 
                 return _foreignkeys;
             }
+
         }
 
-        /// <summary>
-        /// Gets all columns.
-        /// </summary>
-        /// <value>All columns.</value>
+        // MetaDataCollections
+        private DataTable MetaDataCollections
+        {
+            get
+            {
+                DataTable data;
+                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
+                SQLiteConnection con = (SQLiteConnection)CreateConnection();
+                data = con.GetSchema("MetaDataCollections");
+
+                return data;
+            }
+
+        }
+
+        private DataTable AllIndexes
+        {
+            get
+            {
+                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
+                SQLiteConnection con = (SQLiteConnection)CreateConnection();
+                _indexes = con.GetSchema("indexes");
+
+                return _indexes;
+            }
+
+        }
+
         private DataTable AllColumns
         {
             get
             {
-                using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
-                    _columns = con.GetSchema("COLUMNS");
+                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
+                SQLiteConnection con = (SQLiteConnection)CreateConnection();
+                _columns = con.GetSchema("COLUMNS");
 
                 return _columns;
             }
         }
 
-        /// <summary>
-        /// Force-reloads a provider's schema
-        /// </summary>
-        public override void ReloadSchema()
-        {
-            //not sure how to do this here
-        }
-
-        /// <summary>
-        /// Creates the connection.
-        /// </summary>
-        /// <returns></returns>
         public override DbConnection CreateConnection()
         {
             return CreateConnection(DefaultConnectionString);
         }
-
-        /// <summary>
-        /// Creates the connection.
-        /// </summary>
-        /// <param name="newConnectionString">The new connection string.</param>
-        /// <returns></returns>
+        
         public override DbConnection CreateConnection(string newConnectionString)
         {
             if(_conn == null)
@@ -124,14 +154,15 @@ namespace SubSonic
                 _conn.Open();
 
             return _conn;
+
         }
 
         /// <summary>
         /// Add the Query parameters to a SQLiteCommand command
         /// </summary>
-        /// <param name="qry">The qry.</param>
-        /// <param name="cmd">The CMD.</param>
-        private static void AddParams(QueryCommand qry, SQLiteCommand cmd)
+        /// <param name="qry"></param>
+        /// <param name="cmd"></param>
+        static void AddParams(QueryCommand qry, SQLiteCommand cmd)
         {
             if(qry.Parameters != null)
             {
@@ -150,9 +181,11 @@ namespace SubSonic
         /// <summary>
         /// SQLite does not support Stored Procedures.
         /// </summary>
-        /// <param name="dataReader">The data reader.</param>
-        /// <param name="parameter">The parameter.</param>
-        public override void SetParameter(IDataReader dataReader, StoredProcedure.Parameter parameter) {}
+        /// <param name="rdr"></param>
+        /// <param name="par"></param>
+        public override void SetParameter(IDataReader rdr, StoredProcedure.Parameter par)
+        {
+        }
 
         /// <summary>
         /// This is a simple question mark for SQLite.
@@ -166,20 +199,21 @@ namespace SubSonic
         /// <summary>
         /// The delimiters are the single quote
         /// </summary>
-        /// <param name="columnName">Name of the column.</param>
+        /// <param name="columnName"></param>
         /// <returns></returns>
         public override string DelimitDbName(string columnName)
         {
             if(!String.IsNullOrEmpty(columnName))
+            {
                 return "`" + columnName + "`";
-
+            }
             return String.Empty;
         }
 
         /// <summary>
         /// Return a command from a Query.
         /// </summary>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override IDbCommand GetCommand(QueryCommand qry)
         {
@@ -191,7 +225,7 @@ namespace SubSonic
         /// <summary>
         /// Return a IDataReader from a Query.
         /// </summary>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override IDataReader GetReader(QueryCommand qry)
         {
@@ -208,11 +242,6 @@ namespace SubSonic
             return cmd.ExecuteReader();
         }
 
-        /// <summary>
-        /// Gets the single record reader.
-        /// </summary>
-        /// <param name="qry">The qry.</param>
-        /// <returns></returns>
         public override IDataReader GetSingleRecordReader(QueryCommand qry)
         {
             return GetReader(qry);
@@ -221,7 +250,7 @@ namespace SubSonic
         /// <summary>
         /// Return a Dataset from a Query.
         /// </summary>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override DataSet GetDataSet(QueryCommand qry)
         {
@@ -233,9 +262,18 @@ namespace SubSonic
             AddParams(qry, cmd);
             SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
 
-            using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             {
                 cmd.Connection = conn;
+                try
+                {
+                    cmd.Connection.Open();
+                }
+                catch
+                {
+
+                }
 
                 da.Fill(ds);
 
@@ -249,17 +287,29 @@ namespace SubSonic
         /// <summary>
         /// Return a scalar from a Query.
         /// </summary>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override object ExecuteScalar(QueryCommand qry)
         {
-            using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             {
                 SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql);
                 cmd.CommandType = qry.CommandType;
                 cmd.CommandTimeout = qry.CommandTimeout;
                 AddParams(qry, cmd);
                 cmd.Connection = conn;
+
+                try
+                {
+                    cmd.Connection.Open();
+                }
+                catch(Exception e)
+                {
+                    //Debug.WriteLine("ExecuteScalar: " + e.Message + " state = " + cmd.Connection.State.ToString());
+                }
+
+                // BUG: Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
                 object result = cmd.ExecuteScalar();
 
                 return result;
@@ -269,29 +319,38 @@ namespace SubSonic
         /// <summary>
         /// Runs a Query and returns the number of rows affected.
         /// </summary>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override int ExecuteQuery(QueryCommand qry)
         {
-            using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            using(SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql))
             {
-                SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql);
                 cmd.CommandType = qry.CommandType;
-                cmd.CommandTimeout = qry.CommandTimeout;
+                cmd.CommandTimeout = qry.CommandTimeout; // will always = 15
                 AddParams(qry, cmd);
                 cmd.Connection = conn;
+                try
+                {
+                    cmd.Connection.Open();
+                }
+                catch(Exception e)
+                {
+                    //Debug.WriteLine("ExecuteQuery: " + e.Message + " state = " + cmd.Connection.State.ToString());
+                }
                 int result = cmd.ExecuteNonQuery();
-
                 return result;
             }
+
         }
 
         /// <summary>
         /// Returns the complete schemma of a table.
+        /// 
         /// In this version it assumes that a primary key of type integer is autoincrementable.
         /// </summary>
-        /// <param name="tableName">Name of the table.</param>
-        /// <param name="tableType">Type of the table.</param>
+        /// <param name="tableName"></param>
+        /// <param name="tableType"></param>
         /// <returns></returns>
         public override TableSchema.Table GetTableSchema(string tableName, TableType tableType)
         {
@@ -305,29 +364,52 @@ namespace SubSonic
 
             DataTable dtcols = AllColumns;
             DataTable fks = AllForeignKeys;
+            DataTable indexes = AllIndexes;
 
-            //Add all the columns
+            // Add all the columns
             foreach(DataRow row in dtcols.Select(string.Format("TABLE_NAME = '{0}'", tableName)))
             {
                 TableSchema.TableColumn column = new TableSchema.TableColumn(table);
                 column.ColumnName = row["COLUMN_NAME"].ToString();
 
                 column.IsPrimaryKey = Convert.ToBoolean(row["PRIMARY_KEY"]);
-                column.IsForeignKey = (fks.Select(string.Format("TABLE_NAME = '{0}' AND FKEY_FROM_COLUMN = '{1}'", tableName, column.ColumnName)).Length > 0);
+                column.IsForeignKey = 
+                    (fks.Select(string.Format("TABLE_NAME = '{0}' AND FKEY_FROM_COLUMN = '{1}'", tableName, column.ColumnName)).Length > 0);
+
+                column.MaxLength = Convert.ToInt32(row["CHARACTER_MAXIMUM_LENGTH"]);
+
                 column.DataType = GetDbType(row["DATA_TYPE"].ToString());
 
-                if(column.DataType == DbType.Guid || column.DataType == DbType.DateTime)
-                    column.MaxLength = (column.DataType == DbType.Guid) ? 64 : 48;
-                else
-                    column.MaxLength = Convert.ToInt32(row["CHARACTER_MAXIMUM_LENGTH"]);
+                // These must types have max length 0 in generated classes. -- paul
+                if( column.DataType == DbType.Boolean ||
+                    column.DataType == DbType.Currency ||
+                    column.DataType == DbType.Date ||
+                    column.DataType == DbType.DateTime ||
+                    column.DataType == DbType.DateTime2 ||
+                    column.DataType == DbType.DateTimeOffset ||
+                    column.DataType == DbType.Decimal ||
+                    column.DataType == DbType.Double ||
+                    column.DataType == DbType.Guid ||
+                    column.DataType == DbType.Int16 ||
+                    column.DataType == DbType.Int32 ||
+                    column.DataType == DbType.Int64 ||
+                    column.DataType == DbType.Single ||
+                    column.DataType == DbType.Time ||
+                    column.DataType == DbType.UInt16 ||
+                    column.DataType == DbType.UInt32 ||
+                    column.DataType == DbType.UInt64 ||
+                    column.DataType == DbType.VarNumeric )
+                    column.MaxLength = 0; // must = 0 for subsonic validation method
 
-                column.AutoIncrement = Convert.ToBoolean(row["PRIMARY_KEY"]) && GetDbType(row["DATA_TYPE"].ToString()) == DbType.Int64;
+                // Autoincrement detection now available in recent System.Data.SQLite. 1.0.60.0 -- paul
+                column.AutoIncrement = Convert.ToBoolean(row["AUTOINCREMENT"]);
+
                 column.IsNullable = Convert.ToBoolean(row["IS_NULLABLE"]);
                 column.IsReadOnly = false;
                 table.Columns.Add(column);
             }
 
-            //Add all the foreigh keys from other tables that have foreign keys to this table's primary key
+            //Add all the foreign keys from other tables that have foreign keys to this table's primary key
             foreach(DataRow row in fks.Select(string.Format("FKEY_TO_TABLE = '{0}'", tableName)))
             {
                 TableSchema.TableColumn column = table.Columns.GetColumn(row["FKEY_TO_COLUMN"].ToString());
@@ -341,7 +423,7 @@ namespace SubSonic
                     table.PrimaryKeyTables.Add(pkTable);
                 }
             }
-
+            
             //Add all the foreign keys
             foreach(DataRow row in fks.Select(string.Format("TABLE_NAME = '{0}'", tableName)))
             {
@@ -351,20 +433,17 @@ namespace SubSonic
 
                 table.ForeignKeys.Add(fk);
             }
-
-            if(table.Columns.Count > 0)
-                return table;
-            return null;
+            return table;
         }
 
         /// <summary>
         /// Simple type conversion.
         /// </summary>
-        /// <param name="sqliteType">Type of the sqlite.</param>
+        /// <param name="sqliteType"></param>
         /// <returns></returns>
         public override DbType GetDbType(string sqliteType)
         {
-            switch(sqliteType.ToLowerInvariant())
+            switch(sqliteType.ToLower())
             {
                 case "text":
                 case "char":
@@ -372,13 +451,11 @@ namespace SubSonic
                 case "varchar":
                 case "nvarchar":
                     return DbType.String;
-                case "boolean":
-                case "bit":
-                    return DbType.Boolean;
                 case "bigint":
+                    return DbType.Int64;
                 case "int":
                 case "integer":
-                    return DbType.Int64;
+                    return DbType.Int32;
                 case "real":
                 case "numeric":
                 case "double":
@@ -391,7 +468,6 @@ namespace SubSonic
                 case "time":
                 case "datetime":
                 case "smalldatetime":
-                case "timestamp":
                     return DbType.DateTime;
                 case "binary":
                 case "blob":
@@ -399,6 +475,8 @@ namespace SubSonic
                     return DbType.Binary;
                 case "guid":
                     return DbType.Guid;
+                case "bit":
+                    return DbType.Boolean;
                 default:
                     return DbType.String;
             }
@@ -407,14 +485,16 @@ namespace SubSonic
         /// <summary>
         /// Type conversion to .NET types.
         /// </summary>
-        /// <param name="sqliteType">Type of the sqlite.</param>
+        /// <param name="sqliteType"></param>
         /// <returns></returns>
         public Type GetType(string sqliteType)
         {
             if(_types == null)
             {
-                using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
-                    _types = con.GetSchema("DATATYPES");
+                SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
+                conn.Open();
+                _types = conn.GetSchema("DATATYPES");
             }
 
             DataRow[] type = _types.Select(string.Format("Typename = '{0}'", sqliteType));
@@ -422,7 +502,8 @@ namespace SubSonic
             const int DATATYPE_INDEX = 5;
             if(type.Length == 1)
                 return Type.GetType(type[0][DATATYPE_INDEX].ToString());
-            throw new ArgumentOutOfRangeException("sqliteType", sqliteType, "Invalid SQLite type.");
+            else
+                throw new ArgumentOutOfRangeException("sqliteType", sqliteType, "Invalid SQLite type.");
         }
 
         /// <summary>
@@ -438,7 +519,7 @@ namespace SubSonic
         /// <summary>
         /// Returns null as SQLite does not support stored procedures.
         /// </summary>
-        /// <param name="spName">Name of the sp.</param>
+        /// <param name="spName"></param>
         /// <returns></returns>
         public override IDataReader GetSPParams(string spName)
         {
@@ -452,40 +533,44 @@ namespace SubSonic
         /// <returns></returns>
         public override string[] GetTableNameList()
         {
-            const string sql = "select tbl_name from SQLITE_MASTER where type = 'table' ORDER BY tbl_name";
+            string sql = "select tbl_name from SQLITE_MASTER where type = 'table' and tbl_name <> 'XP_PROC' and tbl_name <> 'sqlite_sequence' ORDER BY tbl_name";
+            StringBuilder sList = new StringBuilder();
 
-            using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+
+            using(SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+            using(IDataReader rdr = cmd.ExecuteReader())
             {
-                using(SQLiteCommand cmd = new SQLiteCommand(sql, conn))
-                {
-                    using(IDataReader rdr = cmd.ExecuteReader())
-                    {
-                        List<string> names = new List<string>();
+                List<string> names = new List<string>();
 
-                        while(rdr.Read())
-                            names.Add(rdr[0].ToString());
+                while(rdr.Read())
+                    names.Add(rdr[0].ToString());
 
-                        return names.ToArray();
-                    }
-                }
+                return names.ToArray();
             }
         }
 
         /// <summary>
         /// Return a list with all the primary keys of the table and the tables that reference it.
+        /// 
         /// For example, and using the pubs database:
+        /// 
         /// GetPrimaryKeyTableNames("authors") returns:
+        /// 
         /// TableName   ColumnName
         /// -----------------------
         /// titleauthor	au_id
+        /// 
         /// GetPrimaryKeyTableNames("publishers") returns:
+        /// 
         /// TableName   ColumnName
         /// -----------------------
         /// pub_info	pub_id
         /// titles	    pub_id
         /// employee	pub_id
         /// </summary>
-        /// <param name="tableName">Name of the table.</param>
+        /// <param name="tableName"></param>
         /// <returns></returns>
         public override ArrayList GetPrimaryKeyTableNames(string tableName)
         {
@@ -497,7 +582,7 @@ namespace SubSonic
             DataRow[] pksCols = fks.Select(string.Format("FKEY_TO_TABLE = '{0}'", tableName));
 
             foreach(DataRow row in pksCols)
-                pks.Add(new string[] {row[TABLE_NAME_INDEX].ToString(), row[FKEY_FROM_COLUMN_INDEX].ToString()});
+                pks.Add(new string[] { row[TABLE_NAME_INDEX].ToString(), row[FKEY_FROM_COLUMN_INDEX].ToString() });
 
             return pks;
         }
@@ -506,7 +591,7 @@ namespace SubSonic
         /// Return a list with all the primary keys of the table and the tables that reference it.
         /// See the other overload for a detailed explanation.
         /// </summary>
-        /// <param name="tableName">Name of the table.</param>
+        /// <param name="tableName"></param>
         /// <returns></returns>
         public override TableSchema.Table[] GetPrimaryKeyTables(string tableName)
         {
@@ -521,6 +606,7 @@ namespace SubSonic
                 for(int i = 0; i < pks.Count; i++)
                 {
                     string[] refTable = (string[])pks[i];
+
                     tables[i] = DataService.GetSchema(refTable[REF_TABLENAME_INDEX], Name, TableType.Table);
                 }
                 return tables;
@@ -530,13 +616,15 @@ namespace SubSonic
 
         /// <summary>
         /// Return the name of the referenced table of fkColumnName in table tableName.
+        /// 
         /// Example using the pubs database:
+        /// 
         /// fkColumnName = au_id
         /// tableName = titleauthor
         /// returns: authors
         /// </summary>
-        /// <param name="fkColumnName">Name of the fk column.</param>
-        /// <param name="tableName">Name of the table.</param>
+        /// <param name="fkColumnName"></param>
+        /// <param name="tableName"></param>
         /// <returns></returns>
         public override string GetForeignKeyTableName(string fkColumnName, string tableName)
         {
@@ -546,14 +634,15 @@ namespace SubSonic
             const int FKEY_TO_TABLE_INDEX = 13;
 
             if(pksCols.Length == 0)
-                return String.Empty;
-            return pksCols[0][FKEY_TO_TABLE_INDEX].ToString();
+                return string.Empty;
+            else
+                return pksCols[0][FKEY_TO_TABLE_INDEX].ToString();
         }
 
         /// <summary>
         /// Returns the first table that contains a primary key called fkColumnName.
         /// </summary>
-        /// <param name="fkColumnName">Name of the fk column.</param>
+        /// <param name="fkColumnName"></param>
         /// <returns></returns>
         public override string GetForeignKeyTableName(string fkColumnName)
         {
@@ -563,72 +652,453 @@ namespace SubSonic
             const int TABLE_NAME_INDEX = 2;
 
             if(pks.Length == 0)
-                return String.Empty;
-            return pks[0][TABLE_NAME_INDEX].ToString();
+                return string.Empty;
+            else
+                return pks[0][TABLE_NAME_INDEX].ToString();
         }
 
         /// <summary>
         /// Execute all commands within a single transaction.
         /// </summary>
-        /// <param name="commands">The commands.</param>
+        /// <param name="commands"></param>
         public override void ExecuteTransaction(QueryCommandCollection commands)
         {
             //make sure we have at least one
-            if(commands.Count > 0)
+            if(commands.Count < 1)
             {
-                SQLiteCommand cmd = null;
+                throw new Exception("No commands present");
+            }
 
-                using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteCommand cmd = null;
+
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            SQLiteTransaction trans = (SQLiteTransaction)conn.BeginTransaction();
+
+            foreach(QueryCommand qry in commands)
+            {
+                cmd = new SQLiteCommand(qry.CommandSql, conn);
+                cmd.CommandType = qry.CommandType;
+                try
                 {
-                    SQLiteTransaction trans = conn.BeginTransaction();
+                    cmd.Connection.Open();
+                }
+                catch
+                {
+                }
 
-                    foreach(QueryCommand qry in commands)
+                try
+                {
+                    AddParams(qry, cmd);
+                    cmd.ExecuteNonQuery();
+                }
+                catch(SQLiteException ex)
+                {
+                    //if there's an error, roll everything back
+                    trans.Rollback();
+
+                    //clean up
+                    cmd.Dispose();
+
+                    throw;
+                }
+            }
+            //if we get to this point, we're good to go
+            trans.Commit();
+
+            if(cmd != null)
+                cmd.Dispose();
+
+        }
+
+
+        #region SQL Builders
+
+        public string GetSql(Query qry)
+        {
+            string result = "";
+            switch(qry.QueryType)
+            {
+                case QueryType.Select:
+                    result = GetSelectSql(qry);
+                    break;
+                case QueryType.Update:
+                    result = GetUpdateSql(qry);
+                    break;
+                case QueryType.Insert:
+                    result = GetInsertSql(qry);
+                    break;
+                case QueryType.Delete:
+                    result = GetDeleteSql(qry);
+                    break;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Helper method to build out the limit string of a given query.
+        /// </summary>
+        /// <param name="qry">Query to build the limit string from.</param>
+        /// <returns></returns>
+        private string GetLimit(Query qry)
+        {
+            string limit = string.Empty;
+
+            // We will only implement the top function
+            // when we are not paging. Sorry it is too
+            // sticky otherwise.  Maybe if I get more 
+            // time I will try to work out using top and
+            // paging, but for the time being this should
+            // suffice.
+            if(qry.PageIndex == -1)
+            {
+                // By default MySQL will return 100% of the results
+                // there is no need to apply a limit so we will
+                // return an empty string.
+                if(qry.Top == "100 PERCENT" || String.IsNullOrEmpty(qry.Top))
+                    return limit;
+
+                // If the Top property of the query contains either
+                // a % character or the word percent we need to do
+                // some extra work
+                if(qry.Top.Contains("%") || qry.Top.ToLower().Contains("percent"))
+                {
+                    // strip everything but the numeric portion of
+                    // the top property.
+                    limit = qry.Top.ToLower().Replace("%", string.Empty).Replace("percent", string.Empty).Trim();
+
+                    // we will try/catch just incase something fails
+                    // fails a conversion.  This gives us an easy out
+                    try
                     {
-                        cmd = new SQLiteCommand(qry.CommandSql, conn);
-                        cmd.CommandType = qry.CommandType;
+                        // Convert the percetage to a decimal
+                        decimal percentTop = Convert.ToDecimal(limit) / 100;
 
-                        try
+                        // Get the total count of records to
+                        // be returned.
+                        int count = GetRecordCount(qry);
+
+                        // Using the new decimal and the amount
+                        // of records to be returned calculate
+                        // what percentage of the records are
+                        // to be returned
+                        limit = " LIMIT " + Convert.ToString((int)(count * percentTop));
+                    }
+                    catch
+                    {
+                        // If something fails in the try lets
+                        // just return an empty string and
+                        // move on.
+                        limit = string.Empty;
+                    }
+                }
+                // The top parameter only contains an integer.
+                // Wrap the integer in the limit string and return.
+                else
+                {
+                    limit = " LIMIT " + qry.Top;
+                }
+            }
+            // Paging in MySQL is actually quite simple. 
+            // Using limit we will set the starting record 
+            // to PageIndex * PageSize and the amount of 
+            // records returned to PageSize.
+            else
+            {
+                int start = qry.PageIndex * qry.PageSize;
+
+                limit = string.Format(" LIMIT {0},{1} ", start, qry.PageSize);
+            }
+
+            return limit;
+        }
+
+        /// <summary>
+        /// Creates a SELECT statement based on the Query object settings
+        /// </summary>
+        /// <returns></returns>
+        public override string GetSelectSql(Query qry)
+        {
+            TableSchema.Table table = qry.Schema;
+
+            //different rules for how to do TOP
+            string select = SqlFragment.SELECT;
+            select += qry.IsDistinct ? SqlFragment.DISTINCT : String.Empty;
+
+            //string groupBy = "";
+            //string where;
+            //string join = "";
+            //string query;
+
+            StringBuilder order = new StringBuilder();
+            StringBuilder query = new StringBuilder();
+            string columns;
+
+            //append on the selectList, which is a property that can be set
+            //and is "*" by default
+            select += qry.SelectList;
+
+            select += string.Format(" FROM `{0}`.`{1}`", Catalog, table.Name);
+
+            //string where = BuildWhereSQLite(qry);
+            string where = BuildWhere(qry);
+
+            if(qry.OrderByCollection.Count > 0)
+            {
+                order.Append(SqlFragment.ORDER_BY);
+                for(int j = 0; j < qry.OrderByCollection.Count; j++)
+                {
+                    string orderString = qry.OrderByCollection[j].OrderString;
+                    if(!String.IsNullOrEmpty(orderString))
+                    {
+                        order.Append(orderString);
+                        if(j + 1 != qry.OrderByCollection.Count)
                         {
-                            AddParams(qry, cmd);
-                            cmd.ExecuteNonQuery();
-                        }
-                        catch(SQLiteException)
-                        {
-                            //if there's an error, roll everything back
-                            trans.Rollback();
-
-                            //clean up
-                            cmd.Dispose();
-
-                            throw;
+                            order.Append(", ");
                         }
                     }
-                    //if we get to this point, we're good to go
-                    trans.Commit();
+                }
+                order = order.Replace("[", "");
+                order = order.Replace("]", "");
+            }
 
-                    if(cmd != null)
-                        cmd.Dispose();
+            string limit = GetLimit(qry);
+
+            query.Append(select);
+            query.Append(where);
+            query.Append(order);
+            query.Append(limit);
+
+            return query.ToString();
+        }
+
+        /// <summary>
+        /// This method is a copy of the static BuildWhere. I am not using BuildWhere because
+        /// SQLite apparently does not support named parameters (as in ?AU_NAME), only positional
+        /// parameters.
+        /// </summary>
+        /// <param name="qry"></param>
+        /// <returns></returns>
+        /*
+        private static string BuildWhereSQLite(Query qry)
+        {
+            StringBuilder where = new StringBuilder();
+            //string where = String.Empty;
+            string whereOperator = SqlFragment.WHERE;
+            bool isFirstPass = true;
+
+            foreach(Where wWhere in qry.wheres)
+            {
+                whereOperator = isFirstPass ? SqlFragment.WHERE : whereOperator = " " + Enum.GetName(typeof(Where.WhereCondition), wWhere.Condition) + " ";
+
+                where.Append(whereOperator);
+                where.Append(Utility.QualifyColumnName(wWhere.TableName, wWhere.ColumnName, qry.Provider));
+                where.Append(Where.GetComparisonOperator(wWhere.Comparison));
+                if(wWhere.ParameterValue != DBNull.Value && wWhere.ParameterValue != null)
+                    where.Append("?");
+                else
+                    where.Append(" NULL");
+
+
+                isFirstPass = false;
+            }
+            //isFirstPass = true;
+            foreach(BetweenAnd between in qry.betweens)
+            {
+                if(qry.wheres.Count == 0 && isFirstPass)
+                {
+                    whereOperator = SqlFragment.WHERE;
+                }
+                else
+                {
+                    whereOperator = isFirstPass ? SqlFragment.WHERE : whereOperator = " " + Enum.GetName(typeof(Where.WhereCondition), between.Condition) + " ";
+                }
+                where.Append(whereOperator);
+                where.Append(Utility.QualifyColumnName(between.TableName, between.ColumnName, qry.Provider));
+                where.Append(SqlFragment.BETWEEN + " ? ");
+                where.Append(SqlFragment.AND + " ? ");
+
+                isFirstPass = false;
+            }
+
+            for(int i = qry.wheres.Count - 1; i >= 0; i--)
+            {
+                if(qry.wheres[i].ParameterValue == DBNull.Value)
+                {
+                    qry.wheres.RemoveAt(i);
+                }
+            }
+
+            if(qry.inList != null)
+            {
+                if(qry.inList.Length > 0)
+                {
+                    if(isFirstPass)
+                    {
+                        where.Append(whereOperator);
+                    }
+                    else
+                    {
+                        where.Append(SqlFragment.AND);
+                    }
+
+                    where.Append(qry.Provider.DelimitDbName(qry.inColumn) + SqlFragment.IN + "(");
+                    bool isFirst = true;
+
+                    for(int i = 1; i <= qry.inList.Length; i++)
+                    {
+                        if(!isFirst)
+                        {
+                            where.Append(", ");
+                        }
+                        isFirst = false;
+
+                        where.Append("?");
+                    }
+                    where.Append(")");
+                }
+            }
+
+            if(qry.notInList != null && qry.notInList.Length > 0)
+            {
+                if(isFirstPass)
+                    where.Append(whereOperator);
+                else
+                    where.Append(SqlFragment.AND);
+
+                where.Append(qry.Provider.DelimitDbName(qry.notInColumn));
+                where.Append(SqlFragment.NOT_IN);
+                where.Append("(");
+                bool isFirst = true;
+
+                for(int i = 1; i <= qry.notInList.Length; i++)
+                {
+                    if(!isFirst)
+                        where.Append(", ");
+                    isFirst = false;
+
+                    where.Append(Utility.PrefixParameter(String.Concat("notIn", i), qry.Provider));
+                }
+                where.Append(")");
+            }
+
+
+            return where.ToString();
+        }
+        */
+
+        /// <summary>
+        /// Loops the TableColums[] array for the object, creating a SQL string
+        /// for use as an INSERT statement
+        /// </summary>
+        /// <returns></returns>
+        public override string GetInsertSql(Query qry)
+        {
+            TableSchema.Table table = qry.Schema;
+
+            //split the TablNames and loop out the SQL
+            string insertSQL = "INSERT INTO `" + table.Name +"`";
+
+            string cols = "";
+            string pars = "";
+
+            //int loopCount = 1;
+
+            //if table columns are null toss an exception
+            foreach(TableSchema.TableColumn col in table.Columns)
+            {
+                if(!col.AutoIncrement && !col.IsReadOnly)
+                {
+                    cols += col.ColumnName + ",";
+                    pars += "?,";
+                }
+            }
+            cols = cols.Remove(cols.Length - 1, 1);
+            pars = pars.Remove(pars.Length - 1, 1);
+            insertSQL += "(" + cols + ") ";
+
+            insertSQL += "VALUES(" + pars + ");";
+
+            insertSQL += " SELECT LAST_INSERT_ROWID() as newID";
+
+            return insertSQL;
+        }
+
+        /// <summary>
+        /// This method is a copy of the static GetDeleteSql that uses BuildWhereSQLite.
+        /// </summary>
+        /// <param name="qry"></param>
+        /// <returns></returns>
+        public static string GetDeleteSqlite(Query qry)
+        {
+            TableSchema.Table table = qry.Schema;
+            string sql = SqlFragment.DELETE_FROM + Utility.QualifyColumnName(table.SchemaName, table.Name, qry.Provider);
+            if(qry.wheres.Count == 0)
+            {
+                // Thanks Jason!
+                TableSchema.TableColumn[] keys = table.PrimaryKeys;
+                for(int i = 0; i < keys.Length; i++)
+                {
+                    sql += SqlFragment.WHERE +
+                           Utility.MakeParameterAssignment(keys[i].ColumnName, keys[i].ColumnName, qry.Provider);
+                    if(i + 1 != keys.Length)
+                        sql += SqlFragment.AND;
                 }
             }
             else
-                throw new Exception("No commands present");
+                sql += BuildWhere(qry);
+            //sql += BuildWhereSQLite(qry);
+
+            return sql;
         }
+
+        #endregion
+
+        #region Command Builders
+
+        public QueryCommand BuildCommand(Query qry)
+        {
+            QueryCommand cmd = null;
+            switch(qry.QueryType)
+            {
+                case QueryType.Select:
+                    cmd = BuildSelectCommand(qry);
+                    break;
+                case QueryType.Update:
+                    cmd = BuildUpdateCommand(qry);
+                    break;
+
+                case QueryType.Insert:
+                    cmd = null;
+                    break;
+
+                case QueryType.Delete:
+                    cmd = BuildDeleteCommand(qry);
+                    break;
+            }
+            return cmd;
+        }
+
+        #endregion
+
 
         /// <summary>
         /// This is a copy and adaptation from the SQL Server provider and it
         /// needs more work as it does NOT support auto incrementing columns.
         /// </summary>
-        /// <param name="tableName">Name of the table.</param>
-        /// <param name="providerName">Name of the provider.</param>
+        /// <param name="tableName"></param>
+        /// <param name="providerName"></param>
         /// <returns></returns>
         public override string ScriptData(string tableName, string providerName)
         {
+            return "fail"; // TODO:
+            
             StringBuilder result = new StringBuilder();
             if(CodeService.ShouldGenerate(tableName, providerName))
             {
                 StringBuilder fieldList = new StringBuilder();
                 StringBuilder insertStatement = new StringBuilder();
                 StringBuilder statements = new StringBuilder();
+
 
                 insertStatement.Append("INSERT INTO [" + tableName + "] ");
 
@@ -674,14 +1144,18 @@ namespace SubSonic
                                     thisStatement.Append(bData ? "1" : " 0");
                                 }
                                 else if(col.DataType == DbType.Byte)
+                                {
                                     thisStatement.Append(oData);
+                                }
                                 else if(col.DataType == DbType.Binary)
                                 {
                                     thisStatement.Append("0x");
                                     thisStatement.Append(Utility.ByteArrayToString((Byte[])oData).ToUpper());
                                 }
                                 else if(col.IsNumeric)
+                                {
                                     thisStatement.Append(oData);
+                                }
                                 else if(col.IsDateTime)
                                 {
                                     DateTime dt = DateTime.Parse(oData.ToString());
@@ -697,7 +1171,9 @@ namespace SubSonic
                                 }
                             }
                             else
+                            {
                                 thisStatement.Append("NULL");
+                            }
 
                             if(!Utility.IsMatch(col.ColumnName, lastColumnName))
                                 thisStatement.Append(", ");
@@ -717,14 +1193,15 @@ namespace SubSonic
         }
 
         /// <summary>
-        /// Gets the db command.
+        /// 
         /// </summary>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override DbCommand GetDbCommand(QueryCommand qry)
         {
+            DbCommand cmd;
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
-            DbCommand cmd = conn.CreateCommand();
+            cmd = conn.CreateCommand();
 
             cmd.CommandText = qry.CommandSql;
             cmd.CommandType = qry.CommandType;
@@ -749,7 +1226,8 @@ namespace SubSonic
         public override string[] GetViewNameList()
         {
             DataTable views;
-            using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
                 views = conn.GetSchema("VIEWS");
 
             string[] allViews = new string[views.Rows.Count];
@@ -765,7 +1243,7 @@ namespace SubSonic
         /// Return a dataset for a query
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="qry">The qry.</param>
+        /// <param name="qry"></param>
         /// <returns></returns>
         public override T GetDataSet<T>(QueryCommand qry)
         {
@@ -776,7 +1254,8 @@ namespace SubSonic
             SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
 
             AddTableMappings(da, ds);
-            using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
+            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             {
                 cmd.Connection = conn;
                 AddParams(qry, cmd);
@@ -789,14 +1268,16 @@ namespace SubSonic
             }
         }
 
+
         /// <summary>
         /// Private helper to create a parameter table for returning
         /// from the GetSPParams method.
-        /// There is no standard way to get parameters from MySQL
+        /// 
+        /// There is no standard way to get parameters from MySQL 
         /// stored procedures.  We have to do a string level parse to
         /// hack out the parameters.  Unfortunately this does not give
         /// us an IDataReader interface to return from teh GetSPParams
-        /// method.  Inorder to provide this interface return we build
+        /// method.  Inorder to provide this interface return we build 
         /// a datatable with the SP Params and returna DataTableReader.
         /// </summary>
         /// <returns></returns>
@@ -820,11 +1301,12 @@ namespace SubSonic
 
         /// <summary>
         /// Return the tables that have a key referencing this table.
+        /// 
         /// For example:
         /// tableName = employee
         /// returns: { "publishers", "jobs" }
         /// </summary>
-        /// <param name="tableName">Name of the table.</param>
+        /// <param name="tableName"></param>
         /// <returns></returns>
         public override string[] GetForeignKeyTables(string tableName)
         {
@@ -834,21 +1316,23 @@ namespace SubSonic
             const int FKEY_TO_TABLE_INDEX = 13;
 
             if(pksCols.Length == 0)
-                return new string[] {String.Empty};
+                return new string[] { "" };
+            else
+            {
+                string[] names = new string[pksCols.Length];
 
-            string[] names = new string[pksCols.Length];
+                for(int n = 0; n < pksCols.Length; n++)
+                    names[n] = pksCols[n][FKEY_TO_TABLE_INDEX].ToString();
 
-            for(int n = 0; n < pksCols.Length; n++)
-                names[n] = pksCols[n][FKEY_TO_TABLE_INDEX].ToString();
-
-            return names;
+                return names;
+            }
         }
 
         /// <summary>
         /// Returns the first table with a primary key column named pkName
         /// </summary>
-        /// <param name="pkName">Name of the pk.</param>
-        /// <param name="providerName">Name of the provider.</param>
+        /// <param name="pkName"></param>
+        /// <param name="providerName"></param>
         /// <returns></returns>
         public override string GetTableNameByPrimaryKey(string pkName, string providerName)
         {
@@ -856,7 +1340,8 @@ namespace SubSonic
             const int TABLE_NAME_INDEX = 2;
 
             DataTable indexes, indexColumns;
-            using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
+            SQLiteConnection con = (SQLiteConnection)CreateConnection();
+            //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
             {
                 indexColumns = con.GetSchema("INDEXCOLUMNS");
                 indexes = con.GetSchema("INDEXES");
@@ -865,23 +1350,22 @@ namespace SubSonic
             DataRow[] index = indexColumns.Select(string.Format("COLUMN_NAME = '{0}'", pkName));
 
             if(index.Length == 0)
-                return String.Empty;
+                return string.Empty;
+            else
+            {
+                DataRow[] tables = indexes.Select(string.Format("PRIMARY_KEY = True AND INDEX_NAME = '{0}'", index[0][INDEX_NAME_INDEX]));
 
-            DataRow[] tables = indexes.Select(string.Format("PRIMARY_KEY = True AND INDEX_NAME = '{0}'", index[0][INDEX_NAME_INDEX]));
+                if(tables.Length == 0)
+                    return string.Empty;
+                else
+                    return tables[0][TABLE_NAME_INDEX].ToString();
+            }
 
-            if(tables.Length == 0)
-                return String.Empty;
-            return tables[0][TABLE_NAME_INDEX].ToString();
         }
 
-        /// <summary>
-        /// Gets the database version.
-        /// </summary>
-        /// <param name="providerName">Name of the provider.</param>
-        /// <returns></returns>
         protected override string GetDatabaseVersion(string providerName)
         {
-            //string retVal = "Unknown";
+            string retVal = "Unknown";
 
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
 
@@ -891,7 +1375,7 @@ namespace SubSonic
             }
             catch
             {
-                return "UNKNOWN";
+                return "UKNOWN";
             }
             finally
             {
@@ -901,281 +1385,10 @@ namespace SubSonic
         }
 
 
-        #region SQL Builders
-
-        /// <summary>
-        /// Helper method to build out the limit string of a given query.
-        /// </summary>
-        /// <param name="qry">Query to build the limit string from.</param>
-        /// <returns></returns>
-        private string GetLimit(Query qry)
-        {
-            string limit = String.Empty;
-
-            // We will only implement the top function
-            // when we are not paging. Sorry it is too
-            // sticky otherwise.  Maybe if I get more 
-            // time I will try to work out using top and
-            // paging, but for the time being this should
-            // suffice.
-            if(qry.PageIndex == -1)
-            {
-                // By default MySQL will return 100% of the results
-                // there is no need to apply a limit so we will
-                // return an empty string.
-                if(qry.Top == "100 PERCENT" || String.IsNullOrEmpty(qry.Top))
-                    return limit;
-
-                // If the Top property of the query contains either
-                // a % character or the word percent we need to do
-                // some extra work
-                if(qry.Top.Contains("%") || qry.Top.ToLower().Contains("percent"))
-                {
-                    // strip everything but the numeric portion of
-                    // the top property.
-                    limit = qry.Top.ToLower().Replace("%", String.Empty).Replace("percent", String.Empty).Trim();
-
-                    // we will try/catch just incase something fails
-                    // fails a conversion.  This gives us an easy out
-                    try
-                    {
-                        // Convert the percetage to a decimal
-                        decimal percentTop = Convert.ToDecimal(limit) / 100;
-
-                        // Get the total count of records to
-                        // be returned.
-                        int count = GetRecordCount(qry);
-
-                        // Using the new decimal and the amount
-                        // of records to be returned calculate
-                        // what percentage of the records are
-                        // to be returned
-                        limit = " LIMIT " + Convert.ToString((int)(count * percentTop));
-                    }
-                    catch
-                    {
-                        // If something fails in the try lets
-                        // just return an empty string and
-                        // move on.
-                        limit = String.Empty;
-                    }
-                }
-                    // The top parameter only contains an integer.
-                    // Wrap the integer in the limit string and return.
-                else
-                    limit = " LIMIT " + qry.Top;
-            }
-                // Paging in MySQL is actually quite simple. 
-                // Using limit we will set the starting record 
-                // to PageIndex * PageSize and the amount of 
-                // records returned to PageSize.
-            else
-            {
-                int start = (qry.PageIndex - 1) * qry.PageSize;
-                limit = string.Format(" LIMIT {0},{1} ", start, qry.PageSize);
-            }
-
-            return limit;
-        }
-
-        /// <summary>
-        /// Creates a SELECT statement based on the Query object settings
-        /// </summary>
-        /// <returns></returns>
-        public override string GetSelectSql(Query qry)
-        {
-            TableSchema.Table table = qry.Schema;
-
-            //different rules for how to do TOP
-            string select = SqlFragment.SELECT;
-            select += qry.IsDistinct ? SqlFragment.DISTINCT : String.Empty;
-
-            const string groupBy = "";
-            string order = String.Empty;
-            const string join = "";
-
-            //append on the selectList, which is a property that can be set
-            //and is "*" by default
-            select += qry.SelectList;
-
-            select += string.Format(" FROM {0}.`{1}`", Catalog, table.Name);
-
-            string where = BuildWhereSQLite(qry);
-
-            if(qry.OrderByCollection.Count > 0)
-            {
-                order += SqlFragment.ORDER_BY;
-                for(int j = 0; j < qry.OrderByCollection.Count; j++)
-                {
-                    string orderString = qry.OrderByCollection[j].OrderString;
-                    if(!String.IsNullOrEmpty(orderString))
-                    {
-                        order += orderString;
-                        if(j + 1 != qry.OrderByCollection.Count)
-                            order += ", ";
-                    }
-                }
-                order = order.Replace("[", String.Empty);
-                order = order.Replace("]", String.Empty);
-            }
-
-            string limit = GetLimit(qry);
-
-            string query = select + join + groupBy + where + order + limit;
-            return query + ";";
-        }
-
-        /// <summary>
-        /// This method is a copy of the static BuildWhere. I am not using BuildWhere because
-        /// SQLite apparently does not support named parameters (as in ?AU_NAME), only positional
-        /// parameters.
-        /// </summary>
-        /// <param name="qry"></param>
-        /// <returns></returns>
-        private static string BuildWhereSQLite(Query qry)
-        {
-            string where = String.Empty;
-            string whereOperator = SqlFragment.WHERE;
-            bool isFirstPass = true;
-
-            foreach(Where wWhere in qry.Wheres)
-            {
-                whereOperator = isFirstPass ? SqlFragment.WHERE : " " + Enum.GetName(typeof(Where.WhereCondition), wWhere.Condition) + " ";
-
-                where += whereOperator +
-                         Utility.QualifyColumnName(wWhere.TableName, wWhere.ColumnName, qry.Provider) +
-                         Where.GetComparisonOperator(wWhere.Comparison);
-                if(wWhere.ParameterValue != DBNull.Value && wWhere.ParameterValue != null)
-                    where += "?";
-                else
-                    where += " NULL";
-
-                isFirstPass = false;
-            }
-            //isFirstPass = true;
-            foreach(BetweenAnd between in qry.Betweens)
-            {
-                if(qry.Wheres.Count == 0 && isFirstPass)
-                    whereOperator = SqlFragment.WHERE;
-                else
-                    whereOperator = isFirstPass ? SqlFragment.WHERE : " " + Enum.GetName(typeof(Where.WhereCondition), between.Condition) + " ";
-
-                where += whereOperator +
-                         Utility.QualifyColumnName(between.TableName, between.ColumnName, qry.Provider) +
-                         SqlFragment.BETWEEN + " ? " +
-                         SqlFragment.AND + " ? ";
-
-                isFirstPass = false;
-            }
-
-            for(int i = qry.Wheres.Count - 1; i >= 0; i--)
-            {
-                if(qry.Wheres[i].ParameterValue == DBNull.Value)
-                    qry.Wheres.RemoveAt(i);
-            }
-
-            if(qry.InList != null)
-            {
-                if(qry.InList.Length > 0)
-                {
-                    if(isFirstPass)
-                        where += whereOperator;
-                    else
-                        where += SqlFragment.AND;
-
-                    where += qry.Provider.DelimitDbName(qry.InColumn) + SqlFragment.IN + "(";
-                    bool isFirst = true;
-
-                    for(int i = 1; i <= qry.InList.Length; i++)
-                    {
-                        if(!isFirst)
-                            where += ", ";
-
-                        isFirst = false;
-                        where += "?";
-                    }
-                    where += ")";
-                }
-            }
-
-            return where;
-        }
-
-        /// <summary>
-        /// Loops the TableColums[] array for the object, creating a SQL string
-        /// for use as an INSERT statement
-        /// </summary>
-        /// <returns></returns>
-        public override string GetInsertSql(Query qry)
-        {
-            TableSchema.Table table = qry.Schema;
-
-            //split the TablNames and loop out the SQL
-            string insertSQL = "INSERT INTO `" + table.Name + "`";
-
-            string cols = String.Empty;
-            string pars = String.Empty;
-
-            //int loopCount = 1;
-
-            //if table columns are null toss an exception
-            foreach(TableSchema.TableColumn col in table.Columns)
-            {
-                if(!col.AutoIncrement && !col.IsReadOnly)
-                {
-                    cols += col.ColumnName + ",";
-                    pars += "?,";
-                }
-            }
-            cols = cols.Remove(cols.Length - 1, 1);
-            pars = pars.Remove(pars.Length - 1, 1);
-
-            insertSQL += "(" + cols + ") ";
-            insertSQL += "VALUES(" + pars + ");";
-            insertSQL += " SELECT LAST_INSERT_ROWID() as newID";
-
-            return insertSQL;
-        }
-
-        /// <summary>
-        /// This method is a copy of the static GetDeleteSql that uses BuildWhereSQLite.
-        /// </summary>
-        /// <param name="qry"></param>
-        /// <returns></returns>
-        public static string GetDeleteSqlite(Query qry)
-        {
-            TableSchema.Table table = qry.Schema;
-            string sql = SqlFragment.DELETE_FROM + table.QualifiedName;
-            if(qry.Wheres.Count == 0)
-            {
-                // Thanks Jason!
-                TableSchema.TableColumn[] keys = table.PrimaryKeys;
-                for(int i = 0; i < keys.Length; i++)
-                {
-                    sql += SqlFragment.WHERE +
-                           Utility.MakeParameterAssignment(keys[i].ColumnName, keys[i].ColumnName, qry.Provider);
-                    if(i + 1 != keys.Length)
-                        sql += SqlFragment.AND;
-                }
-            }
-            else
-                sql += BuildWhereSQLite(qry);
-
-            return sql;
-        }
-
-        #endregion
 
 
-        #region SQL Generation Support
-
-        public override ISqlGenerator GetSqlGenerator(SqlQuery sqlQuery)
-        {
-            return new SqlLiteGenerator(sqlQuery); // ANSISqlGenerator(sqlQuery);
-        }
-
-        #endregion
     }
 }
+
 
 #endif
