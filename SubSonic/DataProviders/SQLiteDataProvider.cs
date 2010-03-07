@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Text;
+using System.Threading;
 using SubSonic.Utilities;
 using System.Diagnostics;
 
@@ -14,7 +15,8 @@ namespace SubSonic
 {
     /// <summary>
     /// A Data Provider for SQLite. 
-    /// 
+    /// </summary>
+    /// <remarks>
     /// Loosely based on the MySQL data provider (by Larry Beall) with
     /// lots of consultation of the SqlDataProvider (no name attributed).
     /// 
@@ -39,8 +41,11 @@ namespace SubSonic
     ///    connection at a time, and there is some problem with repeated open/close
     ///    cycles on the database file here.
     ///
-    /// </summary>
-    public class SQLiteDataProvider: DataProvider   
+    /// Mar 6 2010 - Added bool and boolean to GetDbType. Changed the way connections are handled. 
+    /// 
+    /// 
+    /// <remarks>
+    public class SQLiteDataProvider: DataProvider
     {
         private DataTable _types = null;
         private DataTable _columns = null;
@@ -91,7 +96,6 @@ namespace SubSonic
         {
             get
             {
-                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
                 SQLiteConnection con = (SQLiteConnection)CreateConnection();
                 _foreignkeys = con.GetSchema("FOREIGNKEYS");
 
@@ -106,7 +110,6 @@ namespace SubSonic
             get
             {
                 DataTable data;
-                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
                 SQLiteConnection con = (SQLiteConnection)CreateConnection();
                 data = con.GetSchema("MetaDataCollections");
 
@@ -119,7 +122,6 @@ namespace SubSonic
         {
             get
             {
-                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
                 SQLiteConnection con = (SQLiteConnection)CreateConnection();
                 _indexes = con.GetSchema("indexes");
 
@@ -132,7 +134,6 @@ namespace SubSonic
         {
             get
             {
-                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
                 SQLiteConnection con = (SQLiteConnection)CreateConnection();
                 _columns = con.GetSchema("COLUMNS");
 
@@ -144,17 +145,24 @@ namespace SubSonic
         {
             return CreateConnection(DefaultConnectionString);
         }
-        
+
+        private Dictionary<string, SQLiteConnection> threadConnectionTable = new Dictionary<string, SQLiteConnection>();
+
         public override DbConnection CreateConnection(string newConnectionString)
         {
-            if(_conn == null)
-                _conn = new SQLiteConnection(newConnectionString);
-
-            if(_conn.State != ConnectionState.Open)
-                _conn.Open();
-
-            return _conn;
-
+            SQLiteConnection conn;
+            string connKey = "t" + Thread.CurrentThread.ManagedThreadId + "__" + newConnectionString;
+            if(threadConnectionTable.ContainsKey(connKey))
+            {
+                conn = threadConnectionTable[connKey];
+                if(conn.State != ConnectionState.Open)
+                    conn.Open();
+                return conn;
+            }
+            conn = new SQLiteConnection(newConnectionString);
+            conn.Open();
+            threadConnectionTable[connKey] = conn;
+            return conn;
         }
 
         /// <summary>
@@ -229,6 +237,8 @@ namespace SubSonic
         /// <returns></returns>
         public override IDataReader GetReader(QueryCommand qry)
         {
+            Debug.WriteLine("GetReader: " + qry.CommandSql);
+            
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
 
             SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql);
@@ -254,6 +264,8 @@ namespace SubSonic
         /// <returns></returns>
         public override DataSet GetDataSet(QueryCommand qry)
         {
+            Debug.WriteLine("GetDataSet: " + qry.CommandSql);
+            
             DataSet ds = new DataSet();
             SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql);
             cmd.CommandType = qry.CommandType;
@@ -263,7 +275,6 @@ namespace SubSonic
             SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
 
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
-            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             {
                 cmd.Connection = conn;
                 try
@@ -291,8 +302,9 @@ namespace SubSonic
         /// <returns></returns>
         public override object ExecuteScalar(QueryCommand qry)
         {
+            Debug.WriteLine("ExecuteScalar: " + qry.CommandSql);
+            
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
-            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             {
                 SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql);
                 cmd.CommandType = qry.CommandType;
@@ -323,6 +335,8 @@ namespace SubSonic
         /// <returns></returns>
         public override int ExecuteQuery(QueryCommand qry)
         {
+            Debug.WriteLine("ExecuteQuery: " + qry.CommandSql);
+            
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
             using(SQLiteCommand cmd = new SQLiteCommand(qry.CommandSql))
             {
@@ -381,7 +395,7 @@ namespace SubSonic
                 column.DataType = GetDbType(row["DATA_TYPE"].ToString());
 
                 // These must types have max length 0 in generated classes. -- paul
-                if( column.DataType == DbType.Boolean ||
+                if(column.DataType == DbType.Boolean ||
                     column.DataType == DbType.Currency ||
                     column.DataType == DbType.Date ||
                     column.DataType == DbType.DateTime ||
@@ -398,7 +412,7 @@ namespace SubSonic
                     column.DataType == DbType.UInt16 ||
                     column.DataType == DbType.UInt32 ||
                     column.DataType == DbType.UInt64 ||
-                    column.DataType == DbType.VarNumeric )
+                    column.DataType == DbType.VarNumeric)
                     column.MaxLength = 0; // must = 0 for subsonic validation method
 
                 // Autoincrement detection now available in recent System.Data.SQLite. 1.0.60.0 -- paul
@@ -423,7 +437,7 @@ namespace SubSonic
                     table.PrimaryKeyTables.Add(pkTable);
                 }
             }
-            
+
             //Add all the foreign keys
             foreach(DataRow row in fks.Select(string.Format("TABLE_NAME = '{0}'", tableName)))
             {
@@ -443,7 +457,7 @@ namespace SubSonic
         /// <returns></returns>
         public override DbType GetDbType(string sqliteType)
         {
-            switch(sqliteType.ToLower())
+            switch(sqliteType.ToLowerInvariant())
             {
                 case "text":
                 case "char":
@@ -475,6 +489,8 @@ namespace SubSonic
                     return DbType.Binary;
                 case "guid":
                     return DbType.Guid;
+                case "bool":
+                case "boolean":
                 case "bit":
                     return DbType.Boolean;
                 default:
@@ -492,7 +508,6 @@ namespace SubSonic
             if(_types == null)
             {
                 SQLiteConnection conn = (SQLiteConnection)CreateConnection();
-                //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
                 conn.Open();
                 _types = conn.GetSchema("DATATYPES");
             }
@@ -536,7 +551,6 @@ namespace SubSonic
             string sql = "select tbl_name from SQLITE_MASTER where type = 'table' and tbl_name <> 'XP_PROC' and tbl_name <> 'sqlite_sequence' ORDER BY tbl_name";
             StringBuilder sList = new StringBuilder();
 
-            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
 
             using(SQLiteCommand cmd = new SQLiteCommand(sql, conn))
@@ -665,48 +679,48 @@ namespace SubSonic
         {
             //make sure we have at least one
             if(commands.Count < 1)
-            {
-                throw new Exception("No commands present");
-            }
+                throw new ArgumentOutOfRangeException("commands", "No commands present");
 
+            Debug.WriteLine("ExecuteTransaction: " + commands.Count);
             SQLiteCommand cmd = null;
 
-            SQLiteConnection conn = (SQLiteConnection)CreateConnection();
+            SQLiteConnection conn = (SQLiteConnection) CreateConnection();
+            if(conn.State == ConnectionState.Closed)
+                conn.Open();
+
             SQLiteTransaction trans = (SQLiteTransaction)conn.BeginTransaction();
 
-            foreach(QueryCommand qry in commands)
+            try
             {
-                cmd = new SQLiteCommand(qry.CommandSql, conn);
-                cmd.CommandType = qry.CommandType;
-                try
+                foreach(QueryCommand qry in commands)
                 {
-                    cmd.Connection.Open();
+                    cmd = new SQLiteCommand(qry.CommandSql, conn, trans);
+                    cmd.CommandType = qry.CommandType;
+                    try
+                    {
+                        AddParams(qry, cmd);
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch(SQLiteException ex)
+                    {
+                        //if there's an error, roll everything back
+                        trans.Rollback();
+                        throw;
+                    }
                 }
-                catch
-                {
-                }
-
-                try
-                {
-                    AddParams(qry, cmd);
-                    cmd.ExecuteNonQuery();
-                }
-                catch(SQLiteException ex)
-                {
-                    //if there's an error, roll everything back
-                    trans.Rollback();
-
-                    //clean up
+                trans.Commit();
+                trans = null;
+            }
+            finally
+            {
+                if(cmd != null)
                     cmd.Dispose();
 
-                    throw;
-                }
+                if(trans != null)
+                    trans.Dispose();
             }
-            //if we get to this point, we're good to go
-            trans.Commit();
 
-            if(cmd != null)
-                cmd.Dispose();
+            Debug.WriteLine("ExecuteTransaction: exit " + conn.State.ToString());
 
         }
 
@@ -1090,8 +1104,6 @@ namespace SubSonic
         /// <returns></returns>
         public override string ScriptData(string tableName, string providerName)
         {
-            return "fail"; // TODO:
-            
             StringBuilder result = new StringBuilder();
             if(CodeService.ShouldGenerate(tableName, providerName))
             {
@@ -1227,8 +1239,7 @@ namespace SubSonic
         {
             DataTable views;
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
-            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
-                views = conn.GetSchema("VIEWS");
+            views = conn.GetSchema("VIEWS");
 
             string[] allViews = new string[views.Rows.Count];
 
@@ -1255,7 +1266,6 @@ namespace SubSonic
 
             AddTableMappings(da, ds);
             SQLiteConnection conn = (SQLiteConnection)CreateConnection();
-            //using(SQLiteConnection conn = (SQLiteConnection)CreateConnection())
             {
                 cmd.Connection = conn;
                 AddParams(qry, cmd);
@@ -1341,7 +1351,6 @@ namespace SubSonic
 
             DataTable indexes, indexColumns;
             SQLiteConnection con = (SQLiteConnection)CreateConnection();
-            //using(SQLiteConnection con = (SQLiteConnection)CreateConnection())
             {
                 indexColumns = con.GetSchema("INDEXCOLUMNS");
                 indexes = con.GetSchema("INDEXES");
