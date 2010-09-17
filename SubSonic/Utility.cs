@@ -194,10 +194,10 @@ namespace SubSonic.Utilities
         /// <returns>
         /// 	<c>true</c> if the specified provider is SQL2008; otherwise, <c>false</c>.
         /// </returns>
+
         public static bool IsSql2008(DataProvider provider)
         {
-			return provider.DatabaseVersion.IndexOf("2008 - 10.") > -1 ||
-				provider.DatabaseVersion.IndexOf("2008 (RTM) - 10.") > -1;
+            return provider.DatabaseVersion.Contains("SQL Server 2008");
         }
 
         /// <summary>
