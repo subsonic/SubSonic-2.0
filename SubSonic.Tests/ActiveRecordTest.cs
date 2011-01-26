@@ -46,7 +46,7 @@ namespace SubSonic.Tests
         /// Products_s the crud.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void Products_Crud()
         {
             //add a new product
@@ -69,7 +69,7 @@ namespace SubSonic.Tests
         /// Products_s the null crud.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void Products_NullCrud()
         {
             //add a new product
@@ -127,7 +127,7 @@ namespace SubSonic.Tests
         /// Gets the new command.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void GetNewCommand()
         {
             Product p = CreateTestProduct();
@@ -140,7 +140,7 @@ namespace SubSonic.Tests
         /// Gets the update command.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void GetUpdateCommand()
         {
             Product p = CreateTestProduct();
@@ -156,7 +156,7 @@ namespace SubSonic.Tests
         /// Gets the no changes command.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void GetNoChangesCommand()
         {
             Product p = CreateTestProduct();
@@ -171,7 +171,7 @@ namespace SubSonic.Tests
         /// Saves the when not dirty.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SaveWhenNotDirty()
         {
             Product p = CreateTestProduct();

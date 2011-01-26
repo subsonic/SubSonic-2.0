@@ -30,7 +30,7 @@ namespace SubSonic.Tests
         /// <summary>
         /// Tests the fixture set up.
         /// </summary>
-        [TestFixtureSetUp]
+        [FixtureSetUp]
         public void TestFixtureSetUp()
         {
             msdtc.Stop();
@@ -39,7 +39,7 @@ namespace SubSonic.Tests
         /// <summary>
         /// Tests the fixture tear down.
         /// </summary>
-        [TestFixtureTearDown]
+        [FixtureTearDown]
         public void TestFixtureTearDown()
         {
             msdtc.Revert();

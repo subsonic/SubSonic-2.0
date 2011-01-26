@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ea4b8fd2-de86-439d-bb50-bf9bdafa5b85")]
-[assembly: MbUnit.Framework.AssemblyCleanup(typeof(SubSonic.Tests.AssemblyCleaner))]
+//[assembly: MbUnit.Framework.AssemblyCleaner(typeof(SubSonic.Tests.AssemblyCleaner))]
 
 
 [assembly: AssemblyProductAttribute("SubSonic.Tests")]

@@ -138,7 +138,7 @@ namespace SubSonic.Tests.SqlQuery
         [Test]
         public void Exec_AggregateStandardDeviation()
         {
-            const double expected = 42.7698669325723;
+            const double expected = 42.769866932572263;
 
             // overload #1
             double result = new

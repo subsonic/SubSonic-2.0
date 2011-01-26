@@ -24,7 +24,7 @@ namespace SubSonic.Tests.SqlQuery
         #region INSERT
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void Insert_Simple()
         {
             Insert i = new Insert().Into(Category.Schema).Values("Test", "TestDescription", DBNull.Value);
@@ -33,7 +33,7 @@ namespace SubSonic.Tests.SqlQuery
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void Insert_SimpleWithSelect()
         {
             Insert i = new Insert().Into(Category.Schema)
@@ -44,7 +44,7 @@ namespace SubSonic.Tests.SqlQuery
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void Insert_SimpleWithSelectAndSchema()
         {
             Insert i = new Insert().Into(Category.Schema)

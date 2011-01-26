@@ -46,7 +46,7 @@ namespace SubSonic.Tests
         /// Batches the save insert.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void BatchSaveInsert()
         {
             ProductCollection c = CreateProductCollection();
@@ -61,7 +61,7 @@ namespace SubSonic.Tests
         /// Tests deferred deletes
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void DeferredDelete()
         {
             ProductCollection c = CreateProductCollection();
@@ -125,7 +125,7 @@ namespace SubSonic.Tests
         /// Batches the save update.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void BatchSaveUpdate()
         {
             ProductCollection c = CreateProductCollection();
@@ -147,7 +147,7 @@ namespace SubSonic.Tests
         /// Batches the save update no changes.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void BatchSaveUpdateNoChanges()
         {
             ProductCollection c = CreateProductCollection();

@@ -71,7 +71,7 @@ namespace SubSonic.Tests
         /// Query_s the updates.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void Query_Updates()
         {
             Query qry = new Query(Product.Schema);

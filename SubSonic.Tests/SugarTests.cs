@@ -97,6 +97,8 @@ namespace SubSonic.Tests
         /// <param name="startTime">The start time.</param>
         /// <param name="endTime">The end time.</param>
         /// <param name="expected">The expected.</param>
+        [Test]
+
         [Row("01 Jan 2007", "01 Jan 2007", "0 seconds ago")]
         [Row("01 Jan 2007", "01 Jan 2007 00:00:01", "1 second ago")]
         [Row("01 Jan 2007", "01 Jan 2007 00:00:05", "5 seconds ago")]
@@ -114,7 +116,7 @@ namespace SubSonic.Tests
         [Row("01 Jan 2007", "01 Jan 2008 01:30:40", "1 year ago")]
         [Row("01 Jan 2007", "01 Jan 2207 01:30:40", "200 years ago")]
         [Row("01 Jan 2007", "01 May 2207 01:30:40", "200 years, 4 months ago")]
-        [RowTest]
+        
         public void Dates_ReadableDiff(DateTime startTime, DateTime endTime, string expected)
         {
             Assert.AreEqual(expected, Dates.ReadableDiff(startTime, endTime));
@@ -126,6 +128,7 @@ namespace SubSonic.Tests
         /// </summary>
         /// <param name="creditCardNumber">The credit card number.</param>
         /// <param name="expected">Expected test result.</param>
+        [Test]
         [Row("5105105105105100", true)] // MasterCard
         [Row("5555555555554444", true)] // MasterCard
         [Row("4222222222222", true)] // MasterCard
@@ -148,7 +151,6 @@ namespace SubSonic.Tests
         [Row("0000000000000000", false)]
         [Row("000000000000000", false)]
         [Row("0000000000000", false)]
-        [RowTest]
         public void Validation_IsCreditCardAny(string creditCardNumber, bool expected)
         {
             Assert.AreEqual(expected, Validation.IsCreditCardAny(creditCardNumber));

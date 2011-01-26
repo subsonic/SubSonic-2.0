@@ -161,7 +161,7 @@ namespace SubSonic.Tests.SqlQuery
             .Paged(1, 20);
 
             ProductCollection pc = q.ExecuteAsCollection<ProductCollection>();
-            Assert.GreaterEqualThan(pc.Count, 1);
+            Assert.GreaterThanOrEqualTo(pc.Count, 1);
 
             SubSonic.SqlQuery q2 = new SubSonic.SqlQuery().From(Product.Schema)
             .InnerJoin(Category.Schema)
@@ -169,7 +169,7 @@ namespace SubSonic.Tests.SqlQuery
             .Paged(1, 20);
 
             ProductCollection pc2 = q2.ExecuteAsCollection<ProductCollection>();
-            Assert.GreaterEqualThan(pc2.Count, 1);
+            Assert.GreaterThanOrEqualTo(pc2.Count, 1);
 
         }
 
@@ -272,5 +272,5 @@ namespace SubSonic.Tests.SqlQuery
             string sql = gen.BuildDropColumnStatement(productSchema, column);
             Assert.AreEqual("ALTER TABLE [dbo].[Products] DROP COLUMN [ProductName]", sql);
         }
-    }
+     }
 }

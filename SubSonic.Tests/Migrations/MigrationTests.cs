@@ -24,7 +24,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationGenerateDropTablesSql()
         {
             //get a table in there to drop
@@ -64,7 +64,7 @@ namespace SubSonic.Tests.Migrations
             }
         }
 
-        [Test, RollBack]
+        [Test, Rollback]
         public void MigrateDownFromZero()
         {
             Assert.AreEqual(Migrator.GetCurrentVersion("Northwind"), 0);
@@ -72,7 +72,7 @@ namespace SubSonic.Tests.Migrations
             Assert.AreEqual(Migrator.GetCurrentVersion("Northwind"), 0);
         }
 
-        [Test,RollBack]
+        [Test,Rollback]
         public void MigrateUpDownNegative1()
         {
             string p = "Northwind";
@@ -93,7 +93,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationUpDown()
         {
             Migration m = new MigrationTest001();
@@ -115,7 +115,7 @@ namespace SubSonic.Tests.Migrations
             Assert.IsFalse(DataService.TableExists("Northwind", "ShipStatus"));
         }
 
-        [Test, RollBack]
+        [Test, Rollback]
         public void MigrationUpwithErrors()
         {
             //test that the two correct tables don't get added to the database
@@ -134,7 +134,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationAlterColumn()
         {
             Migration m = new AlterProductNameMigration();
@@ -155,7 +155,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationAddRemoveColumns()
         {
             Migration m = new MigrationTest003();
@@ -168,7 +168,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationShouldCreateAndDropTestTable()
         {
             //up
@@ -189,7 +189,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationShouldExecMultipleMigrations()
         {
             Migrator.Migrate("Northwind", MigrationDirectory, null);
@@ -214,7 +214,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationOnDispose()
         {
             //testing Rob's super-cool migration on dispose pattern
@@ -232,7 +232,7 @@ namespace SubSonic.Tests.Migrations
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void MigrationExecute()
         {
             int expectedRegions = new Select("RegionDescription").From("Region").GetRecordCount();

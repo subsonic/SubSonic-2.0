@@ -17,9 +17,9 @@ using MbUnit.Framework;
 namespace SubSonic.Tests
 {
     /// <summary>
-    /// Summary for the AssemblyCleaner class
+    /// Summary for the AssemblyFixture class
     /// </summary>
-    public static class AssemblyCleaner
+    public static class AssemblyFixture
     {
         /// <summary>
         /// Sets the up.

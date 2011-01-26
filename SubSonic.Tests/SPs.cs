@@ -44,7 +44,7 @@ namespace SubSonic.Tests
     public class SPs
     {
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_Schema_Should_Load_10_SPs()
         {
             List<StoredProcedure> sps = DataService.GetSPSchemaCollection("Northwind");
@@ -52,7 +52,7 @@ namespace SubSonic.Tests
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_Schema_Should_Load_With_Schema_Name()
         {
             List<StoredProcedure> sps = DataService.GetSPSchemaCollection("Northwind");
@@ -60,7 +60,7 @@ namespace SubSonic.Tests
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_CustOrderHist_Should_Have_QualifiedName()
         {
             List<StoredProcedure> sps = DataService.GetSPSchemaCollection("Northwind");
@@ -68,7 +68,7 @@ namespace SubSonic.Tests
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_CustOrderHist_Should_Have_Qualified_CommandSQL()
         {
             List<StoredProcedure> sps = DataService.GetSPSchemaCollection("Northwind");
@@ -76,7 +76,7 @@ namespace SubSonic.Tests
         }
 
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_CustOrderHist_TypedSP_Should_Have_Qualified_CommandSQL()
         {
             StoredProcedure sp = Northwind.SPs.CustOrderHist("ALFKI").GetBuiltProcedure();
@@ -87,7 +87,7 @@ namespace SubSonic.Tests
         /// Ss the p_ reader test.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_ReaderTest()
         {
             StoredProcedure sp = new StoredProcedure("CustOrderHist", DataService.GetInstance("Northwind"));
@@ -107,7 +107,7 @@ namespace SubSonic.Tests
         /// Ss the p_ scalar test.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_ScalarTest()
         {
             StoredProcedure sp = new StoredProcedure("CustOrderHist", DataService.GetInstance("Northwind"));
@@ -121,7 +121,7 @@ namespace SubSonic.Tests
         /// Ss the p_ DS test.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_DSTest()
         {
             StoredProcedure sp = new StoredProcedure("CustOrderHist", DataService.GetInstance("Northwind"));
@@ -135,7 +135,7 @@ namespace SubSonic.Tests
         /// Ss the p_ outputs.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_Outputs()
         {
             StoredProcedure sp = new StoredProcedure("SubSonicTest", DataService.GetInstance("Northwind"));
@@ -155,7 +155,7 @@ namespace SubSonic.Tests
         /// Ss the p_ outputs_ default provider.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_Outputs_DefaultProvider()
         {
             StoredProcedure sp = new StoredProcedure("SubSonicTestNW", DataService.GetInstance("Northwind"));
@@ -175,7 +175,7 @@ namespace SubSonic.Tests
         /// Ss the p_ quick reader.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_QuickReader()
         {
             int count = 0;
@@ -192,7 +192,7 @@ namespace SubSonic.Tests
         /// Ss the p_ quick data set.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void SP_QuickDataSet()
         {
             DataSet ds = StoredProcedure.GetDataSet("CustOrderHist 'ALFKI'");

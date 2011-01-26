@@ -94,7 +94,7 @@ namespace SubSonic.Tests
         /// Object_s the CRUD.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void Object_CRUD()
         {
             //Add a product

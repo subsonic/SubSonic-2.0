@@ -22,7 +22,7 @@ namespace SubSonic.Tests.SqlQuery
     public class TransactionTests
     {
         [Test]
-        [RollBack]
+        [Rollback]
         public void Transaction_Simple()
         {
             List<Insert> queries = new List<Insert>();

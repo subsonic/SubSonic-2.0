@@ -44,7 +44,7 @@ namespace SubSonic.Tests
         /// Script_s the data.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void Script_Data()
         {
             string sql = DataService.ScriptData("Categories", "Northwind");
@@ -55,7 +55,7 @@ namespace SubSonic.Tests
         /// Script_s all data.
         /// </summary>
         [Test]
-        [RollBack]
+        [Rollback]
         public void Script_AllData()
         {
             string sql = DataService.ScriptData("Northwind");
