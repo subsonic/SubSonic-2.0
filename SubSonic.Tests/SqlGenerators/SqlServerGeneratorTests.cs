@@ -189,7 +189,7 @@ namespace SubSonic.Tests.SqlQuery
                 .RightOuterJoin(Category.Schema);
             string sql = q.BuildSqlStatement();
             Assert.AreEqual(
-                "SELECT [dbo].[Products].[ProductID], categoryName\r\n FROM [dbo].[Products]\r\n RIGHT OUTER JOIN [dbo].[Categories] ON [dbo].[Products].[CategoryID] = [dbo].[Categories].[CategoryID]\r\n",
+                "SELECT [dbo].[Products].[ProductID], [dbo].[Categories].[CategoryName]\r\n FROM [dbo].[Products]\r\n RIGHT OUTER JOIN [dbo].[Categories] ON [dbo].[Products].[CategoryID] = [dbo].[Categories].[CategoryID]\r\n",
                 sql);
         }
 
@@ -201,7 +201,7 @@ namespace SubSonic.Tests.SqlQuery
                 .CrossJoin(Category.Schema);
             string sql = q.BuildSqlStatement();
             Assert.AreEqual(
-                "SELECT [dbo].[Products].[ProductID], categoryName\r\n FROM [dbo].[Products]\r\n CROSS JOIN [dbo].[Categories]\r\n",
+                "SELECT [dbo].[Products].[ProductID], [dbo].[Categories].[CategoryName]\r\n FROM [dbo].[Products]\r\n CROSS JOIN [dbo].[Categories]\r\n",
                 sql);
         }
 
@@ -213,7 +213,7 @@ namespace SubSonic.Tests.SqlQuery
                 .NotEqualJoin(Category.Schema);
             string sql = q.BuildSqlStatement();
             Assert.AreEqual(
-                "SELECT [dbo].[Products].[ProductID], categoryName\r\n FROM [dbo].[Products]\r\n JOIN [dbo].[Categories] ON [dbo].[Products].[CategoryID] <> [dbo].[Categories].[CategoryID]\r\n",
+                "SELECT [dbo].[Products].[ProductID], [dbo].[Categories].[CategoryName]\r\n FROM [dbo].[Products]\r\n JOIN [dbo].[Categories] ON [dbo].[Products].[CategoryID] <> [dbo].[Categories].[CategoryID]\r\n",
                 sql);
         }
 
@@ -231,7 +231,7 @@ namespace SubSonic.Tests.SqlQuery
             ANSISqlGenerator gen = new ANSISqlGenerator(null);
             string sql = gen.BuildCreateTableStatement(Product.Schema);
             Assert.AreEqual(
-                "CREATE TABLE [dbo].[Products] (\r\n  [ProductID] int NOT NULL PRIMARY KEY IDENTITY(1,1),\r\n  [ProductName] nvarchar(40) NOT NULL,\r\n  [SupplierID] int NULL,\r\n  [CategoryID] int NULL,\r\n  [QuantityPerUnit] nvarchar(20) NULL,\r\n  [UnitPrice] money NULL CONSTRAINT DF_Products_UnitPrice DEFAULT (((0))),\r\n  [UnitsInStock] int NULL CONSTRAINT DF_Products_UnitsInStock DEFAULT (((0))),\r\n  [UnitsOnOrder] int NULL CONSTRAINT DF_Products_UnitsOnOrder DEFAULT (((0))),\r\n  [ReorderLevel] int NULL CONSTRAINT DF_Products_ReorderLevel DEFAULT (((0))),\r\n  [Discontinued] bit NOT NULL CONSTRAINT DF_Products_Discontinued DEFAULT (((0))),\r\n  [AttributeXML] nvarchar NULL,\r\n  [DateCreated] datetime NULL CONSTRAINT DF_Products_DateCreated DEFAULT ((getdate())),\r\n  [ProductGUID] uniqueidentifier NULL CONSTRAINT DF_Products_ProductGUID DEFAULT ((newid())),\r\n  [CreatedOn] datetime NOT NULL CONSTRAINT DF_Products_CreatedOn DEFAULT ((getdate())),\r\n  [CreatedBy] nvarchar(50) NULL,\r\n  [ModifiedOn] datetime NOT NULL CONSTRAINT DF_Products_ModifiedOn DEFAULT ((getdate())),\r\n  [ModifiedBy] nvarchar(50) NULL,\r\n  [Deleted] bit NOT NULL CONSTRAINT DF_Products_Deleted DEFAULT (((0))) \r\n)",
+                "CREATE TABLE [dbo].[Products] (\r\n  [ProductID] int NOT NULL PRIMARY KEY IDENTITY(1,1),\r\n  [ProductName] nvarchar(40) NOT NULL,\r\n  [SupplierID] int NULL,\r\n  [CategoryID] int NULL,\r\n  [QuantityPerUnit] nvarchar(20) NULL,\r\n  [UnitPrice] money NULL CONSTRAINT DF_Products_UnitPrice DEFAULT (((0))),\r\n  [UnitsInStock] int NULL CONSTRAINT DF_Products_UnitsInStock DEFAULT (((0))),\r\n  [UnitsOnOrder] int NULL CONSTRAINT DF_Products_UnitsOnOrder DEFAULT (((0))),\r\n  [ReorderLevel] int NULL CONSTRAINT DF_Products_ReorderLevel DEFAULT (((0))),\r\n  [Discontinued] bit NOT NULL CONSTRAINT DF_Products_Discontinued DEFAULT (((0))),\r\n  [AttributeXML] varchar NULL,\r\n  [DateCreated] datetime NULL CONSTRAINT DF_Products_DateCreated DEFAULT ((getdate())),\r\n  [ProductGUID] uniqueidentifier NULL CONSTRAINT DF_Products_ProductGUID DEFAULT ((newid())),\r\n  [CreatedOn] datetime NOT NULL CONSTRAINT DF_Products_CreatedOn DEFAULT ((getdate())),\r\n  [CreatedBy] nvarchar(50) NULL,\r\n  [ModifiedOn] datetime NOT NULL CONSTRAINT DF_Products_ModifiedOn DEFAULT ((getdate())),\r\n  [ModifiedBy] nvarchar(50) NULL,\r\n  [Deleted] bit NOT NULL CONSTRAINT DF_Products_Deleted DEFAULT (((0))) \r\n)",
                 sql);
         }
 

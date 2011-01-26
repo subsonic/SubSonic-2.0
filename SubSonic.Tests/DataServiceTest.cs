@@ -58,7 +58,7 @@ namespace SubSonic.Tests
         public void DataService_GetTableNames()
         {
             string[] tables = DataService.GetTableNames(DataService.Provider.Name);
-            Assert.IsTrue(tables.Length == 15, "Count is " + tables.Length);
+            Assert.IsTrue(tables.Length == 16, "Count is " + tables.Length);
         }
 
         /// <summary>
