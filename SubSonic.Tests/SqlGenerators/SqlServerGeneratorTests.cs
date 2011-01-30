@@ -260,6 +260,9 @@ namespace SubSonic.Tests.SqlQuery
             ANSISqlGenerator gen = new ANSISqlGenerator(null);
             string sql = gen.BuildAlterColumnStatement(column);
             Assert.AreEqual("ALTER TABLE [dbo].[Products] ALTER COLUMN [ProductName] nvarchar(150) NOT NULL", sql);
+
+            // Set it back to 40 or Create_Table fails.
+            column.MaxLength = 40;
         }
 
         [Test]
