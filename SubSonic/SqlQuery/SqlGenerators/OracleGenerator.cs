@@ -22,13 +22,6 @@ namespace SubSonic
     /// </summary>
     public class OracleGenerator : ANSISqlGenerator
     {
-        private const string PAGING_SQL =
-            @"		SELECT *
-                    FROM(
-						{0}
-                    )
-					WHERE row_number BETWEEN {1} AND {2}              
-                    ";
         /// <summary>
         /// Initializes a new instance of the <see cref="OracleGenerator"/> class.
         /// </summary>
@@ -71,7 +64,17 @@ namespace SubSonic
                 return aggregate.ColumnName;
             if(hasAlias)
                 return String.Format("{0}({1}) AS \"{2}\"", Aggregate.GetFunctionType(aggregate).ToUpper(), aggregate.ColumnName, aggregate.Alias);
+
             return string.Format("{0}({1})", Aggregate.GetFunctionType(aggregate).ToUpper(), aggregate.ColumnName);
+        }
+
+        /// <summary>
+        /// Gets the count select.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetCountSelect()
+        {
+            return base.GetCountSelect().Replace('\'', '"');
         }
 
         /// <summary>
@@ -80,56 +83,52 @@ namespace SubSonic
         /// <returns></returns>
         public override string BuildPagedSelectStatement()
         {
-            string idColumn = GetSelectColumns()[0];
-            string sqlType;
+            int startnum = query.PageSize * query.CurrentPage + 1;
+            int endnum = query.PageSize * query.CurrentPage + query.PageSize;
+            string orderBy = String.Empty;
 
-            TableSchema.TableColumn idCol = FindColumn(idColumn);
-            if (idCol != null)
-            {
-                string pkType = String.Empty;
-                if (Utility.IsString(idCol))
-                    pkType = String.Concat("(", idCol.MaxLength, ")");
-                sqlType = Enum.GetName(typeof(SqlDbType), Utility.GetSqlDBType(idCol.DataType));
-                sqlType = String.Concat(sqlType, pkType);
-            }
-            else
-            {
-                //assume it's an integer
-                sqlType = Enum.GetName(typeof(SqlDbType), SqlDbType.Int);
-            }
+            if (this.query.OrderBys.Count > 0)
+                orderBy = GenerateOrderBy();
 
-            string select = GenerateCommandLine();
-            //string columnList = select.Replace("SELECT", "");
-            string fromLine = GenerateFromList();
-            string joins = GenerateJoins();
-            string wheres = GenerateWhere();
-            string havings = string.Empty;
+            //The ROW_NUMBER() function in Oracle requires an ORDER BY clause.
+            //In case one is not specified, we need to halt and inform the caller.
+            if(orderBy.Equals(String.Empty))
+                throw new ArgumentException("There is no column specified for the ORDER BY clause", "OrderBys");
+            
+            System.Text.StringBuilder sql = new System.Text.StringBuilder();
 
-            //have to doctor the wheres, since we're using a WHERE in the paging
-            //bits. So change all "WHERE" to "AND"
-            string tweakedWheres = wheres.Replace("WHERE", "AND");
-            string orderby = GenerateOrderBy();
+            //Build the command string
+            sql.Append("WITH pagedtable AS (");
+            sql.Append(GenerateCommandLine());
+            
+            //Since this class is for Oracle-specific SQL, we can add a hint
+            //which should help pagination queries return rows more quickly.
+            //AFAIK, this is only valid for Oracle 9i or newer.
+            sql.Replace("SELECT", "SELECT /*+ first_rows('" + query.PageSize + "') */");
+            
+            sql.Append(", ROW_NUMBER () OVER (");
+            sql.Append(orderBy);
+            sql.Append(") AS rowindex ");
+            sql.Append(Environment.NewLine);
+            sql.Append(GenerateFromList());
+            sql.Append(GenerateJoins());
+
+            sql.Append(GenerateWhere());
 
             if (query.Aggregates.Count > 0)
             {
-                joins = String.Concat(joins, GenerateGroupBy());
-                havings = GenerateHaving();
+                sql.Append(GenerateGroupBy());
+                sql.Append(Environment.NewLine);
+                sql.Append(GenerateHaving());
             }
 
-            //this uses SQL2000-compliant paging
-            //the arguments are...
-            //1 - id column - this is the PK or identifier
-            //2 - from/join/where
-            //3 - select/from/joins
-            //4 - where/order by
-            //5 - page index
-            //6 - page size
-            //7 - PK Type (using Utility.GetSqlDBType)
-            int startnum = query.PageSize*query.CurrentPage +1;
-            int endnum = query.PageSize*query.CurrentPage + query.PageSize;
-            string sql = string.Format(PAGING_SQL, String.Concat(select, fromLine.Replace("FROM", ", ROWNUM as row_number  FROM"), joins), startnum, endnum);
+            sql.Append(") SELECT * FROM pagedtable WHERE rowindex >= ");
+            sql.Append(startnum);
+            sql.Append(" AND rowindex < ");
+            sql.Append(endnum);
+            sql.Append(" ORDER BY rowindex");
 
-            return sql;
+            return sql.ToString();
         }
 
         #endregion
