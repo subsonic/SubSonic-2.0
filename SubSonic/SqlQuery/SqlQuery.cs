@@ -1936,6 +1936,7 @@ namespace SubSonic
         /// <returns></returns>
         public SqlQuery Distinct()
         {
+            DistinctSpec = SqlFragment.DISTINCT;
             IsDistinct = true;
             return this;
         }
