@@ -628,16 +628,16 @@ namespace SubSonic
         {
             switch(sqlType)
             {
-                case "varchar2":
-                case "varchar":
                 case "char":
-                case "nchar":
-                case "nvarchar2":
-                case "rowid":
-                    return DbType.String;
-                case "nclob":
+                case "varchar":
+                case "varchar2":
                 case "clob":
                     return DbType.AnsiString;
+                case "nchar":
+                case "nvarchar2":
+                case "nclob":
+                case "rowid": //Not sure about ROWID
+                    return DbType.String;                
                 case "number":
                     return DbType.Decimal;
                     //if (dataScale > 0)
