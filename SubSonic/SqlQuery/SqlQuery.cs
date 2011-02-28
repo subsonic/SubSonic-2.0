@@ -84,6 +84,7 @@ namespace SubSonic
         /// 
         /// </summary>
         public List<Aggregate> Aggregates = new List<Aggregate>();
+
         /// <summary>
         /// 
         /// </summary>

@@ -122,9 +122,9 @@ namespace SubSonic
                 sql.Append(GenerateHaving());
             }
 
-            sql.Append(") SELECT * FROM pagedtable WHERE rowindex >= ");
+            sql.Append(") SELECT * FROM pagedtable WHERE rowindex BETWEEN ");
             sql.Append(startnum);
-            sql.Append(" AND rowindex < ");
+            sql.Append(" AND ");
             sql.Append(endnum);
             sql.Append(" ORDER BY rowindex");
 
