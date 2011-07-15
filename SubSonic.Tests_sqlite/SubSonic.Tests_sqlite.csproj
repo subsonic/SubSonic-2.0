@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CF0455A9-EBEA-4C34-ACF5-52A130B3FEC8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SubSonic.Tests</RootNamespace>
+    <AssemblyName>SubSonic.Tests</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ALLPROVIDERS</DefineConstants>
+    <DocumentationFile>bin\Debug\SubSonic.Tests.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;ALLPROVIDERS</DefineConstants>
+    <DocumentationFile>bin\Release\SubSonic.Tests.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug %28SQL Server Only%29|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\SubSonic.Tests.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release %28SQL Server Only%29|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\SubSonic.Tests.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gallio, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="MbUnit, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActiveListTests.cs" />
+    <Compile Include="ActiveRecordTest.cs" />
+    <Compile Include="AssemblyCleaner.cs" />
+    <Compile Include="CodeGeneratorTests.cs" />
+    <Compile Include="Generated\AllStructs.cs" />
+    <Compile Include="Generated\NorthwindRepository\AlphabeticalListOfProduct.cs" />
+    <Compile Include="Generated\NorthwindRepository\Category.cs" />
+    <Compile Include="Generated\NorthwindRepository\CurrentProductList.cs" />
+    <Compile Include="Generated\NorthwindRepository\Customer.cs" />
+    <Compile Include="Generated\NorthwindRepository\CustomerAndSuppliersByCity.cs" />
+    <Compile Include="Generated\NorthwindRepository\CustomerCustomerDemo.cs" />
+    <Compile Include="Generated\NorthwindRepository\CustomerDemographic.cs" />
+    <Compile Include="Generated\NorthwindRepository\DisposeTable.cs" />
+    <Compile Include="Generated\NorthwindRepository\Distribution.cs" />
+    <Compile Include="Generated\NorthwindRepository\Employee.cs" />
+    <Compile Include="Generated\NorthwindRepository\EmployeeTerritory.cs" />
+    <Compile Include="Generated\NorthwindRepository\Order.cs" />
+    <Compile Include="Generated\NorthwindRepository\OrderDetail.cs" />
+    <Compile Include="Generated\NorthwindRepository\OrdersQry.cs" />
+    <Compile Include="Generated\NorthwindRepository\Product.cs" />
+    <Compile Include="Generated\NorthwindRepository\ProductCategoryMap.cs" />
+    <Compile Include="Generated\NorthwindRepository\ProductsAboveAveragePrice.cs" />
+    <Compile Include="Generated\NorthwindRepository\ProductsByCategory.cs" />
+    <Compile Include="Generated\NorthwindRepository\Region.cs" />
+    <Compile Include="Generated\NorthwindRepository\Shipper.cs" />
+    <Compile Include="Generated\NorthwindRepository\ShipStatus.cs" />
+    <Compile Include="Generated\NorthwindRepository\StoredProcedures.cs" />
+    <Compile Include="Generated\NorthwindRepository\Supplier.cs" />
+    <Compile Include="Generated\NorthwindRepository\Territory.cs" />
+    <Compile Include="Generated\NorthwindRepository\TextEntry.cs" />
+    <Compile Include="Generated\Northwind\AlphabeticalListOfProduct.cs" />
+    <Compile Include="Generated\Northwind\Category.cs" />
+    <Compile Include="Generated\Northwind\CategoryController.cs" />
+    <Compile Include="Generated\Northwind\CurrentProductList.cs" />
+    <Compile Include="Generated\Northwind\Customer.cs" />
+    <Compile Include="Generated\Northwind\CustomerAndSuppliersByCity.cs" />
+    <Compile Include="Generated\Northwind\CustomerController.cs" />
+    <Compile Include="Generated\Northwind\CustomerCustomerDemo.cs" />
+    <Compile Include="Generated\Northwind\CustomerCustomerDemoController.cs" />
+    <Compile Include="Generated\Northwind\CustomerDemographic.cs" />
+    <Compile Include="Generated\Northwind\CustomerDemographicController.cs" />
+    <Compile Include="Generated\Northwind\DisposeTable.cs" />
+    <Compile Include="Generated\Northwind\DisposeTableController.cs" />
+    <Compile Include="Generated\Northwind\Distribution.cs" />
+    <Compile Include="Generated\Northwind\DistributionController.cs" />
+    <Compile Include="Generated\Northwind\Employee.cs" />
+    <Compile Include="Generated\Northwind\EmployeeController.cs" />
+    <Compile Include="Generated\Northwind\EmployeeTerritory.cs" />
+    <Compile Include="Generated\Northwind\EmployeeTerritoryController.cs" />
+    <Compile Include="Generated\Northwind\Order.cs" />
+    <Compile Include="Generated\Northwind\OrderController.cs" />
+    <Compile Include="Generated\Northwind\OrderDetail.cs" />
+    <Compile Include="Generated\Northwind\OrderDetailController.cs" />
+    <Compile Include="Generated\Northwind\OrdersQry.cs" />
+    <Compile Include="Generated\Northwind\Product.cs" />
+    <Compile Include="Generated\Northwind\ProductCategoryMap.cs" />
+    <Compile Include="Generated\Northwind\ProductCategoryMapController.cs" />
+    <Compile Include="Generated\Northwind\ProductController.cs" />
+    <Compile Include="Generated\Northwind\ProductsAboveAveragePrice.cs" />
+    <Compile Include="Generated\Northwind\ProductsByCategory.cs" />
+    <Compile Include="Generated\Northwind\Region.cs" />
+    <Compile Include="Generated\Northwind\RegionController.cs" />
+    <Compile Include="Generated\Northwind\Shipper.cs" />
+    <Compile Include="Generated\Northwind\ShipperController.cs" />
+    <Compile Include="Generated\Northwind\ShipStatus.cs" />
+    <Compile Include="Generated\Northwind\ShipStatusController.cs" />
+    <Compile Include="Generated\Northwind\StoredProcedures.cs" />
+    <Compile Include="Generated\Northwind\Supplier.cs" />
+    <Compile Include="Generated\Northwind\SupplierController.cs" />
+    <Compile Include="Generated\Northwind\Territory.cs" />
+    <Compile Include="Generated\Northwind\TerritoryController.cs" />
+    <Compile Include="Generated\Northwind\TextEntry.cs" />
+    <Compile Include="Generated\Northwind\TextEntryController.cs" />
+    <Compile Include="Repository\RepositoryTests.cs" />
+    <Compile Include="ScriptersTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlGenerators\SQLiteGeneratorTests.cs" />
+    <Compile Include="SqlQuery\AggregateTests.cs" />
+    <Compile Include="SqlQuery\ParserTestUtility.cs" />
+    <Compile Include="SqlQuery\InlineQueryTests.cs" />
+    <Compile Include="SqlQuery\DeleteTests.cs" />
+    <Compile Include="SqlQuery\InsertTests.cs" />
+    <Compile Include="DataServiceTest.cs" />
+    <Compile Include="ETL.cs" />
+    <Compile Include="ForeignKeyTests.cs" />
+    <Compile Include="ManyToMany.cs" />
+    <Compile Include="MultiProvider.cs" />
+    <Compile Include="NameTransformationTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlQuery\SelectTests.cs" />
+    <Compile Include="SqlQuery\TransactionTests.cs" />
+    <Compile Include="SqlQuery\UpdateTests.cs" />
+    <Compile Include="QueryTest.cs" />
+    <Compile Include="SugarTests.cs" />
+    <Compile Include="TransactionTests.cs" />
+    <Compile Include="TransactionWithDtcOffTests.cs" />
+    <Compile Include="TurboTemplateTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Northwind.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SubSonic.Migrations\SubSonic.Migrations.csproj">
+      <Project>{0E82F4EB-BA66-474C-A5F9-3D10D1EE2206}</Project>
+      <Name>SubSonic.Migrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubSonic\SubSonic.csproj">
+      <Project>{EE4A10E7-92C3-4EAC-B6DF-5DA1C26F4D1D}</Project>
+      <Name>SubSonic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DBScripts\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+</Project>
