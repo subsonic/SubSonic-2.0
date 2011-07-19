@@ -113,6 +113,8 @@ namespace SubSonic
                     sqlParam.OracleType = GetOracleType(param.DataType);
                     sqlParam.ParameterName = param.ParameterName;
                     sqlParam.Value = param.ParameterValue;
+                    sqlParam.Size = param.Size;
+
                     cmd.Parameters.Add(sqlParam);
                 }
             }
@@ -551,7 +553,6 @@ namespace SubSonic
             QueryCommand cmd = new QueryCommand(GET_PRIMARY_KEY_SQL, Name);
             cmd.AddParameter(TABLE_NAME_PARAMETER, tableName, DbType.AnsiString);
             ArrayList names = new ArrayList();
-            //ArrayList list = new ArrayList();
 
             using(IDataReader rdr = GetReader(cmd))
             {
@@ -637,10 +638,17 @@ namespace SubSonic
                 case "blob":
                     return DbType.Binary;
                 case "date":
-                case "timestamp":
                     return DbType.DateTime;
                 default:
-                    return DbType.String;
+                    //For whatever reason, Oracle9i (+ others?) stores the 
+                    //precision with certain datatypes. Ex: "timestamp(3)"
+                    //So having "timestamp" as a case statement will not work.
+                    if(sqlType.StartsWith("timestamp"))
+                        return DbType.DateTime;
+                    else if (sqlType.StartsWith("interval"))
+                        return DbType.String; //No idea how to handle this one
+                    else
+                        return DbType.String;
             }
         }
 
