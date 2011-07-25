@@ -307,11 +307,27 @@ namespace SubSonic.Tests.SqlQuery
         #region Paging
 
         [Test]
-        public void Exec_PagedSimple()
-        {
+        public void Exec_PagedSimple() {
             SubSonic.SqlQuery q = Select.AllColumnsFrom<Product>().Paged(1, 20).Where("productid").IsLessThan(100);
             int records = q.GetRecordCount();
             Assert.IsTrue(records == 20);
+        }
+
+        [Test]
+        public void Exec_PagedWithAggregate() {
+            SubSonic.SqlQuery query = new SubSonic.Select(
+                SubSonic.Aggregate.GroupBy(Product.Columns.CategoryID))
+                .Paged(1, 3)
+                .From(Product.Schema)
+                .Where(Product.Columns.ProductID).IsGreaterThan(0);
+            string exMsg = "";
+            try {
+                ProductCollection plist = query.ExecuteAsCollection<ProductCollection>();
+            }
+            catch (Exception ex) {
+                exMsg = ex.Message;
+            }
+            Assert.IsTrue(!exMsg.Contains("syntax near the keyword 'WHERE'"), exMsg + "\r\n" + query.BuildSqlStatement());
         }
 
         [Test]

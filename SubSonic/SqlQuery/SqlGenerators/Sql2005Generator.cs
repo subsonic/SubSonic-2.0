@@ -23,15 +23,15 @@ namespace SubSonic
     {
         private const string PAGING_SQL =
             @"
-SELECT {7}
-FROM     (SELECT ROW_NUMBER() OVER ({1}) AS Row, 
+SELECT {7} FROM (
+SELECT ROW_NUMBER() OVER ({1}) AS Row, 
 {0} 
 {2}
 {3}
 {4}
-)
-            AS PagedResults
-WHERE  Row >= {5} AND Row <= {6}";
+{5}
+) AS PagedResults
+WHERE  Row >= {6} AND Row <= {7}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sql2005Generator"/> class.
@@ -57,12 +57,13 @@ WHERE  Row >= {5} AND Row <= {6}";
             string joins = GenerateJoins();
             string wheres = GenerateWhere();
             string orderby = GenerateOrderBy();
+            string groupby = string.Empty;
 
             if(String.IsNullOrEmpty(orderby.Trim()))
                 orderby = String.Concat(SqlFragment.ORDER_BY, idColumn);
 
             if(qry.Aggregates.Count > 0)
-                joins = String.Concat(joins, GenerateGroupBy());
+                groupby = String.Concat(joins, GenerateGroupBy());
 
             // If the query has a top defined
             if (!String.IsNullOrEmpty(qry.TopSpec))
@@ -77,7 +78,7 @@ WHERE  Row >= {5} AND Row <= {6}";
             int pageStart = (qry.CurrentPage - 1) * qry.PageSize + 1;
             int pageEnd = qry.CurrentPage * qry.PageSize;
 
-            string sql = string.Format(PAGING_SQL, columnList, orderby, fromLine, joins, wheres, pageStart, pageEnd, top);
+            string sql = string.Format(PAGING_SQL, columnList, orderby, fromLine, joins, wheres, groupby, pageStart, pageEnd, top);
             return sql;
         }
     }

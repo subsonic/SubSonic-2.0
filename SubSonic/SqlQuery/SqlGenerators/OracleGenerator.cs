@@ -104,6 +104,7 @@ namespace SubSonic
             string joins = GenerateJoins();
             string wheres = GenerateWhere();
             string havings = string.Empty;
+            string groupby = string.Empty;
 
             //have to doctor the wheres, since we're using a WHERE in the paging
             //bits. So change all "WHERE" to "AND"
@@ -112,7 +113,7 @@ namespace SubSonic
 
             if (query.Aggregates.Count > 0)
             {
-                joins = String.Concat(joins, GenerateGroupBy());
+                groupby = GenerateGroupBy();
                 havings = GenerateHaving();
             }
 
