@@ -67,6 +67,8 @@ namespace SubSonic.Tests.Migrations
         [Test, Rollback]
         public void MigrateDownFromZero()
         {
+            DataService.ClearSchemaCache("Northwind");
+
             Assert.AreEqual(Migrator.GetCurrentVersion("Northwind"), 0);
             Migrator.Migrate("Northwind", "Migrations", -1);
             Assert.AreEqual(Migrator.GetCurrentVersion("Northwind"), 0);
@@ -76,6 +78,8 @@ namespace SubSonic.Tests.Migrations
         public void MigrateUpDownNegative1()
         {
             string p = "Northwind";
+
+            DataService.ClearSchemaCache(p);
 
             Assert.AreEqual(Migrator.GetCurrentVersion(p), 0);
 
@@ -115,9 +119,14 @@ namespace SubSonic.Tests.Migrations
             Assert.IsFalse(DataService.TableExists("Northwind", "ShipStatus"));
         }
 
-        [Test, Rollback]
+        [Test]
+        // DON'T put in a transaction because the error messes up the transaction's state 
+        // and then we can't read the table list
+        // - the good news is nothing permanent happens anyway :-)
         public void MigrationUpwithErrors()
         {
+            DataService.ClearSchemaCache("Northwind");
+
             //test that the two correct tables don't get added to the database
             Migration m = new MigrationTest002();
             try
@@ -137,6 +146,8 @@ namespace SubSonic.Tests.Migrations
         [Rollback]
         public void MigrationAlterColumn()
         {
+            DataService.ClearSchemaCache("Northwind");
+
             Migration m = new AlterProductNameMigration();
 
             //Up
@@ -192,6 +203,8 @@ namespace SubSonic.Tests.Migrations
         [Rollback]
         public void MigrationShouldExecMultipleMigrations()
         {
+            DataService.ClearSchemaCache("Northwind");
+
             Migrator.Migrate("Northwind", MigrationDirectory, null);
             DataService.ClearSchemaCache("Northwind");
             TableSchema.Table table = DataService.GetSchema("Test1", "Northwind");
@@ -269,7 +282,7 @@ namespace SubSonic.Tests.Migrations
             Assert.IsFalse(DataService.TableExists("Southwind", "ShipStatus"));
         }
 
-        [Test]
+        [Test, Rollback]
         public void CreateTable_Should_Allow_Char3_As_PrimaryKey() {
 
             new InlineQuery("Northwind").Execute("IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[MyTb]') AND type in (N'U')) \r\n DROP TABLE [dbo].[MyTb]");

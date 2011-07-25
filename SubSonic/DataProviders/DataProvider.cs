@@ -778,6 +778,14 @@ namespace SubSonic
         public abstract string[] GetSPList();
 
         /// <summary>
+        /// Gets the SP list.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string[] GetSPList(bool includeSchema) {
+            return GetSPList();
+        }
+
+        /// <summary>
         /// Gets the table name list.
         /// </summary>
         /// <returns></returns>

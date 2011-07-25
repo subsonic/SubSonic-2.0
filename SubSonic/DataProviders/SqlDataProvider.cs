@@ -817,7 +817,11 @@ ORDER BY OrdinalPosition ASC";
         /// Gets the SP list.
         /// </summary>
         /// <returns></returns>
-        public override string[] GetSPList()
+        public override string[] GetSPList() {
+            return GetSPList(false);
+        }
+
+        public override string[] GetSPList(bool includeSchema)
         {
             QueryCommand cmd = new QueryCommand(String.Concat("/* GetSPList() */ ", SP_SQL), Name);
 
@@ -827,7 +831,7 @@ ORDER BY OrdinalPosition ASC";
             {
                 while(rdr.Read())
                 {
-                    sList.Append(rdr[0]);
+                    sList.Append((includeSchema ? rdr["Schema"] + "." : "") + rdr["SPName"]);
                     sList.Append("|");
                 }
                 rdr.Close();

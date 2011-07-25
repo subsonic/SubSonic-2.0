@@ -429,8 +429,7 @@ namespace SubSonic
         /// Returns an empty array as SQLite does not support stored procedures.
         /// </summary>
         /// <returns></returns>
-        public override string[] GetSPList()
-        {
+        public override string[] GetSPList() {
             //SQLite does not support stored procedures
             return new string[0];
         }

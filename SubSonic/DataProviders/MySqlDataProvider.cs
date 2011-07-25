@@ -444,8 +444,7 @@ namespace SubSonic
         /// Gets the SP list.
         /// </summary>
         /// <returns></returns>
-        public override string[] GetSPList()
-        {
+        public override string[] GetSPList() {
             const string sql = "SELECT routine_name FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_SCHEMA = ?databaseName";
             StringBuilder sList = new StringBuilder();
 

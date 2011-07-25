@@ -396,7 +396,7 @@ namespace SubSonic
         public static List<StoredProcedure> GetSPSchemaCollection(string providerName)
         {
             List<StoredProcedure> _sps = new List<StoredProcedure>();
-            string[] sps = GetSPList(providerName);
+            string[] sps = GetSPList(providerName, true);
 
             DataProvider provider = Providers[providerName];
             {
@@ -404,32 +404,25 @@ namespace SubSonic
                 int generatedSprocs = 0;
                 foreach(string s in sps)
                 {
-                    if(CodeService.ShouldGenerate(s, provider.IncludeProcedures, provider.ExcludeProcedures, provider))
+                    string spName = s;
+                    string spSchemaName = "";
+                    int i = s.IndexOf('.');
+                    if (i >= 0) {
+                        spName = s.Substring(i + 1);
+                        spSchemaName = s.Substring(0, i);
+                    }
+                    if (CodeService.ShouldGenerate(spName, provider.IncludeProcedures, provider.ExcludeProcedures, provider))
                     {
+
                         //declare the sp
-                        StoredProcedure sp = new StoredProcedure(s, provider);
+                        StoredProcedure sp = new StoredProcedure(spName, provider, spSchemaName);
 
                         //get the params
-                        using(IDataReader rdr = GetSPParams(s, providerName))
+                        using (IDataReader rdr = GetSPParams(spName, providerName))
                         {
                             while(rdr.Read())
                             {
-                                try
-                                {
-                                    object objSchema = rdr["SPSchema"];
-                                    if(objSchema != null)
-                                        sp.SchemaName = objSchema.ToString();
-
-                                }
-                                catch (Exception)
-                                {
-                                    
-                                    //throw;
-                                    //no throw here
-                                }
                                 StoredProcedure.Parameter par = new StoredProcedure.Parameter();
-                                
-
 
                                 provider.SetParameter(rdr, par);
                                 par.QueryParameter = provider.MakeParam(par.Name);
@@ -805,6 +798,16 @@ namespace SubSonic
         public static string[] GetSPList(string providerName)
         {
             return GetInstance(providerName).GetSPList();
+        }
+
+        /// <summary>
+        /// Gets the SP name and schema list.
+        /// </summary>
+        /// <param name="providerName">Name of the provider.</param>
+        /// <returns></returns>
+        public static string[] GetSPList(string providerName, bool includeSchema)
+        {
+            return GetInstance(providerName).GetSPList(includeSchema);
         }
 
         /// <summary>
