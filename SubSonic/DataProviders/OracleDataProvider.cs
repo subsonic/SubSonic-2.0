@@ -689,6 +689,7 @@ namespace SubSonic
                     {
                         cmd = new OracleCommand(qry.CommandSql, (OracleConnection)conn.Connection);
                         cmd.CommandType = qry.CommandType;
+                        cmd.Transaction = trans;
 
                         AddParams(cmd, qry);
 
