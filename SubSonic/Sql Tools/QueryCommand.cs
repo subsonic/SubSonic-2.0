@@ -370,17 +370,6 @@ namespace SubSonic
         }
 
         /// <summary>
-        /// Adds the parameter. THIS OVERLOAD DOES NOT ENSURE DATA TYPE SAFETY!
-        /// </summary>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="parameterValue">The parameter value.</param>
-        [Obsolete("Deprecated: Use AddParameter(string parameterName, object parameterValue, DbType dataType) instead.")]
-        public void AddParameter(string parameterName, object parameterValue)
-        {
-            AddParameter(parameterName, parameterValue, DbType.AnsiString);
-        }
-
-        /// <summary>
         /// Adds the output parameter.
         /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
