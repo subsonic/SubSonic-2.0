@@ -113,7 +113,12 @@ namespace SubSonic
                     sqlParam.OracleType = GetOracleType(param.DataType);
                     sqlParam.ParameterName = param.ParameterName;
                     sqlParam.Value = param.ParameterValue;
-                    sqlParam.Size = param.Size;
+
+                    if (param.Mode == ParameterDirection.Output ||
+                        param.Mode == ParameterDirection.InputOutput)
+                    {
+                        sqlParam.Size = param.Size;
+                    }
 
                     cmd.Parameters.Add(sqlParam);
                 }
@@ -158,7 +163,7 @@ namespace SubSonic
                 case DbType.Int64:
                     return OracleType.Number;
                 case DbType.Object:
-                    return OracleType.Blob;
+                    return OracleType.Cursor;
                 case DbType.SByte:
                     return OracleType.SByte;
                 case DbType.Single:
