@@ -25,6 +25,7 @@ _compareTemp
 _notes
 aspnet_client
 httpd.parse.errors
+test-report-
  
 # Office Temp Files
 ~$*
