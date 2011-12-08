@@ -12,6 +12,7 @@
  * rights and limitations under the License.
 */
 
+using System;
 using System.Data;
 using MbUnit.Framework;
 using Northwind;
@@ -171,6 +172,23 @@ namespace SubSonic.Tests.SqlQuery
             ProductCollection pc2 = q2.ExecuteAsCollection<ProductCollection>();
             Assert.GreaterThanOrEqualTo(pc2.Count, 1);
 
+        }
+
+        [Test]
+        public void Select_PagedWithAggregate() {
+             SubSonic.SqlQuery query = new SubSonic.Select(
+                SubSonic.Aggregate.GroupBy(Product.Columns.CategoryID))
+                .Paged(1, 3)
+                .From(Product.Schema)
+                .Where(Product.Columns.ProductID).IsGreaterThan(0);
+            string exMsg = "";
+            try {
+                ProductCollection plist = query.ExecuteAsCollection<ProductCollection>();
+            }
+            catch (Exception ex) {
+                exMsg = ex.Message;
+            }
+            Assert.IsTrue(!exMsg.Contains("syntax near the keyword 'WHERE'"), exMsg + "\r\n" + query.BuildSqlStatement());
         }
 
         [Test]

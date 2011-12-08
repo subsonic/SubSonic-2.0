@@ -67,8 +67,9 @@ namespace SubSonic.SubCommander
                 commandsToActions["generatetables"] = GenerateTables;
                 commandsToActions["generateods"] = GenerateODSControllers;
                 commandsToActions["generateviews"] = GenerateViews;
-                commandsToActions["generatesps"] = GenerateSPs;
-                commandsToActions["generate"] = GenerateAll;
+				commandsToActions["generatesps"] = GenerateSPs;
+				commandsToActions["generateenums"] = GenerateEnums;
+				commandsToActions["generate"] = GenerateAll;
                 commandsToActions["generateall"] = GenerateAll;
                 commandsToActions["generateeditor"] = GenerateEditor;
                 commandsToActions["editor"] = GenerateEditor;
@@ -140,8 +141,9 @@ namespace SubSonic.SubCommander
             Console.WriteLine("generatetables: Generates output code for your tables");
             Console.WriteLine("generateODS:    Generates and ObjectDataSource controller for each table");
             Console.WriteLine("generateviews:  Generates output code for your views");
-            Console.WriteLine("generatesps:    Generates output code for your SPs");
-            Console.WriteLine("editor:         Creates an Editor for a particular table");
+			Console.WriteLine("generatesps:    Generates output code for your SPs");
+			Console.WriteLine("generateenums:  Generates output code for your Enums");
+			Console.WriteLine("editor:         Creates an Editor for a particular table");
             Console.WriteLine("migrate:        Migrate the database using migrations in \\Migrations folder");
             Console.WriteLine(String.Empty);
             Console.WriteLine("******************** Argument List ****************************");
@@ -788,8 +790,9 @@ namespace SubSonic.SubCommander
             GenerateTables();
             GenerateODSControllers();
             GenerateViews();
-            GenerateSPs();
-            GenerateStructs();
+			GenerateSPs();
+			GenerateEnums();
+			GenerateStructs();
         }
 
         /// <summary>
@@ -1104,6 +1107,36 @@ namespace SubSonic.SubCommander
                 Console.WriteLine("Generating SPs to " + outPath);
 
                 TurboTemplate tt = CodeService.BuildSPTemplate(language, provider);
+                tt.OutputPath = outPath;
+                turboCompiler.AddTemplate(tt);
+            }
+
+            Console.WriteLine("Finished");
+        }
+
+        /// <summary>
+        /// Generates the S ps.
+        /// </summary>
+		private static void GenerateEnums()
+        {
+            SetProvider();
+
+            language = CodeLanguageFactory.GetByShortName(GetArg("lang"));
+
+            //loop the providers, and if there's more than one, output to their own folder
+            //for tidiness
+            foreach(DataProvider provider in DataService.Providers)
+            {
+                string outDir = GetOutSubDir(provider);
+                if(outDir == String.Empty)
+                    outDir = Directory.GetCurrentDirectory();
+
+                if(!Directory.Exists(outDir))
+                    Directory.CreateDirectory(outDir);
+                string outPath = Path.Combine(outDir, "Enums" + language.FileExtension);
+                Console.WriteLine("Generating Enums to " + outPath);
+
+				TurboTemplate tt = CodeService.BuildEnumTemplate(language, provider);
                 tt.OutputPath = outPath;
                 turboCompiler.AddTemplate(tt);
             }

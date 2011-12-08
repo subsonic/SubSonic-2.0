@@ -126,7 +126,7 @@ namespace SubSonic
             }
 
             //batch this into one call
-            string idParam = Utility.PrefixParameter("id", provider);
+            string idParam = provider.FormatParameterNameForSQL("id");
             QueryCommand cmd = new QueryCommand("SELECT " + fkPK + "," + foreignTextColumn + " FROM " + foreignTableName + ";", providerName);
             cmd.CommandSql += "SELECT " + fkPK + " FROM " + mapTableName + " WHERE " + pkTable.PrimaryKey.ColumnName + " = " + idParam;
             cmd.Parameters.Add(idParam, primaryKeyValue, pkTable.PrimaryKey.DataType);
@@ -168,7 +168,7 @@ namespace SubSonic
             string pk = pkTable.PrimaryKey.ColumnName;
 
             //delete out the existing
-            string idParam = Utility.PrefixParameter("id", provider);
+            string idParam = provider.FormatParameterNameForSQL("id");
             QueryCommand cmdDel = new QueryCommand("DELETE FROM " + mapTableName + " WHERE " + pk + " = " + idParam, providerName);
             cmdDel.AddParameter(idParam, primaryKeyValue, DbType.AnsiString);
             //cmdDel.ProviderName = Product.Schema.ProviderName;
@@ -177,8 +177,8 @@ namespace SubSonic
             coll.Add(cmdDel);
 
             //loop the items and insert
-            string fkParam = Utility.PrefixParameter("fkID", provider);
-            string pkParam = Utility.PrefixParameter("pkID", provider);
+            string fkParam = provider.FormatParameterNameForSQL("fkID");
+            string pkParam = provider.FormatParameterNameForSQL("pkID");
 
             foreach(ListItem l in Items)
             {

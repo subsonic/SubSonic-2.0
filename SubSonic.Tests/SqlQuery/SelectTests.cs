@@ -398,7 +398,8 @@ namespace SubSonic.Tests.SqlQuery
         {
             SubSonic.SqlQuery query = new
                 Select(Aggregate.GroupBy("ProductID"), Aggregate.Avg("UnitPrice"), Aggregate.Avg("Quantity"))
-                .From("Order Details")
+                .From("Order Details");
+                query
                 .Where(Aggregate.Avg("UnitPrice"))
                 .IsGreaterThan(30)
                 .And(Aggregate.Avg("Quantity"))

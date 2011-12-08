@@ -259,6 +259,19 @@ namespace Southwind
 				colvarDiscontinued.ForeignKeyTableName = "";
 				schema.Columns.Add(colvarDiscontinued);
 				
+				TableSchema.TableColumn colvarIsDeleted = new TableSchema.TableColumn(schema);
+				colvarIsDeleted.ColumnName = "IsDeleted";
+				colvarIsDeleted.DataType = DbType.Boolean;
+				colvarIsDeleted.MaxLength = 4;
+				colvarIsDeleted.AutoIncrement = false;
+				colvarIsDeleted.IsNullable = true;
+				colvarIsDeleted.IsPrimaryKey = false;
+				colvarIsDeleted.IsForeignKey = false;
+				colvarIsDeleted.IsReadOnly = false;
+				colvarIsDeleted.DefaultSetting = @"";
+				colvarIsDeleted.ForeignKeyTableName = "";
+				schema.Columns.Add(colvarIsDeleted);
+				
 				BaseSchema = schema;
 				//add this schema to the provider
 				//so we can query it later
@@ -348,6 +361,14 @@ namespace Southwind
 			get { return GetColumnValue<bool>(Columns.Discontinued); }
 			set { SetColumnValue(Columns.Discontinued, value); }
 		}
+		  
+		[XmlAttribute("IsDeleted")]
+		[Bindable(true)]
+		public bool? IsDeleted 
+		{
+			get { return GetColumnValue<bool?>(Columns.IsDeleted); }
+			set { SetColumnValue(Columns.IsDeleted, value); }
+		}
 		
 		#endregion
 		
@@ -368,7 +389,7 @@ namespace Southwind
 		/// <summary>
 		/// Inserts a record, can be used with the Object Data Source
 		/// </summary>
-		public static void Insert(string varProductName,int? varSupplierID,int? varCategoryID,string varQuantityPerUnit,decimal? varUnitPrice,short? varUnitsInStock,short? varUnitsOnOrder,short? varReorderLevel,bool varDiscontinued)
+		public static void Insert(string varProductName,int? varSupplierID,int? varCategoryID,string varQuantityPerUnit,decimal? varUnitPrice,short? varUnitsInStock,short? varUnitsOnOrder,short? varReorderLevel,bool varDiscontinued,bool? varIsDeleted)
 		{
 			Product item = new Product();
 			
@@ -390,6 +411,8 @@ namespace Southwind
 			
 			item.Discontinued = varDiscontinued;
 			
+			item.IsDeleted = varIsDeleted;
+			
 		
 			if (System.Web.HttpContext.Current != null)
 				item.Save(System.Web.HttpContext.Current.User.Identity.Name);
@@ -400,7 +423,7 @@ namespace Southwind
 		/// <summary>
 		/// Updates a record, can be used with the Object Data Source
 		/// </summary>
-		public static void Update(int varProductID,string varProductName,int? varSupplierID,int? varCategoryID,string varQuantityPerUnit,decimal? varUnitPrice,short? varUnitsInStock,short? varUnitsOnOrder,short? varReorderLevel,bool varDiscontinued)
+		public static void Update(int varProductID,string varProductName,int? varSupplierID,int? varCategoryID,string varQuantityPerUnit,decimal? varUnitPrice,short? varUnitsInStock,short? varUnitsOnOrder,short? varReorderLevel,bool varDiscontinued,bool? varIsDeleted)
 		{
 			Product item = new Product();
 			
@@ -423,6 +446,8 @@ namespace Southwind
 				item.ReorderLevel = varReorderLevel;
 			
 				item.Discontinued = varDiscontinued;
+			
+				item.IsDeleted = varIsDeleted;
 			
 			item.IsNew = false;
 			if (System.Web.HttpContext.Current != null)
@@ -507,6 +532,13 @@ namespace Southwind
         
         
         
+        public static TableSchema.TableColumn IsDeletedColumn
+        {
+            get { return Schema.Columns[10]; }
+        }
+        
+        
+        
         #endregion
 		#region Columns Struct
 		public struct Columns
@@ -521,6 +553,7 @@ namespace Southwind
 			 public static string UnitsOnOrder = @"UnitsOnOrder";
 			 public static string ReorderLevel = @"ReorderLevel";
 			 public static string Discontinued = @"Discontinued";
+			 public static string IsDeleted = @"IsDeleted";
 						
 		}
 		#endregion

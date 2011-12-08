@@ -305,7 +305,7 @@ namespace SubSonic
 
             QueryParameter param = new QueryParameter
                                        {
-                                           ParameterName = CommandType == CommandType.StoredProcedure ? parameterName : Utility.PrefixParameter(parameterName, Provider),
+                                           ParameterName = CommandType == CommandType.StoredProcedure ? parameterName : Provider.FormatParameterNameForSQL(parameterName),
                                            ParameterValue = parameterValue ?? DBNull.Value,
                                            Mode = direction,
                                            DataType = dbType,

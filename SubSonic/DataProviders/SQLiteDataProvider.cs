@@ -168,7 +168,7 @@ namespace SubSonic
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public override string DelimitDbName(string columnName)
+        public override string FormatIdentifier(string columnName)
         {
             if(!String.IsNullOrEmpty(columnName))
                 return "`" + columnName + "`";
@@ -1042,7 +1042,7 @@ namespace SubSonic
                 whereOperator = isFirstPass ? SqlFragment.WHERE : " " + Enum.GetName(typeof(Where.WhereCondition), wWhere.Condition) + " ";
 
                 where += whereOperator +
-                         Utility.QualifyColumnName(wWhere.TableName, wWhere.ColumnName, qry.Provider) +
+                         qry.Provider.QualifyColumnName("", wWhere.TableName, wWhere.ColumnName) +
                          Where.GetComparisonOperator(wWhere.Comparison);
                 if(wWhere.ParameterValue != DBNull.Value && wWhere.ParameterValue != null)
                     where += "?";
@@ -1060,7 +1060,7 @@ namespace SubSonic
                     whereOperator = isFirstPass ? SqlFragment.WHERE : " " + Enum.GetName(typeof(Where.WhereCondition), between.Condition) + " ";
 
                 where += whereOperator +
-                         Utility.QualifyColumnName(between.TableName, between.ColumnName, qry.Provider) +
+                         qry.Provider.QualifyColumnName("", between.TableName, between.ColumnName) +
                          SqlFragment.BETWEEN + " ? " +
                          SqlFragment.AND + " ? ";
 
@@ -1082,7 +1082,7 @@ namespace SubSonic
                     else
                         where += SqlFragment.AND;
 
-                    where += qry.Provider.DelimitDbName(qry.InColumn) + SqlFragment.IN + "(";
+                    where += qry.Provider.FormatIdentifier(qry.InColumn) + SqlFragment.IN + "(";
                     bool isFirst = true;
 
                     for(int i = 1; i <= qry.InList.Length; i++)

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -21,9 +21,10 @@
     </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,8 +61,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Gallio.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MbUnit, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\MbUnit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -100,6 +100,7 @@
     <Compile Include="Generated\NorthwindRepository\CustomerDemographic.cs" />
     <Compile Include="Generated\NorthwindRepository\Employee.cs" />
     <Compile Include="Generated\NorthwindRepository\EmployeeTerritory.cs" />
+    <Compile Include="Generated\NorthwindRepository\Enums.cs" />
     <Compile Include="Generated\NorthwindRepository\Invoice.cs" />
     <Compile Include="Generated\NorthwindRepository\Order.cs" />
     <Compile Include="Generated\NorthwindRepository\OrderDetail.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Generated\Northwind\EmployeeController.cs" />
     <Compile Include="Generated\Northwind\EmployeeTerritory.cs" />
     <Compile Include="Generated\Northwind\EmployeeTerritoryController.cs" />
+    <Compile Include="Generated\Northwind\Enums.cs" />
     <Compile Include="Generated\Northwind\Invoice.cs" />
     <Compile Include="Generated\Northwind\Order.cs" />
     <Compile Include="Generated\Northwind\OrderController.cs" />
@@ -179,6 +181,7 @@
     <Compile Include="Generated\SouthwindRepository\Customerdemographic.cs" />
     <Compile Include="Generated\SouthwindRepository\Employee.cs" />
     <Compile Include="Generated\SouthwindRepository\Employeeterritory.cs" />
+    <Compile Include="Generated\SouthwindRepository\Enums.cs" />
     <Compile Include="Generated\SouthwindRepository\Invoice.cs" />
     <Compile Include="Generated\SouthwindRepository\Order.cs" />
     <Compile Include="Generated\SouthwindRepository\OrderDetail.cs" />
@@ -215,9 +218,8 @@
     <Compile Include="Generated\Southwind\EmployeeController.cs" />
     <Compile Include="Generated\Southwind\Employeeterritory.cs" />
     <Compile Include="Generated\Southwind\EmployeeterritoryController.cs" />
+    <Compile Include="Generated\Southwind\Enums.cs" />
     <Compile Include="Generated\Southwind\Invoice.cs" />
-    <Compile Include="Generated\Southwind\Logicaldelete.cs" />
-    <Compile Include="Generated\Southwind\LogicaldeleteController.cs" />
     <Compile Include="Generated\Southwind\Order.cs" />
     <Compile Include="Generated\Southwind\OrderController.cs" />
     <Compile Include="Generated\Southwind\OrderDetail.cs" />
@@ -244,23 +246,6 @@
     <Compile Include="Generated\Southwind\SupplierController.cs" />
     <Compile Include="Generated\Southwind\Territory.cs" />
     <Compile Include="Generated\Southwind\TerritoryController.cs" />
-    <Compile Include="Generated\Southwind\Testtable.cs" />
-    <Compile Include="Generated\Southwind\TesttableController.cs" />
-    <Compile Include="Generated\T4\ActiveRecord.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ActiveRecord.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Generated\T4\Utility.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Utility.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Generated\T4\Settings.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Settings.tt</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\MigrationFiles\001_MigrationTest.cs" />
     <Compile Include="Migrations\MigrationFiles\002_MigrationTest.cs" />
     <Compile Include="Migrations\MigrationTests.cs" />
@@ -293,25 +278,15 @@
     <Compile Include="TurboTemplateTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="DBScripts\Northwind.db3" />
     <None Include="DBScripts\Northwind_Data_2007_5_7.sql" />
     <None Include="DBScripts\Northwind_Schema_2007_5_7.sql" />
     <None Include="DBScripts\Northwind_Schema_Data_MySQL.sql" />
     <None Include="DBScripts\Pubs_Data_2007_5_7.sql" />
     <None Include="DBScripts\Pubs_Schema_2007_5_7.sql" />
-    <None Include="Generated\T4\ActiveRecord.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ActiveRecord.cs</LastGenOutput>
-    </None>
-    <None Include="Generated\T4\Utility.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Utility.cs</LastGenOutput>
-    </None>
-    <None Include="Generated\T4\Settings.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Settings.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SubSonic.Migrations\SubSonic.Migrations.csproj">
@@ -324,7 +299,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="DBScripts\Northwind.mdb">
+    </None>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
 </Project>

@@ -249,7 +249,7 @@ namespace SubSonic
             InsertSetting setting = new InsertSetting
                                         {
                                             ColumnName = columnName,
-                                            ParameterName = Utility.PrefixParameter("ins_" + columnName, provider),
+                                            ParameterName = provider.FormatParameterNameForSQL("ins_" + columnName),
                                             Value = columnValue,
                                             IsExpression = isExpression,
                                             DataType = dbType

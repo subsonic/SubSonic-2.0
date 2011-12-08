@@ -1048,7 +1048,7 @@ FROM  INFORMATION_SCHEMA.COLUMNS";
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public override string DelimitDbName(string columnName)
+        public override string FormatIdentifier(string columnName)
         {
             if(!String.IsNullOrEmpty(columnName) && !columnName.StartsWith("[") && !columnName.EndsWith("]"))
                 return "[" + columnName + "]";
@@ -1166,7 +1166,7 @@ FROM  INFORMATION_SCHEMA.COLUMNS";
                     //pretend it's a view
                     query.Append(string.Format(
                         PAGING_VIEW_SQL,
-                        Utility.QualifyColumnName(table.SchemaName, table.Name, qry.Provider),
+                        qry.Provider.QualifyTableName(table.SchemaName, table.Name),
                         GetQualifiedSelect(table),
                         where,
                         order,
@@ -1235,8 +1235,8 @@ FROM  INFORMATION_SCHEMA.COLUMNS";
 
                         isFirstColumn = false;
 
-                        cols += DelimitDbName(colName);
-                        pars += Utility.PrefixParameter(colName, this);
+                        cols += FormatIdentifier(colName);
+                        pars += FormatParameterNameForSQL(colName);
                     }
                     if(col.IsPrimaryKey && col.DataType == DbType.Guid)
                     {

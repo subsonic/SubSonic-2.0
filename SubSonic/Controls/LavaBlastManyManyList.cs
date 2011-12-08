@@ -158,7 +158,7 @@ namespace SubSonic
         protected virtual void BuildMappedElementCommand(DataProvider provider, QueryCommand cmd)
         {
             string userFilter = String.Empty;
-            string idParam = Utility.PrefixParameter("id", provider);
+            string idParam = provider.FormatParameterNameForSQL("id");
 
             if (!String.IsNullOrEmpty(ForeignWhere))
             {
@@ -266,8 +266,8 @@ namespace SubSonic
             // build the commands to be executed. 
             QueryCommandCollection coll = new QueryCommandCollection();
 
-            string fkParam = Utility.PrefixParameter("fkID", provider);
-            string pkParam = Utility.PrefixParameter("pkID", provider);
+            string fkParam = provider.FormatParameterNameForSQL("fkID");
+            string pkParam = provider.FormatParameterNameForSQL("pkID");
 
             foreach(KeyValuePair<string, bool> kvp in newState)
             {

@@ -63,7 +63,7 @@ WHERE  Row >= {6} AND Row <= {7}";
                 orderby = String.Concat(SqlFragment.ORDER_BY, idColumn);
 
             if(qry.Aggregates.Count > 0)
-                groupby = String.Concat(joins, GenerateGroupBy());
+                groupby = GenerateGroupBy();
 
             // If the query has a top defined
             if (!String.IsNullOrEmpty(qry.TopSpec))

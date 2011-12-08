@@ -932,7 +932,7 @@ namespace SubSonic
                     }
                     isFirst = false;
                     cols.Append(col.ColumnName);
-                    pars.Append(MakeParam(col.ColumnName));
+                    pars.Append(FormatParameterNameForSQL(col.ColumnName));
                 }
             }
             insertSQL.Append("(");

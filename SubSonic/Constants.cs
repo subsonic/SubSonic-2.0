@@ -36,8 +36,9 @@ namespace SubSonic
     /// </summary>
     public class TemplateName
     {
-        public const string CLASS = "ClassTemplate";
-        public const string DYNAMIC_SCAFFOLD = "DynamicScaffold";
+		public const string ENUM = "EnumTemplate";
+		public const string CLASS = "ClassTemplate";
+		public const string DYNAMIC_SCAFFOLD = "DynamicScaffold";
         public const string GENERATED_SCAFFOLD_CODE_BEHIND = "GeneratedScaffoldCodeBehind";
         public const string GENERATED_SCAFFOLD_MARKUP = "GeneratedScaffoldMarkup";
         public const string ODS_CONTROLLER = "ODSController";
@@ -135,8 +136,11 @@ namespace SubSonic
         public const string DEFAULT_PROVIDER = "defaultProvider";
         public const string ENABLE_TRACE = "enableTrace";
         public const string EXCLUDE_PROCEDURE_LIST = "excludeProcedureList";
-        public const string EXCLUDE_TABLE_LIST = "excludeTableList";
-        public const string EXTRACT_CLASS_NAME_FROM_SP_NAME = "extractClassNameFromSPName";
+		public const string EXCLUDE_TABLE_LIST = "excludeTableList";
+		public const string ENUM_INCLUDE_LIST = "enumIncludeList";
+		public const string ENUM_EXCLUDE_LIST = "enumExcludeList";
+		public const string ENUM_SHOW_DEBUG_INFO = "enumShowDebugInfo";
+		public const string EXTRACT_CLASS_NAME_FROM_SP_NAME = "extractClassNameFromSPName";
         public const string FIX_DATABASE_OBJECT_CASING = "fixDatabaseObjectCasing";
         public const string FIX_PLURAL_CLASS_NAMES = "fixPluralClassNames";
         public const string GENERATE_LAZY_LOADS = "generateLazyLoads";
@@ -185,6 +189,7 @@ namespace SubSonic
         public const string SQL_SERVER = "SqlDataProvider";
         public const string SQLITE = "SQLiteDataProvider";
         public const string VISTADB = "VistaDBDataProvider";
+        public const string MSACCESS = "AccessDataProvider";
     }
 
     /// <summary>
@@ -358,6 +363,61 @@ namespace SubSonic
     public class MySqlSchemaVariable
     {
         public const string PARAMETER_PREFIX = "?";
+    }
+
+    /// <summary>
+    /// Summary for the AccessSchemaVariable class
+    /// </summary>
+    public class AccessSchemaVariable {
+        // OleDB Schema Cols
+        public const string TABLE_TYPE = "TABLE_TYPE";
+        public const string TABLE_NAME = "TABLE_NAME";
+        public const string COLUMN_NAME = "COLUMN_NAME";
+        public const string ORDINAL_POSITION = "ORDINAL_POSITION";
+        public const string DATA_TYPE = "DATA_TYPE";
+        public const string COLUMN_DEFAULT = "COLUMN_DEFAULT";
+        public const string MAX_LENGTH = "CHARACTER_MAXIMUM_LENGTH";
+        public const string IS_NULLABLE = "IS_NULLABLE";
+        public const string FK_COLUMN_NAME = "FK_COLUMN_NAME";
+        public const string FK_TABLE_NAME = "FK_TABLE_NAME";
+        public const string PK_COLUMN_NAME = "PK_COLUMN_NAME";
+        public const string PK_TABLE_NAME = "PK_TABLE_NAME";
+        public const string COLUMN_FLAGS = "COLUMN_FLAGS";
+        public const string PROCEDURE_NAME = "PROCEDURE_NAME";
+        public const string PROCEDURE_DEF = "PROCEDURE_DEFINITION";
+
+        public const string DEFAULT = "DEFAULT";
+
+        // Addl Cols manufactured from Access DAO
+        public const string ALLOW_EMPTY_STRING = "ALLOW_EMPTY_STRING";
+        public const string AUTO_INCREMENT = "AUTO_INCREMENT";
+        // Addl calculated cols
+        public const string PK_TYPE = "PK_TYPE";
+        // Stored Proc Columns
+        public const string SP_SCHEMA = "SPSchema";
+        public const string SP_NAME = "SPName";
+        public const string SP_PARAM_ORDINALPOS = "OrdinalPosition";
+        public const string SP_PARAM_MODE = "mode";
+        public const string SP_PARAM_NAME = "Name";
+        public const string SP_PARAM_DBDATATYPE = "DataType";
+        public const string SP_PARAM_DATALENGTH = "DataLength";
+        public const string SP_PARAM_PREFIX = "";
+        // Addl cols from external sources
+        public const string EXTPROP_IS_IDENTITY = "ColumnIsAutoNum";
+        public const string EXTPROP_ALLOW_EMPTYSTRING = "ColumnAllowZeroLengthString";
+    }
+
+    /// <summary>
+    /// Prefixes for subsonic-generated SQL parameters.  The column name alone should not be used for the parameter 
+    /// since some RDBMSs (like MS Access) do not support a preceding character or parameters like '@' and hence cannot 
+    /// distinguish between the column and the parameter in SQL unless it is named differently.  
+    /// </summary>
+    public class GeneratedParamPrefix {
+        public const string ColAuto = "col_";
+        public const string SelectClause = "sel_";
+        public const string WhereClause = "whr_";
+        public const string InClause = "in_";
+        public const string NotInClause = "notin_";
     }
 
     /// <summary>

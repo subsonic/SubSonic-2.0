@@ -30,8 +30,6 @@ namespace Northwind
         
 		public static readonly string EmployeeTerritory = @"EmployeeTerritories";
         
-		public static readonly string MyTb = @"MyTb";
-        
 		public static readonly string OrderDetail = @"Order Details";
         
 		public static readonly string Order = @"Orders";
@@ -83,11 +81,6 @@ namespace Northwind
 		public static TableSchema.Table EmployeeTerritory
 		{
             get { return DataService.GetSchema("EmployeeTerritories", "Northwind"); }
-		}
-        
-		public static TableSchema.Table MyTb
-		{
-            get { return DataService.GetSchema("MyTb", "Northwind"); }
 		}
         
 		public static TableSchema.Table OrderDetail
@@ -255,8 +248,6 @@ namespace Southwind
         
 		public static readonly string Employeeterritory = @"employeeterritories";
         
-		public static readonly string Logicaldelete = @"logicaldelete";
-        
 		public static readonly string OrderDetail = @"order details";
         
 		public static readonly string Order = @"orders";
@@ -270,8 +261,6 @@ namespace Southwind
 		public static readonly string Supplier = @"suppliers";
         
 		public static readonly string Territory = @"territories";
-        
-		public static readonly string Testtable = @"testtable";
         
 	}
 	#endregion
@@ -308,11 +297,6 @@ namespace Southwind
             get { return DataService.GetSchema("employeeterritories", "Southwind"); }
 		}
         
-		public static TableSchema.Table Logicaldelete
-		{
-            get { return DataService.GetSchema("logicaldelete", "Southwind"); }
-		}
-        
 		public static TableSchema.Table OrderDetail
 		{
             get { return DataService.GetSchema("order details", "Southwind"); }
@@ -346,11 +330,6 @@ namespace Southwind
 		public static TableSchema.Table Territory
 		{
             get { return DataService.GetSchema("territories", "Southwind"); }
-		}
-        
-		public static TableSchema.Table Testtable
-		{
-            get { return DataService.GetSchema("testtable", "Southwind"); }
 		}
         
 	
@@ -473,8 +452,6 @@ namespace NorthwindRepository
         
 		public static readonly string EmployeeTerritory = @"EmployeeTerritories";
         
-		public static readonly string MyTb = @"MyTb";
-        
 		public static readonly string OrderDetail = @"Order Details";
         
 		public static readonly string Order = @"Orders";
@@ -526,11 +503,6 @@ namespace NorthwindRepository
 		public static TableSchema.Table EmployeeTerritory
 		{
             get { return DataService.GetSchema("EmployeeTerritories", "NorthwindRepository"); }
-		}
-        
-		public static TableSchema.Table MyTb
-		{
-            get { return DataService.GetSchema("MyTb", "NorthwindRepository"); }
 		}
         
 		public static TableSchema.Table OrderDetail
@@ -774,8 +746,6 @@ namespace SouthwindRepository
         
 		public static readonly string Employeeterritory = @"employeeterritories";
         
-		public static readonly string Logicaldelete = @"logicaldelete";
-        
 		public static readonly string OrderDetail = @"order details";
         
 		public static readonly string Order = @"orders";
@@ -789,8 +759,6 @@ namespace SouthwindRepository
 		public static readonly string Supplier = @"suppliers";
         
 		public static readonly string Territory = @"territories";
-        
-		public static readonly string Testtable = @"testtable";
         
 	}
 	#endregion
@@ -827,11 +795,6 @@ namespace SouthwindRepository
             get { return DataService.GetSchema("employeeterritories", "SouthwindRepository"); }
 		}
         
-		public static TableSchema.Table Logicaldelete
-		{
-            get { return DataService.GetSchema("logicaldelete", "SouthwindRepository"); }
-		}
-        
 		public static TableSchema.Table OrderDetail
 		{
             get { return DataService.GetSchema("order details", "SouthwindRepository"); }
@@ -865,11 +828,6 @@ namespace SouthwindRepository
 		public static TableSchema.Table Territory
 		{
             get { return DataService.GetSchema("territories", "SouthwindRepository"); }
-		}
-        
-		public static TableSchema.Table Testtable
-		{
-            get { return DataService.GetSchema("testtable", "SouthwindRepository"); }
 		}
         
 	

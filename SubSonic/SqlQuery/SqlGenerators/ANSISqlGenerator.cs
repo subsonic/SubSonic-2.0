@@ -29,6 +29,7 @@ namespace SubSonic
     {
         internal Insert insert;
         protected SqlQuery query;
+        protected bool bracketEachJoin = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ANSISqlGenerator"/> class.
@@ -212,6 +213,7 @@ namespace SubSonic
                         sb.Append(equality);
                         sb.Append(j.FromColumn.QualifiedName);
                     }
+                    if (bracketEachJoin) sb.Append(")"); 
                     sb.AppendLine(String.Empty);
                 }
             }
@@ -228,7 +230,11 @@ namespace SubSonic
             StringBuilder sb = new StringBuilder();
             sb.Append(SqlFragment.FROM);
 
-            bool isFirst = true;
+            if (bracketEachJoin && query.Joins.Count > 0) {
+                sb.Append(new string('(', query.Joins.Count));
+            }
+            
+             bool isFirst = true;
             foreach(TableSchema.Table tbl in query.FromTables)
             {
                 if(!isFirst)
@@ -297,7 +303,7 @@ namespace SubSonic
                 }
                 else
                 {
-                    c.ParameterName = Utility.PrefixParameter(rawColumnName, query.Provider) + query.Constraints.IndexOf(c);
+                    c.ParameterName = String.Concat(query.Provider.FormatParameterNameForSQL(rawColumnName), query.Constraints.IndexOf(c));
                     columnName = c.ConstructionFragment;
                 }
             }
@@ -461,21 +467,32 @@ namespace SubSonic
         }
 
         /// <summary>
-        /// Generates the order by.
+        /// Generates the 'order by' SQL clause.
         /// </summary>
         /// <returns></returns>
         public virtual string GenerateOrderBy()
         {
+            return GenerateOrderBy(false);
+        }
+
+        /// <summary>
+        /// Generates the 'order by' SQL clause.
+        /// </summary>
+        /// <param name="useReverseOrder">Generate the ORDER BY with sort order reversed for all columns/expressions.</param>
+        /// <returns></returns>
+        public virtual string GenerateOrderBy(bool useReverseOrder)
+        {
             StringBuilder sb = new StringBuilder();
-            if(query.OrderBys.Count > 0)
-            {
+            if(query.OrderBys.Count > 0) {
                 sb.Append(SqlFragment.ORDER_BY);
                 bool isFirst = true;
-                foreach(string s in query.OrderBys)
-                {
+                foreach (OrderBySQ o in query.OrderBys) {
                     if(!isFirst)
                         sb.Append(",");
-                    sb.Append(s);
+                    sb.Append(o.ColumnNameOrExpression);
+                    // SQL fragment starts with a space so don't add one
+                    OrderBySQ.OrderDirection direction = useReverseOrder ? OrderBySQ.ReverseDirection(o.Direction) : o.Direction;
+                    sb.Append(OrderBySQ.GetOrderDirectionValue((direction)));
                     isFirst = false;
                 }
                 sb.AppendLine();
@@ -649,7 +666,7 @@ namespace SubSonic
                     sb.Append(SqlFragment.SET);
 
                 if(!String.IsNullOrEmpty(u.ProviderName))
-                    sb.Append(DataService.GetInstance(u.ProviderName).DelimitDbName(u.SetStatements[i].ColumnName));
+                    sb.Append(DataService.GetInstance(u.ProviderName).FormatIdentifier(u.SetStatements[i].ColumnName));
                 else
                     sb.Append(u.SetStatements[i].ColumnName);
 
@@ -931,7 +948,7 @@ namespace SubSonic
             StringBuilder createSql = new StringBuilder();
 
             foreach(TableSchema.TableColumn col in tableSchema.Columns)
-                createSql.AppendFormat("\r\n  {0}{1},", tableSchema.Provider.DelimitDbName(col.ColumnName), GenerateColumnAttributes(col));
+                createSql.AppendFormat("\r\n  {0}{1},", tableSchema.Provider.FormatIdentifier(col.ColumnName), GenerateColumnAttributes(col));
             string columnSql = createSql.ToString();
             return Strings.Chop(columnSql, ",");
         }

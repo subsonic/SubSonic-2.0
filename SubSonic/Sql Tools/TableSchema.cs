@@ -55,7 +55,7 @@ namespace SubSonic
             /// </summary>
             public string QualifiedName
             {
-                get { return Utility.QualifyTableName(SchemaName, Name, Provider); }
+                get { return Provider.QualifyTableName(SchemaName, Name); }
             }
 
             /// <summary>
@@ -1120,7 +1120,7 @@ namespace SubSonic
             /// <value>The delimited name of the column</value>
             public string DelimitedName
             {
-                get { return Table.Provider.DelimitDbName(columnName); }
+                get { return Table.Provider.FormatIdentifier(columnName); }
             }
 
             /// <summary>
@@ -1131,8 +1131,7 @@ namespace SubSonic
             {
                 get
                 {
-                    string prefix = String.IsNullOrEmpty(Table.SchemaName) ? String.Empty : String.Concat(Table.Provider.DelimitDbName(Table.SchemaName), ".");
-                    return String.Concat(prefix, Utility.QualifyColumnName(Table.Name, ColumnName, Table.Provider));
+                    return Table.Provider.QualifyColumnName(Table.SchemaName, Table.Name, ColumnName);
                 }
             }
 
@@ -1291,7 +1290,7 @@ namespace SubSonic
                         if(Utility.IsMatch(strEnd, "id") && strEnd[0].ToString() == "I")
                             displayName = displayName.Substring(0, displayName.Length - 2);
                     }
-                    parameterName = Utility.PrefixParameter(Utility.StripNonAlphaNumeric(columnName), Table.Provider);
+                    parameterName = Table.Provider.FormatParameterNameForSQL(columnName);
                     argumentName = String.Concat("var", propertyName);
                 }
             }

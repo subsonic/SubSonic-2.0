@@ -85,8 +85,11 @@ namespace SubSonic
         private string appendWith = String.Empty;
         private string connectionStringName;
         private string excludeProcedureList = String.Empty;
-        private string excludeTableList = String.Empty;
-        private bool extractClassNameFromSPName;
+		private string excludeTableList = String.Empty;
+		private string enumIncludeList = String.Empty;
+		private string enumExcludeList = String.Empty;
+		private bool enumShowDebugInfo = false;
+		private bool extractClassNameFromSPName;
         private bool fixDatabaseObjectCasing = true;
         private bool fixPluralClassNames = true;
         private string generatedNamespace = "SubSonic.Generated";
@@ -119,6 +122,11 @@ namespace SubSonic
         private bool useUtc;
         private string viewBaseClass = "ReadOnlyRecord";
         private string viewStartsWith = String.Empty;
+        protected bool dbRequiresBracketedJoins = false; 
+        protected bool dbAllowsMultipleStatement = true;
+        protected bool dbAllowsSpOutputParam = true;
+        protected bool dbSupportsITransactionLocal = true;
+        protected bool dbSupportsInlineComments = true;
 
         /// <summary>
         /// Gets the type of the named provider.
@@ -276,6 +284,44 @@ namespace SubSonic
                     result = excludeTableList.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
 
                 return result;
+            }
+        }
+
+       /// <summary>
+        /// Gets the enum include list.
+        /// </summary>
+        /// <value>The enum include tables.</value>
+		public string[] EnumIncludeList
+        {
+            get
+            {
+                string[] result = new string[0];
+				if (!String.IsNullOrEmpty(enumIncludeList))
+					result = enumIncludeList.Split(new[] { ',' }, StringSplitOptions.None);
+
+                return result;
+            }
+        }
+
+       /// <summary>
+		/// Gets the enum exclude list.
+        /// </summary>
+        /// <value>The enum exclude tables.</value>
+		public string[] EnumExcludeList
+        {
+            get
+            {
+                string[] result = new string[0];
+				if (!String.IsNullOrEmpty(enumExcludeList))
+					result = enumExcludeList.Split(new[] { ',' }, StringSplitOptions.None);
+
+                return result;
+            }
+        }
+
+		public bool EnumShowDebugInfo {
+			get {
+				return enumShowDebugInfo;
             }
         }
 
@@ -613,6 +659,46 @@ namespace SubSonic
             }
         }
 
+        /// <summary>
+        /// Flag indicating if the RDBMS requires each join to be individually bracketed.
+        /// </summary>
+        public bool DatabaseRequiresBracketedJoins
+        {
+            get { return dbRequiresBracketedJoins; }
+		}
+		
+        /// Flag indicating if the RDBMS supports multi-statement batching.
+        /// </summary>
+        /// <value>The database version.</value>
+        public bool DatabaseAllowsMultipleStatement
+        {
+            get { return dbAllowsMultipleStatement; }
+        }
+
+        /// <summary>
+        /// Flag indicating if the RDBMS supports output parameters for stored procedures.
+        /// </summary>
+        public bool DatabaseAllowsSpOutputParameters
+        {
+            get { return dbAllowsSpOutputParam; }
+        }
+
+        /// <summary>
+        /// Flag indicating if the RDBMS requires each join to be individually bracketed.
+        /// </summary>
+        public bool DatabaseSupportsInlineComments
+        {
+            get { return dbSupportsInlineComments; }
+        }
+
+        /// <summary>
+        /// Flag indicating if the RDBMS supports the ITransactionLocal interface.
+         /// </summary>
+        public bool DatabaseSupportsITransactionLocal
+        {
+            get { return dbSupportsITransactionLocal; }
+        }
+
         #endregion
 
 
@@ -699,16 +785,6 @@ namespace SubSonic
         protected abstract string GetDatabaseVersion(string providerName);
 
         /// <summary>
-        /// Makes the param.
-        /// </summary>
-        /// <param name="paramName">Name of the param.</param>
-        /// <returns></returns>
-        public virtual string MakeParam(string paramName)
-        {
-            return Utility.PrefixParameter(paramName, this);
-        }
-
-        /// <summary>
         /// Returns a SQL Wildcard character
         /// </summary>
         /// <returns>System.String</returns>
@@ -736,7 +812,7 @@ namespace SubSonic
         /// </summary>
         /// <param name="cmd">The CMD.</param>
         /// <returns></returns>
-        public virtual DataSet GetDataSet(QueryCommand cmd)
+		public virtual DataSet GetDataSet(QueryCommand cmd)
         {
             return GetDataSet<DataSet>(cmd);
         }
@@ -1158,7 +1234,9 @@ namespace SubSonic
         /// <returns></returns>
         protected virtual string AdjustUpdateSql(Query qry, TableSchema.Table table, string updateSql)
         {
-            return String.Concat(updateSql, "; ", SqlFragment.SELECT, table.PrimaryKey.ParameterName, SqlFragment.AS, "id");
+            return String.Concat(updateSql, "; ", SqlFragment.SELECT, 
+                table.PrimaryKey.ParameterName, 
+                SqlFragment.AS, "id");
         }
 
         /// <summary>
@@ -1173,7 +1251,7 @@ namespace SubSonic
                 throw new InvalidOperationException("No update settings have been set. Use Query.AddUpdateSetting to add some in");
 
             StringBuilder sql = new StringBuilder(SqlFragment.UPDATE);
-            sql.Append(qry.Provider.DelimitDbName(table.Name));
+            sql.Append(qry.Provider.FormatIdentifier(table.Name));
             QueryCommand cmd = new QueryCommand(sql.ToString(), qry.ProviderName);
 
             //append the update statements
@@ -1279,13 +1357,11 @@ namespace SubSonic
                     whereOperator = isFirstPass ? SqlFragment.WHERE : String.Concat(" ", Enum.GetName(typeof(Where.WhereCondition), wWhere.Condition), " ");
                     where.Append(whereOperator);
 
-                    if(!String.IsNullOrEmpty(qry.Schema.SchemaName))
-                        where.AppendFormat("{0}.", qry.Provider.DelimitDbName(qry.Schema.SchemaName));
-                    where.Append(Utility.QualifyColumnName(wWhere.TableName, wWhere.ColumnName, qry.Provider));
+                    where.Append(qry.Provider.QualifyColumnName(qry.Schema.SchemaName, wWhere.TableName, wWhere.ColumnName));
                     where.Append(Where.GetComparisonOperator(wWhere.Comparison));
 
-                    if(wWhere.ParameterValue != DBNull.Value && wWhere.ParameterValue != null)
-                        where.Append(Utility.PrefixParameter(wWhere.ParameterName, qry.Provider));
+                    if (wWhere.ParameterValue != DBNull.Value && wWhere.ParameterValue != null)
+                        where.Append(qry.Provider.FormatParameterNameForSQL(wWhere.ParameterName));
                     else
                         where.Append(" NULL");
 
@@ -1337,11 +1413,11 @@ namespace SubSonic
                     whereOperator = isFirstPass ? SqlFragment.WHERE : String.Concat(" ", Enum.GetName(typeof(Where.WhereCondition), between.Condition), " ");
 
                 where.Append(whereOperator);
-                where.Append(Utility.QualifyColumnName(between.TableName, between.ColumnName, qry.Provider));
+                where.Append(qry.Provider.QualifyColumnName("", between.TableName, between.ColumnName));
                 where.Append(SqlFragment.BETWEEN);
-                where.Append(Utility.PrefixParameter(between.StartParameterName, qry.Provider));
+                where.Append(qry.Provider.FormatParameterNameForSQL(between.StartParameterName));
                 where.Append(SqlFragment.AND);
-                where.Append(Utility.PrefixParameter(between.EndParameterName, qry.Provider));
+                where.Append(qry.Provider.FormatParameterNameForSQL(between.EndParameterName));
                 isFirstPass = false;
             }
 
@@ -1358,7 +1434,7 @@ namespace SubSonic
                 else
                     where.Append(SqlFragment.AND);
 
-                where.Append(qry.Provider.DelimitDbName(qry.inColumn));
+                where.Append(qry.Provider.FormatIdentifier(qry.inColumn));
                 where.Append(SqlFragment.IN);
                 where.Append("(");
                 bool isFirst = true;
@@ -1369,7 +1445,7 @@ namespace SubSonic
                         where.Append(", ");
                     isFirst = false;
 
-                    where.Append(Utility.PrefixParameter(String.Concat("in", i), qry.Provider));
+                    where.Append(qry.Provider.FormatParameterNameForSQL(String.Concat("in", i)));
                 }
                 where.Append(")");
             }
@@ -1381,7 +1457,7 @@ namespace SubSonic
                 else
                     where.Append(SqlFragment.AND);
 
-                where.Append(qry.Provider.DelimitDbName(qry.notInColumn));
+                where.Append(qry.Provider.FormatIdentifier(qry.notInColumn));
                 where.Append(SqlFragment.NOT_IN);
                 where.Append("(");
                 bool isFirst = true;
@@ -1392,7 +1468,7 @@ namespace SubSonic
                         where.Append(", ");
                     isFirst = false;
 
-                    where.Append(Utility.PrefixParameter(String.Concat("notIn", i), qry.Provider));
+                    where.Append(qry.Provider.FormatParameterNameForSQL(String.Concat("notIn", i)));
                 }
                 where.Append(")");
             }
@@ -1424,13 +1500,54 @@ namespace SubSonic
         public abstract string GetParameterPrefix();
 
         /// <summary>
+        /// Format the Parameter for inclusion in SQL (eg. @param_name for MSSQL, [param_name] for MSAccess)
+        /// Only use this in the final marshalling for SQL insertion, NOT in initial formatting of the parameter name.
+        /// </summary>
+        public virtual string FormatParameterNameForSQL(string parameterName) {
+            string prefix = GetParameterPrefix();
+            if (!parameterName.StartsWith(prefix))
+                parameterName = prefix + parameterName.Replace(" ", String.Empty);
+            return parameterName;
+        }
+
+        /// <summary>
+        /// Format the Parameter name to ensure it is valid
+        /// </summary>
+        public virtual string PreformatParameterName(string parameterName) {
+            return parameterName.Replace(" ", String.Empty);
+        }
+
+        /// <summary>
+        /// Qualify table name according to RDBMS format (eg. '[owner].[table]')
+        /// </summary>
+        public virtual string QualifyTableName(string schemaName, string tableName) {
+            return (string.IsNullOrEmpty(schemaName) ? "" : FormatIdentifier(schemaName) + ".") + FormatIdentifier(tableName);
+        }
+
+        /// <summary>
+        /// Qualify column name according to RDBMS format (eg. '[owner].[table].[column]')
+        /// </summary>
+        public virtual string QualifyColumnName(string schemaName, string tableName, string columnName) {
+            return (string.IsNullOrEmpty(schemaName) ? "" : FormatIdentifier(schemaName) + ".")
+                + (string.IsNullOrEmpty(tableName) ? "" : FormatIdentifier(tableName) + ".")
+                + FormatIdentifier(columnName);
+        }
+        
+        /// <summary>
         /// Delimits the name of the db.
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public virtual string DelimitDbName(string columnName)
+        public virtual string FormatIdentifier(string columnName)
         {
             return columnName;
+        }
+
+        /// <summary>
+        /// Filter out elements of the SQL for unit testing
+        /// </summary>
+        public virtual string FilterTestSQL(string sqlString) {
+            return sqlString;
         }
 
         /// <summary>
@@ -1552,7 +1669,10 @@ namespace SubSonic
             ApplyConfig(config, ref connectionStringName, ConfigurationPropertyName.CONNECTION_STRING_NAME);
             ApplyConfig(config, ref excludeProcedureList, ConfigurationPropertyName.EXCLUDE_PROCEDURE_LIST);
             ApplyConfig(config, ref excludeTableList, ConfigurationPropertyName.EXCLUDE_TABLE_LIST);
-            ApplyConfig(config, ref extractClassNameFromSPName, ConfigurationPropertyName.EXTRACT_CLASS_NAME_FROM_SP_NAME);
+			ApplyConfig(config, ref enumIncludeList, ConfigurationPropertyName.ENUM_INCLUDE_LIST);
+			ApplyConfig(config, ref enumExcludeList, ConfigurationPropertyName.ENUM_EXCLUDE_LIST);
+			ApplyConfig(config, ref enumShowDebugInfo, ConfigurationPropertyName.ENUM_SHOW_DEBUG_INFO);
+			ApplyConfig(config, ref extractClassNameFromSPName, ConfigurationPropertyName.EXTRACT_CLASS_NAME_FROM_SP_NAME);
             ApplyConfig(config, ref fixDatabaseObjectCasing, ConfigurationPropertyName.FIX_DATABASE_OBJECT_CASING);
             ApplyConfig(config, ref fixPluralClassNames, ConfigurationPropertyName.FIX_PLURAL_CLASS_NAMES);
             ApplyConfig(config, ref generateLazyLoads, ConfigurationPropertyName.GENERATE_LAZY_LOADS);

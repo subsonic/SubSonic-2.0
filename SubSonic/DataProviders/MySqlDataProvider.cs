@@ -155,7 +155,7 @@ namespace SubSonic
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public override string DelimitDbName(string columnName)
+        public override string FormatIdentifier(string columnName)
         {
             if(!String.IsNullOrEmpty(columnName))
                 return "`" + columnName + "`";

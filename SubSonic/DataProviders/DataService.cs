@@ -425,7 +425,7 @@ namespace SubSonic
                                 StoredProcedure.Parameter par = new StoredProcedure.Parameter();
 
                                 provider.SetParameter(rdr, par);
-                                par.QueryParameter = provider.MakeParam(par.Name);
+                                par.QueryParameter = provider.FormatParameterNameForSQL(par.Name);
                                 par.DisplayName = Utility.GetParameterName(par.Name, provider);
                                 sp.Parameters.Add(par);
                             }

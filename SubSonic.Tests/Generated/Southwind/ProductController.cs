@@ -80,7 +80,7 @@ namespace Southwind
 	    /// Inserts a record, can be used with the Object Data Source
 	    /// </summary>
         [DataObjectMethod(DataObjectMethodType.Insert, true)]
-	    public void Insert(string ProductName,int? SupplierID,int? CategoryID,string QuantityPerUnit,decimal? UnitPrice,short? UnitsInStock,short? UnitsOnOrder,short? ReorderLevel,bool Discontinued)
+	    public void Insert(string ProductName,int? SupplierID,int? CategoryID,string QuantityPerUnit,decimal? UnitPrice,short? UnitsInStock,short? UnitsOnOrder,short? ReorderLevel,bool Discontinued,bool? IsDeleted)
 	    {
 		    Product item = new Product();
 		    
@@ -102,6 +102,8 @@ namespace Southwind
             
             item.Discontinued = Discontinued;
             
+            item.IsDeleted = IsDeleted;
+            
 	    
 		    item.Save(UserName);
 	    }
@@ -110,7 +112,7 @@ namespace Southwind
 	    /// Updates a record, can be used with the Object Data Source
 	    /// </summary>
         [DataObjectMethod(DataObjectMethodType.Update, true)]
-	    public void Update(int ProductID,string ProductName,int? SupplierID,int? CategoryID,string QuantityPerUnit,decimal? UnitPrice,short? UnitsInStock,short? UnitsOnOrder,short? ReorderLevel,bool Discontinued)
+	    public void Update(int ProductID,string ProductName,int? SupplierID,int? CategoryID,string QuantityPerUnit,decimal? UnitPrice,short? UnitsInStock,short? UnitsOnOrder,short? ReorderLevel,bool Discontinued,bool? IsDeleted)
 	    {
 		    Product item = new Product();
 	        item.MarkOld();
@@ -135,6 +137,8 @@ namespace Southwind
 			item.ReorderLevel = ReorderLevel;
 				
 			item.Discontinued = Discontinued;
+				
+			item.IsDeleted = IsDeleted;
 				
 	        item.Save(UserName);
 	    }

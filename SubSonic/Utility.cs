@@ -322,6 +322,23 @@ namespace SubSonic.Utilities
         }
 
         /// <summary>
+        /// Strips square brackets from an identifier
+        /// </summary>
+        /// <param name="inputString">The string containing the identifier</param>
+        /// <returns></returns>
+        public static string StripSquareBrackets(string inputString)
+        {
+            string s = inputString;
+            if (!String.IsNullOrEmpty(s))
+            {
+                s = s.Trim();
+                if (s.StartsWith("[") && s.EndsWith("]"))
+                    return s.Substring(1,s.Length - 1);
+            }
+            return s;
+        }
+
+        /// <summary>
         /// Determine whether the passed string is numeric, by attempting to parse it to a double
         /// </summary>
         /// <param name="str">The string to evaluated for numeric conversion</param>
@@ -638,23 +655,22 @@ namespace SubSonic.Utilities
             return asciiBytes;
         }
 
-        /// <summary>
-        /// Prefixes the passed parameter value with the provider specific parameter prefix.
-        /// </summary>
-        /// <param name="parameter">The parameter to evaluate</param>
-        /// <param name="provider">The provider where the parameter will be used</param>
-        /// <returns></returns>
-        public static string PrefixParameter(string parameter, DataProvider provider)
-        {
-            //added this check for Unit Testing weirdness - RC
-            if(provider == null)
-                provider = DataService.Provider;
+        ///// <summary>
+        ///// Prefixes the passed parameter value with the provider specific parameter prefix.
+        ///// </summary>
+        ///// <param name="parameter">The parameter to evaluate</param>
+        ///// <param name="provider">The provider where the parameter will be used</param>
+        ///// <returns></returns>
+		public static string PrefixParameter(string parameter, DataProvider provider) {
+			//added this check for Unit Testing weirdness - RC
+			if (provider == null)
+				provider = DataService.Provider;
 
-            string prefix = provider.GetParameterPrefix();
-            if(!parameter.StartsWith(prefix))
-                parameter = String.Concat(prefix, parameter.Replace(" ", String.Empty));
-            return parameter;
-        }
+			string prefix = provider.GetParameterPrefix();
+			if (!parameter.StartsWith(prefix))
+				parameter = String.Concat(prefix, parameter.Replace(" ", String.Empty));
+			return parameter;
+		}
 
         /// <summary>
         /// Helper method to format a specific passed string as a SQL function
@@ -667,7 +683,7 @@ namespace SubSonic.Utilities
         public static string MakeFunction(string functionName, string columnName, bool isDistinct, DataProvider provider)
         {
             if(isDistinct)
-                return String.Concat(functionName, "(", SqlFragment.DISTINCT, provider.DelimitDbName(columnName), ")");
+                return String.Concat(functionName, "(", SqlFragment.DISTINCT, provider.FormatIdentifier(columnName), ")");
 
             return MakeFunction(functionName, columnName, provider);
         }
@@ -681,49 +697,7 @@ namespace SubSonic.Utilities
         /// <returns></returns>
         public static string MakeFunction(string functionName, string columnName, DataProvider provider)
         {
-            return String.Concat(functionName, "(", provider.DelimitDbName(columnName), ")");
-        }
-
-        /// <summary>
-        /// Fully qualifies qualifies a column name using the [table].[column] format (SQL Server),
-        /// or other format appropriate to a given provider.
-        /// </summary>
-        /// <param name="tableName">Name of the table</param>
-        /// <param name="columnName">Name of the column</param>
-        /// <param name="provider">The provider that the format is being qualified for</param>
-        /// <returns></returns>
-        public static string QualifyColumnName(string tableName, string columnName, DataProvider provider)
-        {
-            string prefix = provider.DelimitDbName(tableName);
-            if(!String.IsNullOrEmpty(prefix))
-                return String.Concat(prefix, ".", provider.DelimitDbName(columnName));
-
-            return provider.DelimitDbName(columnName);
-        }
-
-        /// <summary>
-        /// Fully qualifies a table reference using the [schema].[table] format (SQL Server),
-        /// or other format appropriate to a given provider.
-        /// </summary>
-        /// <param name="schemaName">Name of the schema</param>
-        /// <param name="tableName">Name of the table</param>
-        /// <param name="provider">The provider that the format is being qualified for</param>
-        /// <returns></returns>
-        public static string QualifyTableName(string schemaName, string tableName, DataProvider provider)
-        {
-            string prefix = String.IsNullOrEmpty(schemaName) ? String.Empty : provider.DelimitDbName(schemaName) + ".";
-            return prefix + provider.DelimitDbName(tableName);
-        }
-
-        /// <summary>
-        /// Fully qualifies a table reference using the [schema].[table] format (SQL Server),
-        /// or other format appropriate to a given provider.
-        /// </summary>
-        /// <param name="table">The TableSchema.Table whose name will be qualified</param>
-        /// <returns></returns>
-        public static string QualifyTableName(TableSchema.Table table)
-        {
-            return QualifyTableName(table.SchemaName, table.TableName, table.Provider);
+            return String.Concat(functionName, "(", provider.FormatIdentifier(columnName), ")");
         }
 
         /// <summary>
@@ -736,8 +710,42 @@ namespace SubSonic.Utilities
         /// <returns></returns>
         public static string MakeParameterAssignment(string columnName, string parameterName, DataProvider provider)
         {
-            return String.Concat(provider.DelimitDbName(columnName), " = ", PrefixParameter(parameterName, provider));
+            return String.Concat(provider.FormatIdentifier(columnName), " = ", provider.FormatParameterNameForSQL(parameterName));
         }
+
+		/// <summary>
+		/// Fully qualifies qualifies a column name using the [table].[column] format (SQL Server),
+		/// or other format appropriate to a given provider.
+		/// </summary>
+		/// <param name="tableName">Name of the table</param>
+		/// <param name="columnName">Name of the column</param>
+		/// <param name="provider">The provider that the format is being qualified for</param>
+		/// <returns></returns>
+		public static string QualifyColumnName(string tableName, string columnName, DataProvider provider) {
+			return provider.QualifyColumnName("", tableName, columnName);
+		}
+
+		/// <summary>
+		/// Fully qualifies a table reference using the [schema].[table] format (SQL Server),
+		/// or other format appropriate to a given provider.
+		/// </summary>
+		/// <param name="schemaName">Name of the schema</param>
+		/// <param name="tableName">Name of the table</param>
+		/// <param name="provider">The provider that the format is being qualified for</param>
+		/// <returns></returns>
+		public static string QualifyTableName(string schemaName, string tableName, DataProvider provider) {
+			return provider.QualifyTableName(schemaName, tableName);
+		}
+
+		/// <summary>
+		/// Fully qualifies a table reference using the [schema].[table] format (SQL Server),
+		/// or other format appropriate to a given provider.
+		/// </summary>
+		/// <param name="table">The TableSchema.Table whose name will be qualified</param>
+		/// <returns></returns>
+		public static string QualifyTableName(TableSchema.Table table) {
+			return table.Provider.QualifyTableName(table.SchemaName, table.TableName);
+		}
 
         /// <summary>
         /// Using a set of criteria including primary/foreign key references and positions,

@@ -98,7 +98,7 @@ namespace SubSonic
         /// <value>The fully qualified name of the column.</value>
         public string QualifiedName
         {
-            get { return Utility.QualifyTableName(SchemaName, name, _provider); }
+            get { return _provider.QualifyTableName(SchemaName, name); }
         }
 
         /// <summary>

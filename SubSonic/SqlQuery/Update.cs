@@ -191,12 +191,7 @@ namespace SubSonic
         /// <returns></returns>
         public Setting Set(string columnName)
         {
-            //see if we can find the column
-            TableSchema.TableColumn col = FromTables[0].GetColumn(columnName);
-            if (col != null) 
-                return CreateSetting(col.ColumnName, col.DataType, false);
-
-            return CreateSetting(columnName, DbType.AnsiString, false);
+            return CreateSetting(columnName, GetFROMCol(columnName).DataType, false);
         }
 
         /// <summary>
@@ -212,11 +207,11 @@ namespace SubSonic
         /// <summary>
         /// Sets the expression.
         /// </summary>
-        /// <param name="column">The column.</param>
+        /// <param name="columnName">The column.</param>
         /// <returns></returns>
-        public Setting SetExpression(string column)
+        public Setting SetExpression(string columnName)
         {
-            return CreateSetting(column, DbType.AnsiString, true);
+            return CreateSetting(columnName, DbType.String, true);
         }
 
         /// <summary>
@@ -235,7 +230,7 @@ namespace SubSonic
                             {
                                 query = this,
                                 ColumnName = columnName,
-                                ParameterName = Utility.PrefixParameter(String.Concat("up_", Utility.StripNonAlphaNumeric(columnName)), Provider),
+                                ParameterName = Provider.FormatParameterNameForSQL(String.Concat("up_", Utility.StripNonAlphaNumeric(columnName))),
                                 IsExpression = isExpression,
                                 DataType = dbType
                             };

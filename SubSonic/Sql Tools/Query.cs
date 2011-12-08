@@ -375,44 +375,69 @@ namespace SubSonic
     /// Creates an ORDER BY statement for ANSI SQL
     /// </summary>
     [Serializable]
-    public class OrderBy
-    {
-        private string orderString;
+    public class OrderBy {
+        private string orderColName;
+        private bool isAscending = true;
 
-        private OrderBy() {}
+        private OrderBy() { }
 
         /// <summary>
-        /// Gets or sets the order string.
+        /// Gets or sets the order column name only.
         /// </summary>
         /// <value>The order string.</value>
-        public string OrderString
-        {
-            get { return orderString; }
-            set { orderString = value; }
+        public string OrderColumnName {
+            get { return orderColName; }
+            set { this.orderColName = value; }
         }
 
         /// <summary>
-        /// Trims the directive.
+        /// Gets or sets the order column sort direction.
         /// </summary>
-        public void TrimDirective()
-        {
-            if(!String.IsNullOrEmpty(orderString))
-                orderString = orderString.Replace(SqlFragment.ORDER_BY, String.Empty).Trim();
+        /// <value>The order string.</value>
+        public bool OrderColumnIsSortAsc {
+            get { return isAscending; }
+            set { isAscending = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the order string including the ORDER BY fragment.
+        /// </summary>
+        /// <value>The order string.</value>
+        public string OrderString {
+            get { return orderColName + (isAscending ? SqlFragment.ASC : SqlFragment.DESC); }
+            set {
+                isAscending = true;
+                orderColName = value;
+
+                if (value.TrimEnd().ToLower().EndsWith(SqlFragment.DESC.ToLower())) {
+                    isAscending = false;
+                    orderColName = value.TrimEnd().Substring(0, value.Length - SqlFragment.DESC.Length).Trim();
+                }
+                if (value.TrimEnd().ToLower().EndsWith(SqlFragment.ASC.ToLower())) {
+                    orderColName = value.TrimEnd().Substring(0, value.Length - SqlFragment.ASC.Length).Trim();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets reversed order string including the ORDER BY fragment.
+        /// </summary>
+        /// <value>The order string.</value>
+        public string OrderStringReversed {
+            get { return orderColName + (!isAscending ? SqlFragment.ASC : SqlFragment.DESC); }
         }
 
         /// <summary>
         /// Specifies that query will ordered by the passed column in descending order. Allows table alias to explicity set.
         /// This is the preferred method for specifying order. It is provider neutral and will ensure full qualification of column names.
         /// </summary>
-        /// <param name="tableColumn">The table column.</param>
+        /// <param name="col">The col.</param>
         /// <param name="tableAlias">The table alias.</param>
         /// <returns></returns>
-        public static OrderBy Desc(TableSchema.TableColumn tableColumn, string tableAlias)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = Utility.QualifyColumnName(tableAlias, tableColumn.ColumnName, tableColumn.Table.Provider) + SqlFragment.DESC
-                                  };
+        public static OrderBy Desc(TableSchema.TableColumn col, string tableAlias) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.orderColName = col.Table.Provider.QualifyColumnName("", tableAlias, col.ColumnName);
+            orderBy.isAscending = false;
             return orderBy;
         }
 
@@ -420,14 +445,12 @@ namespace SubSonic
         /// Specifies that query will ordered by the passed column in descending order.
         /// This is the preferred method for specifying order. It is provider neutral and will ensure full qualification of column names.
         /// </summary>
-        /// <param name="tableColumn">The table column.</param>
+        /// <param name="col">The col.</param>
         /// <returns></returns>
-        public static OrderBy Desc(TableSchema.TableColumn tableColumn)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = tableColumn.QualifiedName + SqlFragment.DESC
-                                  };
+        public static OrderBy Desc(TableSchema.TableColumn col) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.orderColName = col.QualifiedName;
+            orderBy.isAscending = false;
             return orderBy;
         }
 
@@ -437,12 +460,10 @@ namespace SubSonic
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public static OrderBy Desc(string columnName)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = "[" + columnName + "]" + SqlFragment.DESC
-                                  };
+        public static OrderBy Desc(string columnName) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.orderColName = SquareBracket(columnName);
+            orderBy.isAscending = false;
             return orderBy;
         }
 
@@ -450,15 +471,13 @@ namespace SubSonic
         /// Specifies that query will ordered by the passed column in ascending order. Allows table alias to explicity set.
         /// This is the preferred method for specifying order. It is provider neutral and will ensure full qualification of column names.
         /// </summary>
-        /// <param name="tableColumn">The table column.</param>
+        /// <param name="col">The col.</param>
         /// <param name="tableAlias">The table alias.</param>
         /// <returns></returns>
-        public static OrderBy Asc(TableSchema.TableColumn tableColumn, string tableAlias)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = Utility.QualifyColumnName(tableAlias, tableColumn.ColumnName, tableColumn.Table.Provider) + SqlFragment.ASC
-                                  };
+        public static OrderBy Asc(TableSchema.TableColumn col, string tableAlias) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.orderColName = col.Table.Provider.QualifyColumnName("", tableAlias, col.ColumnName);
+            orderBy.isAscending = true;
             return orderBy;
         }
 
@@ -466,14 +485,12 @@ namespace SubSonic
         /// Specifies that query will ordered by the passed column in ascending order.
         /// This is the preferred method for specifying order. It is provider neutral and will ensure full qualification of column names.
         /// </summary>
-        /// <param name="tableColumn">The table column.</param>
+        /// <param name="col">The col.</param>
         /// <returns></returns>
-        public static OrderBy Asc(TableSchema.TableColumn tableColumn)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = tableColumn.QualifiedName + SqlFragment.ASC
-                                  };
+        public static OrderBy Asc(TableSchema.TableColumn col) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.orderColName = col.QualifiedName;
+            orderBy.isAscending = true;
             return orderBy;
         }
 
@@ -483,12 +500,10 @@ namespace SubSonic
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public static OrderBy Asc(string columnName)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = "[" + columnName + "]" + SqlFragment.ASC
-                                  };
+        public static OrderBy Asc(string columnName) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.orderColName = SquareBracket(columnName);
+            orderBy.isAscending = true;
             return orderBy;
         }
 
@@ -497,13 +512,18 @@ namespace SubSonic
         /// </summary>
         /// <param name="orderByValue">The order by value.</param>
         /// <returns></returns>
-        public static OrderBy PassedValue(string orderByValue)
-        {
-            OrderBy orderBy = new OrderBy
-                                  {
-                                      orderString = orderByValue
-                                  };
+        public static OrderBy PassedValue(string orderByValue) {
+            OrderBy orderBy = new OrderBy();
+            orderBy.OrderString = orderByValue;
             return orderBy;
+        }
+
+        private static string SquareBracket(string columnName) {
+            if (!String.IsNullOrEmpty(columnName) && !columnName.StartsWith("[")
+            && !columnName.EndsWith("]") && !columnName.Contains(".")) {
+                return "[" + columnName + "]";
+            }
+            return String.Empty;
         }
     }
 
@@ -610,7 +630,7 @@ namespace SubSonic
         /// <returns></returns>
         public Query AddUpdateSetting(string columnName, object value)
         {
-            //columnName = Provider.DelimitDbName(columnName);
+            //columnName = Provider.FormatIdentifier(columnName);
             //boolean massage for MySQL
             if(Utility.IsMatch(value.ToString(), Boolean.FalseString))
                 value = 0;
@@ -1138,8 +1158,6 @@ namespace SubSonic
         /// <param name="orderBy">The order by.</param>
         private void AddQueryToCollection(OrderBy orderBy)
         {
-            if(OrderByCollection.Count > 0)
-                orderBy.TrimDirective();
             OrderByCollection.Add(orderBy);
         }
 
@@ -1255,7 +1273,7 @@ namespace SubSonic
         public Query AddWhere(Where where)
         {
             //fix up the parameter naming
-            where.ParameterName = Utility.PrefixParameter(where.ParameterName.Trim() + wheres.Count, Provider);
+            where.ParameterName = Provider.PreformatParameterName(where.ColumnName.Trim() + wheres.Count);
             where.DbType = GetDbType(where.ColumnName.Trim());
             wheres.Add(where);
             if(String.IsNullOrEmpty(where.TableName))
@@ -1597,7 +1615,8 @@ namespace SubSonic
         public T ExecuteJoinedDataSet<T>() where T : DataSet, new()
         {
             StringBuilder strSelect = new StringBuilder(SqlFragment.SELECT);
-            string strFrom = SqlFragment.FROM + table.QualifiedName;
+            //string strFrom = SqlFragment.FROM + table.QualifiedName;
+            int joinCount = 0;
             StringBuilder strJoin = new StringBuilder();
             for(int i = 0; i < table.Columns.Count; i++)
             {
@@ -1609,7 +1628,7 @@ namespace SubSonic
 
                 if(i == 0 && tblCol.IsForeignKey && !String.IsNullOrEmpty(tblCol.ForeignKeyTableName) && Utility.IsMappingTable(table))
                 {
-                    col = new StringBuilder(Utility.QualifyColumnName(table.Name, tblCol.ColumnName, table.Provider));
+                    col = new StringBuilder(table.Provider.QualifyColumnName(table.SchemaName, table.Name, tblCol.ColumnName));
                     col.Append(SqlFragment.AS);
                     col.Append(String.Concat("PK", tblCol.ColumnName));
                     if(i + 1 != table.Columns.Count)
@@ -1620,40 +1639,46 @@ namespace SubSonic
 
                 if(tblCol.IsForeignKey && !tblCol.IsPrimaryKey && !String.IsNullOrEmpty(tblCol.ForeignKeyTableName))
                 {
-                    string strJoinPrefix = String.Concat(SqlFragment.JOIN_PREFIX, i);
+                    joinCount++; 
+                    string fkTableAlias = String.Concat(SqlFragment.JOIN_PREFIX, i);
                     TableSchema.Table fkTable = DataService.GetSchema(tblCol.ForeignKeyTableName, ProviderName, TableType.Table);
                     TableSchema.TableColumn displayCol = Utility.GetDisplayTableColumn(fkTable);
 
                     bool isSortable = Utility.GetEffectiveMaxLength(displayCol) < 256;
                     string dataCol = displayCol.ColumnName;
-                    string selectCol = Utility.QualifyColumnName(strJoinPrefix, dataCol, table.Provider);
+                    string selectCol = table.Provider.QualifyColumnName("", fkTableAlias, dataCol);
                     col = new StringBuilder(selectCol);
                     strJoin.Append(joinType);
-                    strJoin.Append(Utility.QualifyTableName(fkTable.SchemaName, fkTable.TableName, fkTable.Provider));
-                    strJoin.Append(SqlFragment.SPACE);
-                    strJoin.Append(strJoinPrefix);
+                    strJoin.Append(fkTable.Provider.QualifyTableName(fkTable.SchemaName, fkTable.TableName));
+                    strJoin.Append(SqlFragment.AS);
+                    strJoin.Append(fkTableAlias);
                     strJoin.Append(SqlFragment.ON);
                     string columnReference = tblCol.QualifiedName;
                     strJoin.Append(columnReference);
                     strJoin.Append(SqlFragment.EQUAL_TO);
-                    string joinReference = Utility.QualifyColumnName(strJoinPrefix, fkTable.PrimaryKey.ColumnName, table.Provider);
+                    string joinReference = table.Provider.QualifyColumnName("", fkTableAlias, fkTable.PrimaryKey.ColumnName);
                     strJoin.Append(joinReference);
+                    if (table.Provider.DatabaseRequiresBracketedJoins) strJoin.Append(")");
                     if(isSortable && OrderByCollection.Count > 0)
                     {
-                        foreach(OrderBy ob in OrderByCollection)
+                        foreach (OrderBy ob in OrderByCollection)
                             ob.OrderString = ob.OrderString.Replace(columnReference, selectCol);
                     }
                 }
                 else
-                    col = new StringBuilder(Utility.QualifyColumnName(table.Name, tblCol.ColumnName, table.Provider));
+                    col = new StringBuilder(table.Provider.QualifyColumnName(table.SchemaName, table.Name, tblCol.ColumnName));
                 col.Append(SqlFragment.AS);
-                col.Append(tblCol.Table.Provider.DelimitDbName(tblCol.ColumnName));
+                col.Append(tblCol.Table.Provider.FormatIdentifier(tblCol.ColumnName));
 
                 if(i + 1 != table.Columns.Count)
                     col.Append(", ");
 
                 strSelect.Append(col);
             }
+
+            string strFrom = SqlFragment.FROM;
+            if (table.Provider.DatabaseRequiresBracketedJoins) strFrom += new string('(', joinCount);
+            strFrom += table.QualifiedName;
 
             StringBuilder strSQL = new StringBuilder();
             strSQL.Append(strSelect);
@@ -2252,7 +2277,7 @@ namespace SubSonic
             StringBuilder commandSql = new StringBuilder(SqlFragment.SELECT);
             commandSql.Append(Utility.MakeFunction(aggregateFunction, columnName, isDistinctQuery, Provider));
             commandSql.Append(SqlFragment.FROM);
-            commandSql.Append(Provider.DelimitDbName(Schema.Name));
+            commandSql.Append(Provider.FormatIdentifier(Schema.Name));
             commandSql.Append(DataProvider.BuildWhere(this));
             QueryCommand cmd = new QueryCommand(commandSql.ToString(), ProviderName);
             DataProvider.AddWhereParameters(cmd, this);
@@ -2272,14 +2297,14 @@ namespace SubSonic
             StringBuilder sql = new StringBuilder(SqlFragment.SELECT);
             sql.Append(Utility.MakeFunction(aggregateFunction, columnName, isDistinctQuery, Provider));
             sql.Append(SqlFragment.FROM);
-            sql.Append(Provider.DelimitDbName(Schema.Name));
+            sql.Append(Provider.FormatIdentifier(Schema.Name));
 
             if(where != null)
             {
                 sql.Append(SqlFragment.WHERE);
-                sql.Append(Provider.DelimitDbName(where.ColumnName));
+                sql.Append(Provider.FormatIdentifier(where.ColumnName));
                 sql.Append(Where.GetComparisonOperator(where.Comparison));
-                sql.Append(Utility.PrefixParameter("p1", Provider));
+                sql.Append(Provider.FormatParameterNameForSQL("p1"));
             }
 
             QueryCommand cmd = new QueryCommand(sql.ToString(), ProviderName);

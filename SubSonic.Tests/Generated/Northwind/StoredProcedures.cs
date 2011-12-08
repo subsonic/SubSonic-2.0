@@ -136,7 +136,7 @@ namespace Northwind{
         /// </summary>
         public static StoredProcedure TenMostExpensiveProducts()
         {
-            SubSonic.StoredProcedure sp = new SubSonic.StoredProcedure("Ten Most Expensive Products", DataService.GetInstance("Northwind"), "");
+            SubSonic.StoredProcedure sp = new SubSonic.StoredProcedure("Ten Most Expensive Products", DataService.GetInstance("Northwind"), "dbo");
         	
             return sp;
         }

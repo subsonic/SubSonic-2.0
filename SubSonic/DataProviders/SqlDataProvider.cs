@@ -229,6 +229,8 @@ ORDER BY OrdinalPosition ASC";
         /// <param name="qry">The qry.</param>
         private static void AddParams(SqlCommand cmd, QueryCommand qry)
         {
+           //LogEvent.Write(qry.CommandSql);
+
             if(qry.Parameters != null)
             {
                 foreach(QueryParameter param in qry.Parameters)
@@ -342,7 +344,7 @@ ORDER BY OrdinalPosition ASC";
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public override string DelimitDbName(string columnName)
+        public override string FormatIdentifier(string columnName)
         {
             if(!String.IsNullOrEmpty(columnName) && !columnName.StartsWith("[") && !columnName.EndsWith("]"))
                 return String.Concat("[", columnName, "]");
@@ -1312,7 +1314,7 @@ ORDER BY OrdinalPosition ASC";
                         //pretend it's a view
                         query.Append(string.Format(
                             PAGING_VIEW_SQL,
-                            Utility.QualifyColumnName(table.SchemaName, table.Name, qry.Provider),
+                            qry.Provider.QualifyColumnName("", table.SchemaName, table.Name),
                             GetQualifiedSelect(table),
                             where,
                             order,
@@ -1368,23 +1370,23 @@ ORDER BY OrdinalPosition ASC";
                             //TableSchema.Table fkTable = DataService.GetForeignKeyTable(table.Columns[i], table);
                             TableSchema.Table fkTable = tblCol.Table;
                             string dataCol = tblCol.ColumnName;
-                            string selectCol = Utility.QualifyColumnName(strJoinPrefix, dataCol, qry.Schema.Provider);
+                            string selectCol = qry.Schema.Provider.QualifyColumnName("", strJoinPrefix, dataCol);
                             col = new StringBuilder(selectCol);
                             strJoin.Append(joinType);
-                            strJoin.Append(qry.Schema.Provider.DelimitDbName(fkTable.Name));
+                            strJoin.Append(qry.Schema.Provider.FormatIdentifier(fkTable.Name));
                             strJoin.Append(SqlFragment.SPACE);
                             strJoin.Append(strJoinPrefix);
                             strJoin.Append(SqlFragment.ON);
                             string columnReference = qry.Schema.QualifiedName;
                             strJoin.Append(columnReference);
                             strJoin.Append(SqlFragment.EQUAL_TO);
-                            string joinReference = Utility.QualifyColumnName(strJoinPrefix, fkTable.PrimaryKey.ColumnName, qry.Schema.Provider);
+                            string joinReference = qry.Schema.Provider.QualifyColumnName("", strJoinPrefix, fkTable.PrimaryKey.ColumnName);
                             strJoin.Append(joinReference);
                             if(qry.OrderByCollection.Count > 0)
                             {
-                                foreach(OrderBy ob in qry.OrderByCollection)
+                                foreach (OrderBy ob in qry.OrderByCollection)
                                     ob.OrderString = ob.OrderString.Replace(columnReference, selectCol);
-                            }
+                             }
                             break;
                         }
                     }
@@ -1481,8 +1483,8 @@ ORDER BY OrdinalPosition ASC";
 
                         isFirstColumn = false;
 
-                        cols.Append(DelimitDbName(colName));
-                        pars.Append(Utility.PrefixParameter(colName, this));
+                        cols.Append(FormatIdentifier(colName));
+                        pars.Append(FormatParameterNameForSQL(colName));
                     }
                     if(col.IsPrimaryKey && col.DataType == DbType.Guid)
                     {

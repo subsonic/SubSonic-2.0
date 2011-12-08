@@ -99,16 +99,12 @@ namespace SubSonic
             }
 
             string select = GenerateCommandLine();
-            //string columnList = select.Replace("SELECT", "");
             string fromLine = GenerateFromList();
             string joins = GenerateJoins();
             string wheres = GenerateWhere();
             string havings = string.Empty;
             string groupby = string.Empty;
 
-            //have to doctor the wheres, since we're using a WHERE in the paging
-            //bits. So change all "WHERE" to "AND"
-            string tweakedWheres = wheres.Replace("WHERE", "AND");
             string orderby = GenerateOrderBy();
 
             if (query.Aggregates.Count > 0)
@@ -117,18 +113,11 @@ namespace SubSonic
                 havings = GenerateHaving();
             }
 
-            //this uses SQL2000-compliant paging
-            //the arguments are...
-            //1 - id column - this is the PK or identifier
-            //2 - from/join/where
-            //3 - select/from/joins
-            //4 - where/order by
-            //5 - page index
-            //6 - page size
-            //7 - PK Type (using Utility.GetSqlDBType)
             int startnum = query.PageSize*query.CurrentPage +1;
             int endnum = query.PageSize*query.CurrentPage + query.PageSize;
-            string sql = string.Format(PAGING_SQL, String.Concat(select, fromLine.Replace("FROM", ", ROWNUM as row_number  FROM"), joins), startnum, endnum);
+            string sql = string.Format(PAGING_SQL
+                , String.Concat(select, fromLine.Replace("FROM", ", ROWNUM as row_number  FROM"), joins, wheres, groupby, havings)
+                , startnum, endnum);
 
             return sql;
         }

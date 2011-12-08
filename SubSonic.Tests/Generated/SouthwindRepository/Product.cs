@@ -245,6 +245,19 @@ namespace SouthwindRepository
 				colvarDiscontinued.ForeignKeyTableName = "";
 				schema.Columns.Add(colvarDiscontinued);
 				
+				TableSchema.TableColumn colvarIsDeleted = new TableSchema.TableColumn(schema);
+				colvarIsDeleted.ColumnName = "IsDeleted";
+				colvarIsDeleted.DataType = DbType.Boolean;
+				colvarIsDeleted.MaxLength = 4;
+				colvarIsDeleted.AutoIncrement = false;
+				colvarIsDeleted.IsNullable = true;
+				colvarIsDeleted.IsPrimaryKey = false;
+				colvarIsDeleted.IsForeignKey = false;
+				colvarIsDeleted.IsReadOnly = false;
+				colvarIsDeleted.DefaultSetting = @"";
+				colvarIsDeleted.ForeignKeyTableName = "";
+				schema.Columns.Add(colvarIsDeleted);
+				
 				BaseSchema = schema;
 				//add this schema to the provider
 				//so we can query it later
@@ -333,6 +346,14 @@ namespace SouthwindRepository
 		{
 			get { return GetColumnValue<bool>(Columns.Discontinued); }
 			set { SetColumnValue(Columns.Discontinued, value); }
+		}
+		  
+		[XmlAttribute("IsDeleted")]
+		[Bindable(true)]
+		public bool? IsDeleted 
+		{
+			get { return GetColumnValue<bool?>(Columns.IsDeleted); }
+			set { SetColumnValue(Columns.IsDeleted, value); }
 		}
 		
 		#endregion
@@ -423,6 +444,13 @@ namespace SouthwindRepository
         
         
         
+        public static TableSchema.TableColumn IsDeletedColumn
+        {
+            get { return Schema.Columns[10]; }
+        }
+        
+        
+        
         #endregion
 		#region Columns Struct
 		public struct Columns
@@ -437,6 +465,7 @@ namespace SouthwindRepository
 			 public static string UnitsOnOrder = @"UnitsOnOrder";
 			 public static string ReorderLevel = @"ReorderLevel";
 			 public static string Discontinued = @"Discontinued";
+			 public static string IsDeleted = @"IsDeleted";
 						
 		}
 		#endregion

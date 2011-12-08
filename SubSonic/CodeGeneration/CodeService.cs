@@ -86,7 +86,8 @@ namespace SubSonic
         /// </summary>
         public enum TemplateType
         {
-            /// <summary>
+            Enum, 
+			/// <summary>
             /// 
             /// </summary>
             Class,
@@ -410,7 +411,22 @@ namespace SubSonic
             return PrepareTemplate("Stored Procedure Class - " + provider.Name, TemplateType.SP, list, language, provider);
         }
 
-        /// <summary>
+		/// <summary>
+		/// Builds the Enum template.
+		/// </summary>
+		/// <param name="language">The language.</param>
+		/// <param name="provider">The provider.</param>
+		/// <returns></returns>
+		public static TurboTemplate BuildEnumTemplate(ICodeLanguage language, DataProvider provider) {
+			DataService.LoadProviders();
+			List<Replacement> list = new List<Replacement>
+                                         {
+                                             new Replacement(ReplacementVariable.Provider, provider.Name)
+                                         };
+			return PrepareTemplate("Enums - " + provider.Name, TemplateType.Enum, list, language, provider);
+		}
+
+		/// <summary>
         /// Builds the structs template.
         /// </summary>
         /// <param name="language">The language.</param>
@@ -438,6 +454,8 @@ namespace SubSonic
             Utility.WriteTrace(String.Format("Getting template for {0}", templateName));
             string templateText = GetTemplateText(templateType, language);
 
+			//if (templateType== TemplateType.Enum) System.IO.File.AppendAllText(@"C:\temp\enumlog.txt", templateName + "\r\n");
+
             // set the provider and tablename
             Utility.WriteTrace(String.Format("Preparing template for {0}", templateName));
 
@@ -451,7 +469,10 @@ namespace SubSonic
                                   {
                                       TemplateName = templateName
                                   };
-            return t;
+
+			//if (templateType == TemplateType.Enum) System.IO.File.AppendAllText(@"C:\temp\enumlog.txt", t.TemplateText + "\r\n");
+
+			return t;
         }
 
         /// <summary>
@@ -493,19 +514,29 @@ namespace SubSonic
             return tt.Render();
         }
 
-        /// <summary>
-        /// Runs the S ps.
-        /// </summary>
-        /// <param name="language">The language.</param>
-        /// <param name="provider">The provider.</param>
-        /// <returns></returns>
-        public static string RunSPs(ICodeLanguage language, DataProvider provider)
-        {
-            TurboTemplate tt = BuildSPTemplate(language, provider);
-            return tt.Render();
-        }
+		/// <summary>
+		/// Runs the S ps.
+		/// </summary>
+		/// <param name="language">The language.</param>
+		/// <param name="provider">The provider.</param>
+		/// <returns></returns>
+		public static string RunSPs(ICodeLanguage language, DataProvider provider) {
+			TurboTemplate tt = BuildSPTemplate(language, provider);
+			return tt.Render();
+		}
 
-        /// <summary>
+		/// <summary>
+		/// Runs the Enums.
+		/// </summary>
+		/// <param name="language">The language.</param>
+		/// <param name="provider">The provider.</param>
+		/// <returns></returns>
+		public static string RunEnums(ICodeLanguage language, DataProvider provider) {
+			TurboTemplate tt = BuildEnumTemplate(language, provider);
+			return tt.Render();
+		}
+
+		/// <summary>
         /// Runs the structs.
         /// </summary>
         /// <param name="language">The language.</param>
@@ -546,10 +577,13 @@ namespace SubSonic
                 case TemplateType.ReadOnly:
                     template = TemplateName.VIEW;
                     break;
-                case TemplateType.SP:
-                    template = TemplateName.STORED_PROCEDURE;
-                    break;
-                case TemplateType.Structs:
+				case TemplateType.SP:
+					template = TemplateName.STORED_PROCEDURE;
+					break;
+				case TemplateType.Enum:
+					template = TemplateName.ENUM;
+					break;
+				case TemplateType.Structs:
                     template = TemplateName.STRUCTS;
                     break;
                 case TemplateType.ODSController:

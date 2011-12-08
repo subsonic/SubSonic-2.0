@@ -62,7 +62,7 @@ namespace SubSonic
         private string _distinctspec = String.Empty;
         private List<string> _expressions = new List<string>();
         private TableSchema.TableCollection _fromTables = new TableSchema.TableCollection();
-        private List<string> _orderBys = new List<string>();
+        private List<OrderBySQ> _orderBys = new List<OrderBySQ>();
         private string[] _selectColumnList = new string[0];
         private string _sqlCommand = SqlFragment.SELECT;
         private string _topSpec = String.Empty;
@@ -187,7 +187,7 @@ namespace SubSonic
         /// <returns></returns>
         public Constraint Where(Aggregate aggregate)
         {
-            Constraint c = new Constraint(ConstraintType.Where, aggregate.ColumnName, aggregate.ColumnName, aggregate.WithoutAlias(), this)
+            Constraint c = new Constraint(ConstraintType.Where,  aggregate.ColumnName, aggregate.ColumnName, aggregate.WithoutAlias(), this)
                                {
                                    IsAggregate = true
                                };
@@ -501,6 +501,7 @@ namespace SubSonic
             return cmd;
         }
 
+
         #endregion
 
 
@@ -518,6 +519,21 @@ namespace SubSonic
                 FromTables.Add(t);
 
             return this;
+        }
+
+        public TableSchema.TableColumn GetFROMCol(string colName) {
+            // Get reference to table
+            if (FromTables.Count < 1) {
+                SqlQueryException ex = new SqlQueryException("Query must have at least one table");
+                throw ex;
+            }
+            TableSchema.Table tbl = FromTables[0];
+            TableSchema.TableColumn col = tbl.GetColumn(colName);
+            if (col == null) {
+                SqlQueryException ex = new SqlQueryException("Column '" + colName + "' not found !");
+                throw ex;
+            }
+            return col;
         }
 
         /// <summary>
@@ -1125,13 +1141,9 @@ namespace SubSonic
             bool isFirst = true;
             foreach(string s in columns)
             {
-                if(!isFirst)
-                    sb.Append(", ");
-                sb.Append(s);
-                sb.Append(SqlFragment.ASC);
-                isFirst = false;
+                OrderBySQ o = new OrderBySQ(s, OrderBySQ.OrderDirection.ASC);
+                OrderBys.Add(o);
             }
-            OrderBys.Add(sb.ToString());
             return this;
         }
 
@@ -1146,13 +1158,9 @@ namespace SubSonic
             bool isFirst = true;
             foreach(string s in columns)
             {
-                if(!isFirst)
-                    sb.Append(", ");
-                sb.Append(s);
-                sb.Append(SqlFragment.DESC);
-                isFirst = false;
+                OrderBySQ o = new OrderBySQ(s, OrderBySQ.OrderDirection.DESC);
+                OrderBys.Add(o);
             }
-            OrderBys.Add(sb.ToString());
             return this;
         }
 
@@ -1426,7 +1434,7 @@ namespace SubSonic
 
                     if(i == 0 && tblCol.IsForeignKey && !String.IsNullOrEmpty(tblCol.ForeignKeyTableName) && Utility.IsMappingTable(table))
                     {
-                        col = new StringBuilder(Utility.QualifyColumnName(table.Name, tblCol.ColumnName, table.Provider));
+                        col = new StringBuilder(table.Provider.QualifyColumnName(table.SchemaName, table.Name, tblCol.ColumnName));
                         col.Append(SqlFragment.AS);
                         col.Append(String.Concat("PK", tblCol.ColumnName));
                         if(i + 1 != table.Columns.Count)
@@ -1443,28 +1451,30 @@ namespace SubSonic
 
                         bool isSortable = Utility.GetEffectiveMaxLength(displayCol) < 256;
                         string dataCol = displayCol.ColumnName;
-                        string selectCol = Utility.QualifyColumnName(strJoinPrefix, dataCol, table.Provider);
+                        string selectCol = table.Provider.QualifyColumnName("", strJoinPrefix, dataCol);
                         col = new StringBuilder(selectCol);
                         strJoin.Append(joinType);
-                        strJoin.Append(Utility.QualifyTableName(fkTable.SchemaName, fkTable.TableName, fkTable.Provider));
+                        strJoin.Append(fkTable.Provider.QualifyTableName(fkTable.SchemaName, fkTable.TableName));
                         strJoin.Append(SqlFragment.SPACE);
                         strJoin.Append(strJoinPrefix);
                         strJoin.Append(SqlFragment.ON);
                         string columnReference = tblCol.QualifiedName;
                         strJoin.Append(columnReference);
                         strJoin.Append(SqlFragment.EQUAL_TO);
-                        string joinReference = Utility.QualifyColumnName(strJoinPrefix, fkTable.PrimaryKey.ColumnName, table.Provider);
+                        string joinReference =  table.Provider.QualifyColumnName("", strJoinPrefix, fkTable.PrimaryKey.ColumnName);
                         strJoin.Append(joinReference);
                         if(isSortable && OrderBys.Count > 0)
                         {
-                            for(int o = 0; o < OrderBys.Count; o++)
-                                OrderBys[o] = OrderBys[o].Replace(columnReference, selectCol);
-                        }
+                            //for(int o = 0; o < OrderBys.Count; o++)
+                            //    OrderBys[o] = OrderBys[o].Replace(columnReference, selectCol);
+                            foreach (OrderBySQ ob in OrderBys)
+                                if (Utility.StripSquareBrackets(ob.ColumnNameOrExpression) == columnReference) ob.ColumnNameOrExpression = selectCol;
+                        }                    
                     }
                     else
-                        col = new StringBuilder(Utility.QualifyColumnName(table.Name, tblCol.ColumnName, table.Provider));
+                        col = new StringBuilder(table.Provider.QualifyColumnName("", table.Name, tblCol.ColumnName));
                     col.Append(SqlFragment.AS);
-                    col.Append(tblCol.Table.Provider.DelimitDbName(tblCol.ColumnName));
+                    col.Append(tblCol.Table.Provider.FormatIdentifier(tblCol.ColumnName));
 
                     if(i + 1 != table.Columns.Count)
                         col.Append(", ");
@@ -1819,12 +1829,12 @@ namespace SubSonic
         /// Gets or sets the order bys.
         /// </summary>
         /// <value>The order bys.</value>
-        public List<string> OrderBys
+        public List<OrderBySQ> OrderBys
         {
             get { return _orderBys; }
             internal set { _orderBys = value; }
         }
-
+        
         /// <summary>
         /// Gets or sets the expressions.
         /// </summary>
