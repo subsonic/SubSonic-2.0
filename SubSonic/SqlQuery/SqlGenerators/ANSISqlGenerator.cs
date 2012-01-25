@@ -135,6 +135,7 @@ namespace SubSonic
             {
                 if (query.IsDistinct)
                     sb.Append(query.DistinctSpec);
+
                 //set "TOP"
                 sb.Append(query.TopSpec);
 

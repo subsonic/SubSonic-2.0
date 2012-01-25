@@ -113,6 +113,13 @@ namespace SubSonic
                     sqlParam.OracleType = GetOracleType(param.DataType);
                     sqlParam.ParameterName = param.ParameterName;
                     sqlParam.Value = param.ParameterValue;
+
+                    if (param.Mode == ParameterDirection.Output ||
+                        param.Mode == ParameterDirection.InputOutput)
+                    {
+                        sqlParam.Size = param.Size;
+                    }
+
                     cmd.Parameters.Add(sqlParam);
                 }
             }
@@ -156,7 +163,7 @@ namespace SubSonic
                 case DbType.Int64:
                     return OracleType.Number;
                 case DbType.Object:
-                    return OracleType.Blob;
+                    return OracleType.Cursor;
                 case DbType.SByte:
                     return OracleType.SByte;
                 case DbType.Single:
@@ -391,8 +398,7 @@ namespace SubSonic
                     if(!String.IsNullOrEmpty(precision) && precision != "0")
                         column.NumberPrecision = int.Parse(precision);
 
-                    // column.DataType = GetDbType(rdr[OracleSchemaVariable.DATA_TYPE].ToString().ToLower());
-                    column.DataType = GetDbTypeOracle(rdr[OracleSchemaVariable.DATA_TYPE].ToString().ToLower(), column.NumberScale, column.NumberPrecision);
+                    column.DataType = GetDbType(rdr[OracleSchemaVariable.DATA_TYPE].ToString().ToLower());
                     column.AutoIncrement = false;
                     int maxLength;
                     int.TryParse(rdr[OracleSchemaVariable.MAX_LENGTH].ToString(), out maxLength);
@@ -552,7 +558,6 @@ namespace SubSonic
             QueryCommand cmd = new QueryCommand(GET_PRIMARY_KEY_SQL, Name);
             cmd.AddParameter(TABLE_NAME_PARAMETER, tableName, DbType.AnsiString);
             ArrayList names = new ArrayList();
-            //ArrayList list = new ArrayList();
 
             using(IDataReader rdr = GetReader(cmd))
             {
@@ -611,87 +616,44 @@ namespace SubSonic
         }
 
         /// <summary>
-        /// Added to distinguish for ORACLE between float and integer
-        /// To be accurate, we should test dataPrecision to determine what kind of int
-        /// we deal with 32, 64, while not extactly true cause, for instance 77000 is 5 of dataprecision
-        /// and doesn't fit an int16)
-        /// 19/03/07 : due to mismatch casting between integer and decimal data type (i.e 
-        /// what is the real type returned by the OracleClient assembly which is decimal and
-        /// returned type from this function, I decided to return always for number type,
-        /// decimal). Works better.
+        /// Maps Oracle-specific data types to generic System.Data.DbType types.
         /// </summary>
-        /// <param name="sqlType">Type of the SQL.</param>
-        /// <param name="dataScale">The data scale.</param>
-        /// <param name="dataPrecision">The data precision.</param>
-        /// <returns></returns>
-        public static DbType GetDbTypeOracle(string sqlType, int dataScale, int dataPrecision)
-        {
-            switch(sqlType)
-            {
-                case "varchar2":
-                case "varchar":
-                case "char":
-                case "nchar":
-                case "nvarchar2":
-                case "rowid":
-                    return DbType.String;
-                case "nclob":
-                case "clob":
-                    return DbType.AnsiString;
-                case "number":
-                    return DbType.Decimal;
-                    //if (dataScale > 0)
-                    //{
-                    //    return DbType.Single;
-                    //}
-                    //else
-                    //{
-                    //    return DbType.Int32;
-                    //}
-                case "float":
-                    return DbType.Double;
-                case "raw":
-                case "long raw":
-                case "blob":
-                    return DbType.Binary;
-                case "date":
-                case "timestamp":
-                    return DbType.DateTime;
-                default:
-                    return DbType.String;
-            }
-        }
-
-        /// <summary>
-        /// Gets the type of the db.
-        /// </summary>
-        /// <param name="sqlType">Type of the SQL.</param>
-        /// <returns></returns>
+        /// <param name="sqlType">Oracle data type</param>
+        /// <returns>DbType enum representing the specified Oracle data type.</returns>
         public override DbType GetDbType(string sqlType)
         {
             switch(sqlType)
             {
-                case "number":
-                    return DbType.Single;
-                case "float":
-                    return DbType.Double;
-                case "varchar2":
-                case "varchar":
                 case "char":
+                case "varchar":
+                case "varchar2":
+                case "clob":
+                    return DbType.AnsiString;
                 case "nchar":
                 case "nvarchar2":
-                case "rowid":
                 case "nclob":
-                case "blob":
-                    return DbType.String;
+                case "rowid": //Not sure about ROWID
+                    return DbType.String;                
+                case "number":
+                    return DbType.Decimal;
+                case "float":
+                    return DbType.Double;
                 case "raw":
                 case "long raw":
+                case "blob":
                     return DbType.Binary;
                 case "date":
-                case "timestamp":
                     return DbType.DateTime;
                 default:
-                    return DbType.String;
+                    //For whatever reason, Oracle9i (+ others?) stores the 
+                    //precision with certain datatypes. Ex: "timestamp(3)"
+                    //So having "timestamp" as a case statement will not work.
+                    if(sqlType.StartsWith("timestamp"))
+                        return DbType.DateTime;
+                    else if (sqlType.StartsWith("interval"))
+                        return DbType.String; //No idea how to handle this one
+                    else
+                        return DbType.String;
             }
         }
 
@@ -732,6 +694,7 @@ namespace SubSonic
                     {
                         cmd = new OracleCommand(qry.CommandSql, (OracleConnection)conn.Connection);
                         cmd.CommandType = qry.CommandType;
+                        cmd.Transaction = trans;
 
                         AddParams(cmd, qry);
 

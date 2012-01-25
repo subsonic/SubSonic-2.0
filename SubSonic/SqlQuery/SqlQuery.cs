@@ -84,6 +84,7 @@ namespace SubSonic
         /// 
         /// </summary>
         public List<Aggregate> Aggregates = new List<Aggregate>();
+
         /// <summary>
         /// 
         /// </summary>
@@ -1952,6 +1953,7 @@ namespace SubSonic
         /// <returns></returns>
         public SqlQuery Distinct()
         {
+            DistinctSpec = SqlFragment.DISTINCT;
             IsDistinct = true;
             return this;
         }
