@@ -90,6 +90,51 @@
     <Compile Include="AssemblyCleaner.cs" />
     <Compile Include="CodeGeneratorTests.cs" />
     <Compile Include="Generated\AllStructs.cs" />
+    <Compile Include="Generated\NorthwindAccess\AlphabeticalListOfProduct.cs" />
+    <Compile Include="Generated\NorthwindAccess\Category.cs" />
+    <Compile Include="Generated\NorthwindAccess\CategoryController.cs" />
+    <Compile Include="Generated\NorthwindAccess\CategorySalesFor1997.cs" />
+    <Compile Include="Generated\NorthwindAccess\CurrentProductList.cs" />
+    <Compile Include="Generated\NorthwindAccess\Customer.cs" />
+    <Compile Include="Generated\NorthwindAccess\CustomerController.cs" />
+    <Compile Include="Generated\NorthwindAccess\CustomerCustomerDemo.cs" />
+    <Compile Include="Generated\NorthwindAccess\CustomerCustomerDemoController.cs" />
+    <Compile Include="Generated\NorthwindAccess\CustomerDemographic.cs" />
+    <Compile Include="Generated\NorthwindAccess\CustomerDemographicController.cs" />
+    <Compile Include="Generated\NorthwindAccess\Employee.cs" />
+    <Compile Include="Generated\NorthwindAccess\EmployeeController.cs" />
+    <Compile Include="Generated\NorthwindAccess\EmployeeTerritory.cs" />
+    <Compile Include="Generated\NorthwindAccess\EmployeeTerritoryController.cs" />
+    <Compile Include="Generated\NorthwindAccess\Enums.cs" />
+    <Compile Include="Generated\NorthwindAccess\Invoice.cs" />
+    <Compile Include="Generated\NorthwindAccess\Order.cs" />
+    <Compile Include="Generated\NorthwindAccess\OrderController.cs" />
+    <Compile Include="Generated\NorthwindAccess\OrderDetail.cs" />
+    <Compile Include="Generated\NorthwindAccess\OrderDetailController.cs" />
+    <Compile Include="Generated\NorthwindAccess\OrderDetailsExtended.cs" />
+    <Compile Include="Generated\NorthwindAccess\OrdersQry.cs" />
+    <Compile Include="Generated\NorthwindAccess\OrderSubtotal.cs" />
+    <Compile Include="Generated\NorthwindAccess\Product.cs" />
+    <Compile Include="Generated\NorthwindAccess\ProductCategoryMap.cs" />
+    <Compile Include="Generated\NorthwindAccess\ProductCategoryMapController.cs" />
+    <Compile Include="Generated\NorthwindAccess\ProductController.cs" />
+    <Compile Include="Generated\NorthwindAccess\ProductsAboveAveragePrice.cs" />
+    <Compile Include="Generated\NorthwindAccess\ProductSalesFor1997.cs" />
+    <Compile Include="Generated\NorthwindAccess\ProductsByCategory.cs" />
+    <Compile Include="Generated\NorthwindAccess\QuarterlyOrder.cs" />
+    <Compile Include="Generated\NorthwindAccess\Region.cs" />
+    <Compile Include="Generated\NorthwindAccess\RegionController.cs" />
+    <Compile Include="Generated\NorthwindAccess\SalesByCategory.cs" />
+    <Compile Include="Generated\NorthwindAccess\Shipper.cs" />
+    <Compile Include="Generated\NorthwindAccess\ShipperController.cs" />
+    <Compile Include="Generated\NorthwindAccess\StoredProcedures.cs" />
+    <Compile Include="Generated\NorthwindAccess\Supplier.cs" />
+    <Compile Include="Generated\NorthwindAccess\SupplierController.cs" />
+    <Compile Include="Generated\NorthwindAccess\TenMostExpensiveProduct.cs" />
+    <Compile Include="Generated\NorthwindAccess\Territory.cs" />
+    <Compile Include="Generated\NorthwindAccess\TerritoryController.cs" />
+    <Compile Include="Generated\NorthwindAccess\TextEntry.cs" />
+    <Compile Include="Generated\NorthwindAccess\TextEntryController.cs" />
     <Compile Include="Generated\NorthwindRepository\AlphabeticalListOfProduct.cs" />
     <Compile Include="Generated\NorthwindRepository\Category.cs" />
     <Compile Include="Generated\NorthwindRepository\CategorySalesFor1997.cs" />
@@ -249,6 +294,29 @@
     <Compile Include="Migrations\MigrationFiles\001_MigrationTest.cs" />
     <Compile Include="Migrations\MigrationFiles\002_MigrationTest.cs" />
     <Compile Include="Migrations\MigrationTests.cs" />
+    <Compile Include="MsAccess\ActiveListTests.cs" />
+    <Compile Include="MsAccess\ActiveRecordTest.cs" />
+    <Compile Include="MsAccess\AssemblyCleaner.cs" />
+    <Compile Include="MsAccess\CodeGeneratorTests.cs" />
+    <Compile Include="MsAccess\DataServiceTest.cs" />
+    <Compile Include="MsAccess\ETL.cs" />
+    <Compile Include="MsAccess\ForeignKeyTests.cs" />
+    <Compile Include="MsAccess\GeneratedObjectTests.cs" />
+    <Compile Include="MsAccess\ManyToMany.cs" />
+    <Compile Include="MsAccess\MultiProvider.cs" />
+    <Compile Include="MsAccess\MySqlTests.cs" />
+    <Compile Include="MsAccess\NameTransformationTests.cs" />
+    <Compile Include="MsAccess\QueryTest.cs" />
+    <Compile Include="MsAccess\ScriptersTest.cs" />
+    <Compile Include="MsAccess\SPs.cs" />
+    <Compile Include="MsAccess\SqlQuery\AggregateTests.cs" />
+    <Compile Include="MsAccess\SqlQuery\DeleteTests.cs" />
+    <Compile Include="MsAccess\SqlQuery\InlineQueryTests.cs" />
+    <Compile Include="MsAccess\SqlQuery\InsertTests.cs" />
+    <Compile Include="MsAccess\SqlQuery\ParserTestUtility.cs" />
+    <Compile Include="MsAccess\SqlQuery\SelectTests.cs" />
+    <Compile Include="MsAccess\SqlQuery\TransactionTests.cs" />
+    <Compile Include="MsAccess\SqlQuery\UpdateTests.cs" />
     <Compile Include="SqlGenerators\MySqlGeneratorTests.cs" />
     <Compile Include="SqlGenerators\SqlServerGeneratorTests.cs" />
     <Compile Include="SqlQuery\AggregateTests.cs" />
@@ -304,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DBScripts\Northwind.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup />

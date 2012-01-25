@@ -197,6 +197,7 @@ namespace SubSonic
                     {
                         try
                         {
+							pkVal = Convert.ChangeType(pkVal, BaseSchema.PrimaryKey.GetPropertyType());
                             SetPrimaryKey(pkVal);
                         }
                         catch

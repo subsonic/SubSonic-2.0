@@ -249,6 +249,7 @@ namespace SubSonic
         private void BuildConstraintSQL(ref string constraintOperator, StringBuilder sb, bool isFirst, ref bool expressionIsOpen, Constraint c)
         {
             string columnName = String.Empty;
+			string constraintIndexStr = query.Constraints.IndexOf(c).ToString();
             bool foundColumn = false;
             if(c.ConstructionFragment == c.ColumnName && c.ConstructionFragment != "##")
             {
@@ -258,7 +259,7 @@ namespace SubSonic
                 {
                     columnName = c.Column.QualifiedName;
                     foundColumn = true;
-                    c.ParameterName = String.Concat(col.ParameterName, query.Constraints.IndexOf(c));
+					c.ParameterName = Utility.AddStringToQualifiedName(col.ParameterName, constraintIndexStr);
                 }
                 else
                 {
@@ -267,8 +268,8 @@ namespace SubSonic
                         columnName = col.QualifiedName;
                         c.DbType = col.DataType;
                         foundColumn = true;
-                        c.ParameterName = String.Concat(col.ParameterName, query.Constraints.IndexOf(c));
-                    }
+						c.ParameterName = Utility.AddStringToQualifiedName(col.ParameterName, constraintIndexStr);
+					}
                 }
             }
 
@@ -298,12 +299,12 @@ namespace SubSonic
                     else
                         columnName = Utility.FastReplace(c.ConstructionFragment, col.ColumnName, col.QualifiedName, StringComparison.InvariantCultureIgnoreCase);
 
-                    c.ParameterName = String.Concat(col.ParameterName, query.Constraints.IndexOf(c));
-                    c.DbType = col.DataType;
+					c.ParameterName = Utility.AddStringToQualifiedName(col.ParameterName, constraintIndexStr);
+					c.DbType = col.DataType;
                 }
                 else
                 {
-                    c.ParameterName = String.Concat(query.Provider.FormatParameterNameForSQL(rawColumnName), query.Constraints.IndexOf(c));
+					c.ParameterName = Utility.AddStringToQualifiedName(query.Provider.FormatParameterNameForSQL(rawColumnName), constraintIndexStr);
                     columnName = c.ConstructionFragment;
                 }
             }
@@ -323,9 +324,9 @@ namespace SubSonic
             {
                 sb.Append(columnName);
                 sb.Append(SqlFragment.BETWEEN);
-                sb.Append(c.ParameterName + "_start");
+                sb.Append(query.Provider.FormatParameterNameForSQL(c.ParameterName + "_start"));
                 sb.Append(SqlFragment.AND);
-                sb.Append(c.ParameterName + "_end");
+                sb.Append(query.Provider.FormatParameterNameForSQL(c.ParameterName + "_end"));
             }
             else if(c.Comparison == Comparison.In || c.Comparison == Comparison.NotIn)
             {
@@ -351,7 +352,7 @@ namespace SubSonic
                     int i = 1;
                     while(en.MoveNext())
                     {
-                        sbIn.Append(String.Concat(c.ParameterName, "In", i, ","));
+                        sbIn.Append(query.Provider.FormatParameterNameForSQL(String.Concat(c.ParameterName, "In", i)) + ",");
                         i++;
                     }
                     string inList = sbIn.ToString();
@@ -385,7 +386,7 @@ namespace SubSonic
                             sb.Append("NULL");
                     }
                     else
-                        sb.Append(c.ParameterName);
+                        sb.Append(query.Provider.FormatParameterNameForSQL(c.ParameterName));
                 }
             }
 
@@ -673,7 +674,7 @@ namespace SubSonic
                 sb.Append("=");
 
                 if(!u.SetStatements[i].IsExpression)
-                    sb.Append(u.SetStatements[i].ParameterName);
+                    sb.Append(query.Provider.FormatParameterNameForSQL(u.SetStatements[i].ParameterName));
                 else
                     sb.Append(u.SetStatements[i].Value.ToString());
 
@@ -715,7 +716,7 @@ namespace SubSonic
                     if(!isFirst)
                         sb.Append(",");
                     if(!s.IsExpression)
-                        sb.Append(s.ParameterName);
+                        sb.Append(query.Provider.FormatParameterNameForSQL(s.ParameterName));
                     else
                         sb.Append(s.Value);
                     isFirst = false;

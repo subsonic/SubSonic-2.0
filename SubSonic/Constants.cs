@@ -405,19 +405,12 @@ namespace SubSonic
         // Addl cols from external sources
         public const string EXTPROP_IS_IDENTITY = "ColumnIsAutoNum";
         public const string EXTPROP_ALLOW_EMPTYSTRING = "ColumnAllowZeroLengthString";
+
+		public const string GEN_PARAM_PREFIX = "PARM__";	
     }
 
-    /// <summary>
-    /// Prefixes for subsonic-generated SQL parameters.  The column name alone should not be used for the parameter 
-    /// since some RDBMSs (like MS Access) do not support a preceding character or parameters like '@' and hence cannot 
-    /// distinguish between the column and the parameter in SQL unless it is named differently.  
-    /// </summary>
-    public class GeneratedParamPrefix {
-        public const string ColAuto = "col_";
-        public const string SelectClause = "sel_";
-        public const string WhereClause = "whr_";
-        public const string InClause = "in_";
-        public const string NotInClause = "notin_";
+	public class AccessSql {
+		public const string GET_INT_IDENTITY = "SELECT @@IDENTITY;";
     }
 
     /// <summary>

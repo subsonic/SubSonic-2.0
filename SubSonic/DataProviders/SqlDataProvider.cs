@@ -1462,7 +1462,7 @@ ORDER BY OrdinalPosition ASC";
             StringBuilder cols = new StringBuilder();
             StringBuilder pars = new StringBuilder();
 
-            //returns Guid from VS2005 only!
+            //returns Guid from MSSQL2005 only!
             bool primaryKeyIsGuid = false;
             string primaryKeyName = String.Empty;
 

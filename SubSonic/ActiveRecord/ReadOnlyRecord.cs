@@ -238,7 +238,7 @@ namespace SubSonic
         /// Returns all records for the given column/parameter, ordered by the passed in orderBy
         /// The expression for this is always "column=parameter"
         /// </summary>
-        /// <param name="columnName">Name of the column to use in parmeter statement</param>
+        /// <param name="columnName">Name of the column to use in parameter statement</param>
         /// <param name="oValue">Value of the column</param>
         /// <param name="orderBy">Ordering of results</param>
         /// <returns>IDataReader</returns>

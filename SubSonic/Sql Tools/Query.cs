@@ -1659,10 +1659,13 @@ namespace SubSonic
                     string joinReference = table.Provider.QualifyColumnName("", fkTableAlias, fkTable.PrimaryKey.ColumnName);
                     strJoin.Append(joinReference);
                     if (table.Provider.DatabaseRequiresBracketedJoins) strJoin.Append(")");
-                    if(isSortable && OrderByCollection.Count > 0)
-                    {
-                        foreach (OrderBy ob in OrderByCollection)
-                            ob.OrderString = ob.OrderString.Replace(columnReference, selectCol);
+                    if(isSortable && OrderByCollection.Count > 0) {
+						foreach (OrderBy ob in OrderByCollection) {
+							if (ob.OrderColumnName.ToLower() == tblCol.QualifiedName.ToLower()
+								|| ob.OrderColumnName.ToLower() == table.Provider.FormatIdentifier(tblCol.ColumnName).ToLower()
+								|| ob.OrderColumnName.ToLower() == tblCol.ColumnName.ToLower()
+							) { ob.OrderColumnName = selectCol;	}
+						}
                     }
                 }
                 else

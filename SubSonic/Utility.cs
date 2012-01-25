@@ -172,7 +172,7 @@ namespace SubSonic.Utilities
         /// </returns>
         public static bool IsSql2000(DataProvider provider)
         {
-            return provider.DatabaseVersion.IndexOf("2000 - 8.") > -1;
+			return provider.DatabaseVersion.IndexOf("SQL Server 2000") > -1;
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace SubSonic.Utilities
         /// </returns>
         public static bool IsSql2005(DataProvider provider)
         {
-            return provider.DatabaseVersion.IndexOf("2005") > -1;
+			return provider.DatabaseVersion.IndexOf("SQL Server 2005") > -1;
         }
 
         /// <summary>
@@ -745,6 +745,19 @@ namespace SubSonic.Utilities
 		/// <returns></returns>
 		public static string QualifyTableName(TableSchema.Table table) {
 			return table.Provider.QualifyTableName(table.SchemaName, table.TableName);
+		}
+
+        /// <summary>
+		/// Adds a string to a qualified name, inserting inside enclosing square brackets if necessary
+		/// </summary>
+		/// <param name="qname">The qualified name</param>
+		/// <param name="addTo">The string to add</param>
+		/// <returns></returns>
+		public static string AddStringToQualifiedName(string qname, string addTo) {
+			if (qname.EndsWith("]")) {
+				return String.Concat(qname.Substring(0, qname.Length - 1), addTo, "]");
+			}
+			return qname + addTo;
 		}
 
         /// <summary>

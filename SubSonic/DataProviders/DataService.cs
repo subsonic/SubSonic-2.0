@@ -309,6 +309,9 @@ namespace SubSonic
                 case DataProviderTypeName.SQL_CE:
                     generator = new SqlCEGenerator(sqlQuery);
                     break;
+				case DataProviderTypeName.MSACCESS:
+					generator = new MSJetGenerator(sqlQuery);
+					break;
                 default:
                     generator = new ANSISqlGenerator(sqlQuery);
                     break;

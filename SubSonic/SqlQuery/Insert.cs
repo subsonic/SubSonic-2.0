@@ -318,7 +318,7 @@ namespace SubSonic
         /// <returns></returns>
         public string BuildSqlStatement()
         {
-            SqlQuery q = new SqlQuery();
+            SqlQuery q = new SqlQuery(provider);
             ISqlGenerator generator = q.GetGenerator();
             generator.SetInsertQuery(this);
 

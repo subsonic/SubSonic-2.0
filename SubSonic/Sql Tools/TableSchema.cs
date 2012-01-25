@@ -1290,7 +1290,7 @@ namespace SubSonic
                         if(Utility.IsMatch(strEnd, "id") && strEnd[0].ToString() == "I")
                             displayName = displayName.Substring(0, displayName.Length - 2);
                     }
-                    parameterName = Table.Provider.FormatParameterNameForSQL(columnName);
+                    parameterName = Table.Provider.PreformatParameterName(columnName);
                     argumentName = String.Concat("var", propertyName);
                 }
             }

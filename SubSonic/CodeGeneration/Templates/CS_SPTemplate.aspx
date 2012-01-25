@@ -29,7 +29,7 @@ namespace <%=provider.GeneratedNamespace %>{
                 argList += ", ";
             }
             isFirst = false;
-			// allow nullable types for SP parms - Thanks Jeff!
+			// allow nullable types for SP params - Thanks Jeff!
 			string pType = Utility.GetVariableType(p.DBType, Utility.IsNullableDbType(p.DBType), language);
             string arg = p.DisplayName;
             argList += pType + " " + arg;
@@ -88,7 +88,7 @@ namespace <%=provider.GeneratedNamespace %>{
 		            argList += ", ";
 		        }
 		        isFirst = false;
-				// allow nullable types for SP parms - Thanks Jeff!
+				// allow nullable types for SP params - Thanks Jeff!
 				string pType = Utility.GetVariableType(p.DBType, Utility.IsNullableDbType(p.DBType), language);
 		        string arg = p.DisplayName;
 		        argList += pType + " " + arg;

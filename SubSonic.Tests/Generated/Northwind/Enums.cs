@@ -57,7 +57,7 @@ namespace Northwind {
 			Alice_Mutton = 17,
 			Carnarvon_Tigers = 18,
 			Teatime_Chocolate_Biscuits = 19,
-			new_name_of_product_20_4210 = 20,
+			new_name_of_product_20_9798 = 20,
 			Sir_Rodney_s_Scones = 21,
 			Gustaf_s_Knäckebröd = 22,
 			Tunnbröd = 23,

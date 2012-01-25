@@ -804,7 +804,9 @@ namespace SubSonic
                 {
                     if(!Utility.IsMatch(col.DefaultSetting, SqlSchemaVariable.DEFAULT))
                     {
-                        QueryCommand cmdDefault = new QueryCommand(SqlFragment.SELECT + col.DefaultSetting, col.Table.Provider.Name);
+						string s = col.DefaultSetting;
+						if (s.StartsWith("=")) { s = s.Substring(1); }
+                        QueryCommand cmdDefault = new QueryCommand(SqlFragment.SELECT + s, col.Table.Provider.Name);
                         SetColumnValue(col.ColumnName, DataService.ExecuteScalar(cmdDefault));
                     }
                 }

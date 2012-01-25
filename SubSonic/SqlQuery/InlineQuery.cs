@@ -283,12 +283,19 @@ namespace SubSonic
         private static List<string> ParseParameters(string sql)
         {
 			//bferrier altered this so Inline Query works with Oracle
-            Regex paramReg = new Regex(@"@\w*|:\w*");
+            Regex paramReg = new Regex(@"@\w*|:\w*|\[PARM__\w*\]");
 
             MatchCollection matches = paramReg.Matches(String.Concat(sql, " "));
             List<string> result = new List<string>(matches.Count);
-            foreach(Match m in matches)
-                result.Add(m.Value);
+			foreach (Match m in matches) { result.Add(m.Value); }
+
+			// remove duplicate param names, leaving only the first occurrence
+			for (int i = result.Count - 1; i >= 0; i--) {
+				string s = result[i];
+				for (int j = i - 1; j >= 0; j--) {
+					if (result[j] == s) { result.RemoveAt(i); break; }
+				}
+			}
 
             return result;
         }

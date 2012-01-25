@@ -557,6 +557,7 @@ namespace SubSonic
         {
             TSchema item = new TSchema();
             TableSchema.Table tbl = item.GetSchema();
+			Provider = tbl.Provider;
             FromTables.Add(tbl);
             return this;
         }
@@ -1422,7 +1423,7 @@ namespace SubSonic
             {
                 TableSchema.Table table = FromTables[0];
                 StringBuilder strSelect = new StringBuilder(SqlFragment.SELECT);
-                string strFrom = SqlFragment.FROM + table.QualifiedName;
+                string strFrom = table.QualifiedName;
                 StringBuilder strJoin = new StringBuilder();
                 for(int i = 0; i < table.Columns.Count; i++)
                 {
@@ -1453,6 +1454,7 @@ namespace SubSonic
                         string dataCol = displayCol.ColumnName;
                         string selectCol = table.Provider.QualifyColumnName("", strJoinPrefix, dataCol);
                         col = new StringBuilder(selectCol);
+						if (tblCol.Table.Provider.DatabaseRequiresBracketedJoins) { strFrom = "(" + strFrom; }
                         strJoin.Append(joinType);
                         strJoin.Append(fkTable.Provider.QualifyTableName(fkTable.SchemaName, fkTable.TableName));
                         strJoin.Append(SqlFragment.SPACE);
@@ -1463,7 +1465,8 @@ namespace SubSonic
                         strJoin.Append(SqlFragment.EQUAL_TO);
                         string joinReference =  table.Provider.QualifyColumnName("", strJoinPrefix, fkTable.PrimaryKey.ColumnName);
                         strJoin.Append(joinReference);
-                        if(isSortable && OrderBys.Count > 0)
+						if (tblCol.Table.Provider.DatabaseRequiresBracketedJoins) { strJoin.Append(")"); }
+						if (isSortable && OrderBys.Count > 0)
                         {
                             //for(int o = 0; o < OrderBys.Count; o++)
                             //    OrderBys[o] = OrderBys[o].Replace(columnReference, selectCol);
@@ -1484,7 +1487,7 @@ namespace SubSonic
 
                 StringBuilder strSQL = new StringBuilder();
                 strSQL.Append(strSelect);
-                strSQL.Append(strFrom);
+				strSQL.Append(SqlFragment.FROM + strFrom);
                 strSQL.Append(strJoin);
 
                 ISqlGenerator generator = GetGenerator();
@@ -1649,7 +1652,10 @@ namespace SubSonic
         /// <param name="queries">The queries.</param>
         public static void ExecuteTransaction(List<Insert> queries)
         {
-            using(SharedDbConnectionScope scope = new SharedDbConnectionScope())
+			DataProvider p = DataService.Provider;
+			if (queries.Count > 0) { p = queries[0].Provider;  }
+
+            using(SharedDbConnectionScope scope = new SharedDbConnectionScope(p))
             {
                 using(TransactionScope ts = new TransactionScope())
                 {

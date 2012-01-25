@@ -1235,7 +1235,7 @@ namespace SubSonic
         protected virtual string AdjustUpdateSql(Query qry, TableSchema.Table table, string updateSql)
         {
             return String.Concat(updateSql, "; ", SqlFragment.SELECT, 
-                table.PrimaryKey.ParameterName, 
+				FormatParameterNameForSQL(table.PrimaryKey.ParameterName), 
                 SqlFragment.AS, "id");
         }
 

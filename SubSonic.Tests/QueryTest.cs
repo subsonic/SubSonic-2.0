@@ -372,7 +372,7 @@ namespace SubSonic.Tests
         public void Query_Expression()
         {
             int counter = 0;
-            using(IDataReader rdr = new Query("Products", "Northwind").WHERE("ProductID < 5").ExecuteReader())
+            using(IDataReader rdr = new Query("Products").WHERE("ProductID < 5").ExecuteReader())
             {
                 while(rdr.Read())
                     counter++;
@@ -388,7 +388,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_PagingTest_Table()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             q.PageSize = 10;
             q.PageIndex = 1;
             int counter = 0;
@@ -409,7 +409,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_PagingTest_View()
         {
-            Query q = new Query("Sales By Category", "Northwind");
+            Query q = new Query("Sales By Category");
             q.PageSize = 10;
             q.PageIndex = 1;
             q.ORDER_BY("CategoryID", "ASC");
@@ -430,7 +430,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_JoinedDataSet()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             DataSet ds = q.ExecuteJoinedDataSet();
 
             //should bring back all records
@@ -456,7 +456,7 @@ namespace SubSonic.Tests
         public void Query_ConstraintExpression()
         {
             int counter = 0;
-            using(IDataReader rdr = new Query(Product.Schema.TableName, "Northwind").WHERE(Product.Columns.ProductID, Is.LessThan(5)).ExecuteReader())
+            using(IDataReader rdr = new Query(Product.Schema.TableName).WHERE(Product.Columns.ProductID, Is.LessThan(5)).ExecuteReader())
             {
                 while(rdr.Read())
                     counter++;
@@ -471,7 +471,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_JoinedDataSet_OrderByFK()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
             q.OrderBy = OrderBy.Desc(ts.GetColumn("CategoryID"));
             DataSet ds = q.ExecuteJoinedDataSet();
@@ -633,7 +633,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_JoinedDataSet_OrderByCollection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
             q.OrderByCollection.Add(OrderBy.Desc(ts.GetColumn("CategoryID")));
             q.OrderByCollection.Add(OrderBy.Desc(ts.GetColumn("ProductID")));
@@ -650,7 +650,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_OrderByCollection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
             q.OrderByCollection.Add(OrderBy.Desc(ts.GetColumn("CategoryID")));
             q.OrderByCollection.Add(OrderBy.Desc(ts.GetColumn("ProductID")));
@@ -667,7 +667,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_OrderBy()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
             q.OrderBy = OrderBy.Desc(ts.GetColumn("ProductID"));
 
@@ -683,7 +683,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("ProductID")).ExecuteDataSet();
@@ -698,7 +698,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_DESC()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("ProductID"), SqlFragment.DESC).ExecuteDataSet();
@@ -713,7 +713,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_Expression()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("ProductID DESC").ExecuteDataSet();
             //should bring 77 as first
@@ -726,7 +726,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_ExpressionDESC()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("ProductID", SqlFragment.DESC).ExecuteDataSet();
             //should bring 77 as first
@@ -739,7 +739,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("ProductID")).ExecuteJoinedDataSet();
@@ -754,7 +754,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_DESC()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("ProductID"), SqlFragment.DESC).ExecuteJoinedDataSet();
@@ -769,7 +769,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_Expression()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("ProductID DESC").ExecuteJoinedDataSet();
             //should bring 77 as first
@@ -782,7 +782,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_ExpressionDESC()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("ProductID", SqlFragment.DESC).ExecuteJoinedDataSet();
             //should bring 77 as first
@@ -795,7 +795,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("SupplierID")).
@@ -812,7 +812,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_DESC_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("CategoryID"), SqlFragment.DESC).
@@ -829,7 +829,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_Expression_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("CategoryID DESC").
                 ORDER_BY("ProductID DESC").
@@ -845,7 +845,7 @@ namespace SubSonic.Tests
         [Test]
         public void Query_ORDER_BY_ExpressionDESC_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("CategoryID", SqlFragment.DESC).
                 ORDER_BY("ProductID", SqlFragment.DESC).
@@ -861,7 +861,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("SupplierID")).
@@ -878,7 +878,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_DESC_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
             TableSchema.Table ts = DataService.GetTableSchema("Products", "Northwind");
 
             DataSet ds = q.ORDER_BY(ts.GetColumn("SupplierID"), SqlFragment.DESC).
@@ -895,7 +895,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_Expression_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("SupplierID DESC").
                 ORDER_BY("ProductID DESC").
@@ -911,7 +911,7 @@ namespace SubSonic.Tests
         [Test]
         public void QueryExecuteJoinedDataSet_ORDER_BY_ExpressionDESC_Collection()
         {
-            Query q = new Query("Products", "Northwind");
+            Query q = new Query("Products");
 
             DataSet ds = q.ORDER_BY("SupplierID", SqlFragment.DESC).
                 ORDER_BY("ProductID", SqlFragment.DESC).

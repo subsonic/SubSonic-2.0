@@ -145,7 +145,7 @@ namespace SubSonic
                     //Debug.WriteLine(param.ParameterName + ", " + param.Size + ", " + param.DataType + ", " + sqlParam.Size + ", " + sqlParam.DbType);
 
                     //fix for NULLs as parameter values
-                    if(param.ParameterValue == null || Utility.IsMatch(param.ParameterValue.ToString(), "null"))
+                    if(param.ParameterValue == null) // || Utility.IsMatch(param.ParameterValue.ToString(), "null"))
                     {
                         sqlParam.Value = DBNull.Value;
                     }
@@ -467,7 +467,7 @@ namespace SubSonic
                 case (5): // "Double" 
                     return DbType.Double;
                 case (6): // "Currency" 
-                    return DbType.Decimal;
+                    return DbType.Currency;
                 case (7): // "Date" 
                     return DbType.DateTime;
                 case (8): // "BSTR" 
@@ -483,7 +483,7 @@ namespace SubSonic
                 case (13): // "IUnknown" 
                     return DbType.String;
                 case (14): // "Decimal" 
-                    return DbType.Decimal;
+					return DbType.Double; // ** Decimal type not supported in DAO **
                 case (16): // "TinyInt" 
                     return DbType.Int16;
                 case (17): // "Unsigned TinyInt (BYTE)" 
@@ -507,7 +507,7 @@ namespace SubSonic
                 case (130): // "nChar" 
                     return DbType.String;
                 case (131): // "Numeric" 
-                    return DbType.Decimal;
+					return DbType.Double; // ** Decimal type not supported in DAO **
                 case (132): // "User Defined (UDT)" 
                     return DbType.DateTime;
                 case (133): // "DBDate" 
@@ -612,7 +612,7 @@ namespace SubSonic
                 case DaoDataTypeEnum.dbTime:       return "DATETIME";          // dbTime = 22 
                 case DaoDataTypeEnum.dbTimeStamp:  return "DATETIME";          // dbTimeStamp = 23 
 
-                case DaoDataTypeEnum.dbGUID:       return "GUID";              // dbGUID = 15 
+				case DaoDataTypeEnum.dbGUID:	   return "UNIQUEIDENTIFIER";  // dbGUID = 15 
                 case DaoDataTypeEnum.dbBinary:     return "BINARY(255)";       // dbBinary = 9 
                 case DaoDataTypeEnum.dbLongBinary: return "LONGBINARY";        // dbLongBinary = 11 
                 case DaoDataTypeEnum.dbVarBinary:  return "BINARY(255)";       // dbVarBinary = 17 
@@ -648,22 +648,25 @@ namespace SubSonic
         public override string FormatParameterNameForSQL(string parameterName)
         {
             string prefix = GetParameterPrefix();
-            if (prefix != string.Empty && !parameterName.StartsWith(prefix)) parameterName = prefix + parameterName;
+			if (!parameterName.StartsWith(prefix) && !parameterName.StartsWith("[") && !parameterName.StartsWith("[" + prefix)) {
+				parameterName = prefix + parameterName;
+			}
             return FormatIdentifier(parameterName);
         }
+
 
         /// <summary>
         /// Format the Parameter name to ensure it is valid
         /// </summary>
-        public override string PreformatParameterName(string parameterName)
+		public override string PreformatParameterName(string parameterName)
         {
-            return parameterName;
+			return parameterName;
         }
 
         /// <summary>
         /// Filter out elements of the SQL for unit testing
         /// </summary>
-        public string FilterTestSQL(string sqlString)
+		public override string FilterTestSQL(string sqlString)
         {
             return sqlString.Replace("[dbo].", "").Replace("@", "").Replace("(", "").Replace(")", "");
         }
@@ -684,9 +687,9 @@ namespace SubSonic
         /// Gets the parameter prefix.
         /// </summary>
         /// <returns></returns>
-        public override string GetParameterPrefix()
+		public override string GetParameterPrefix()
         {
-            return AccessSchemaVariable.SP_PARAM_PREFIX;
+			return AccessSchemaVariable.GEN_PARAM_PREFIX;
         }
 
         /// <summary>
@@ -696,11 +699,12 @@ namespace SubSonic
         /// <returns></returns>
         public override string FormatIdentifier(string columnName)
         {
-            if(!String.IsNullOrEmpty(columnName) && !columnName.StartsWith("[") && !columnName.EndsWith("]"))
-            {
+			if (String.IsNullOrEmpty(columnName)) { return String.Empty; }
+
+			if (!columnName.StartsWith("[") && !columnName.EndsWith("]")) {
                 return "[" + columnName + "]";
             }
-            return String.Empty;
+			return columnName;
         }
 
         /// <summary>
@@ -708,38 +712,35 @@ namespace SubSonic
         /// </summary>
         /// <param name="qry">The qry.</param>
         /// <returns></returns>
-        public override IDataReader GetReader(QueryCommand qry)
-        {
-            AutomaticConnectionScope automaticConnectionScope = new AutomaticConnectionScope(this);
-            OleDbCommand cmd = new OleDbCommand(qry.CommandSql);
-            cmd.CommandType = qry.CommandType;
-            cmd.CommandTimeout = qry.CommandTimeout;
-            AddParams(cmd, qry);
+		public override IDataReader GetReader(QueryCommand qry) {
+			AutomaticConnectionScope automaticConnectionScope = new AutomaticConnectionScope(this);
+			OleDbCommand cmd = new OleDbCommand(qry.CommandSql);
+			cmd.CommandType = qry.CommandType;
+			cmd.CommandTimeout = qry.CommandTimeout;
+			AddParams(cmd, qry);
 
-            cmd.Connection = (OleDbConnection)automaticConnectionScope.Connection;
-            //let this bubble up
-            IDataReader rdr;
+			cmd.Connection = (OleDbConnection)automaticConnectionScope.Connection;
+			//let this bubble up
+			IDataReader rdr;
 
-            //Thanks jcoenen!
-            try
-            {
-                // if it is a shared connection, we shouldn't be telling the reader to close it when it is done
-                if(automaticConnectionScope.IsUsingSharedConnection)
-                    rdr = cmd.ExecuteReader();
-                else
-                    rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            }
-            catch(OleDbException)
-            {
-                // AutoConnectionScope will figure out what to do with the connection
-                automaticConnectionScope.Dispose();
-                //rethrow retaining stack trace.
-                throw;
-            }
-            CheckoutOutputParams(cmd, qry);
+			//Thanks jcoenen!
+			try {
+				// if it is a shared connection, we shouldn't be telling the reader to close it when it is done
+				if (automaticConnectionScope.IsUsingSharedConnection)
+					rdr = cmd.ExecuteReader();
+				else
+					rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+			}
+			catch (OleDbException) {
+				// AutoConnectionScope will figure out what to do with the connection
+				automaticConnectionScope.Dispose();
+				//rethrow retaining stack trace.
+				throw;
+			}
+			CheckoutOutputParams(cmd, qry);
 
-            return rdr;
-        }
+			return rdr;
+		}
 
         /// <summary>
         /// Gets the single record reader.
@@ -808,15 +809,26 @@ namespace SubSonic
             }
         }
 
+		private string GetSqlBeforeIdentityFetchSql(string sql, ref bool selectIdentity) {
+			// if the identity select clause follows the main SQL, trim it and run a second command
+			string commandSql = sql;
+			selectIdentity = commandSql.EndsWith(";" + AccessSql.GET_INT_IDENTITY);
+			if (selectIdentity) { commandSql = commandSql.Substring(0, commandSql.Length - AccessSql.GET_INT_IDENTITY.Length); }
+			return commandSql;
+		}
+
         /// <summary>
         /// Executes the scalar.
         /// </summary>
         /// <param name="qry">The qry.</param>
         /// <returns></returns>
         public override object ExecuteScalar(QueryCommand qry) {
-            using (AutomaticConnectionScope automaticConnectionScope = new AutomaticConnectionScope(this))
+			bool selectIdentity = false;
+			string commandSql = GetSqlBeforeIdentityFetchSql(qry.CommandSql, ref selectIdentity);
+
+			using (AutomaticConnectionScope automaticConnectionScope = new AutomaticConnectionScope(this))
             {
-                OleDbCommand cmd = new OleDbCommand(qry.CommandSql);
+				OleDbCommand cmd = new OleDbCommand(commandSql);
                 cmd.CommandType = qry.CommandType;
                 cmd.CommandTimeout = qry.CommandTimeout;
                 AddParams(cmd, qry);
@@ -824,9 +836,8 @@ namespace SubSonic
                 object result = cmd.ExecuteScalar();
 
                 // Run an additional command to return a generated identity value
-                if (qry.CommandSql.EndsWith("SELECT @@IDENTITY;"))
-                {
-                    OleDbCommand idCmd = new OleDbCommand("SELECT @@IDENTITY;");
+				if (selectIdentity) {
+					OleDbCommand idCmd = new OleDbCommand(AccessSql.GET_INT_IDENTITY);
                     idCmd.CommandTimeout = qry.CommandTimeout;
                     idCmd.Connection = (OleDbConnection)automaticConnectionScope.Connection;
                     result = idCmd.ExecuteScalar();
@@ -845,9 +856,12 @@ namespace SubSonic
         /// <returns></returns>
         public override int ExecuteQuery(QueryCommand qry)
         {
+			bool selectIdentity = false;
+			string commandSql = GetSqlBeforeIdentityFetchSql(qry.CommandSql, ref selectIdentity);
+
             using(AutomaticConnectionScope automaticConnectionScope = new AutomaticConnectionScope(this))
             {
-                OleDbCommand cmd = new OleDbCommand(qry.CommandSql);
+				OleDbCommand cmd = new OleDbCommand(commandSql);
                 cmd.CommandType = qry.CommandType;
                 cmd.CommandTimeout = qry.CommandTimeout;
 
@@ -1307,7 +1321,7 @@ namespace SubSonic
                     string columnName = drFK[i][AccessSchemaVariable.FK_COLUMN_NAME].ToString();
                     TableSchema.TableColumn column = columns.GetColumn(columnName);
                     column.IsForeignKey = true;
-                    column.ForeignKeyTableName = drFK[i][AccessSchemaVariable.FK_TABLE_NAME].ToString();
+					column.ForeignKeyTableName = drFK[i][AccessSchemaVariable.PK_TABLE_NAME].ToString();
 
                     TableSchema.ForeignKeyTable fkTable = new TableSchema.ForeignKeyTable(this);
                     fkTable.ColumnName = columnName;
@@ -1723,7 +1737,10 @@ namespace SubSonic
 
                     foreach(QueryCommand qry in commands)
                     {
-                        cmd = new OleDbCommand(qry.CommandSql, (OleDbConnection)conn.Connection, trans);
+						bool selectIdentity = false;
+						string commandSql = GetSqlBeforeIdentityFetchSql(qry.CommandSql, ref selectIdentity);
+
+						cmd = new OleDbCommand(commandSql, (OleDbConnection)conn.Connection, trans);
                         cmd.CommandType = qry.CommandType;
 
                         AddParams(cmd, qry);
@@ -1921,13 +1938,17 @@ namespace SubSonic
                         reverseOrder.Append(OrderBy.Asc(table.PrimaryKey.ColumnName).OrderStringReversed);
                     }
                 }
+				if (order.Length > 0) {
+					order.Insert(0, SqlFragment.ORDER_BY);
+					reverseOrder.Insert(0, SqlFragment.ORDER_BY);
+				}
 
                 tempQuery.Append(select);
                 tempQuery.Append(columns);
                 tempQuery.Append(SqlFragment.FROM);
                 tempQuery.Append(qry.Provider.QualifyTableName(table.SchemaName, table.Name));
                 tempQuery.Append(where);
-                tempQuery.Append(order);
+				tempQuery.Append(order); 
 
                 if (qry.PageIndex < 0) {
                     query.Append(tempQuery);
@@ -2094,7 +2115,7 @@ namespace SubSonic
             string cols = String.Empty;
             string pars = String.Empty;
 
-            //returns Guid from VS2005 only!
+			//returns Guid from MSSQL2005 only!
             bool primaryKeyIsGuid = false;
             bool primaryKeyisIdentity = false;
             string primaryKeyName = "";
@@ -2117,7 +2138,7 @@ namespace SubSonic
                         isFirstColumn = false;
 
                         cols += FormatIdentifier(colName);
-                        pars += FormatParameterNameForSQL(GeneratedParamPrefix.ColAuto + colName);
+                        pars += FormatParameterNameForSQL(colName);
                     }
                     if (col.IsPrimaryKey)
                     {
@@ -2130,12 +2151,14 @@ namespace SubSonic
 
             insertSQL += "(" + cols + ") ";
 
-            // Don't add "SELECT @@IDENTITY;" to statement as Access can't process multiple 
-            // commands.  We'll tweak the ExecuteScalar method later to return the identity.
-            // See GetInsertPkSql() below.
-            insertSQL += "VALUES(" + pars + ");";
+            // Add "SELECT @@IDENTITY;" to statement. (Access can't process multiple 
+            // commands but we'll tweak the ExecuteScalar method when this test is detected.
 
-            return insertSQL;
+			//Non Guid's
+			insertSQL = String.Concat(insertSQL, "VALUES(", pars, ");");
+			insertSQL = String.Concat(insertSQL, AccessSql.GET_INT_IDENTITY);
+
+			return insertSQL;
         }
 
         // for access, do not add anything to the end of the update string
@@ -2144,6 +2167,10 @@ namespace SubSonic
         }
 
         #endregion
+
+		public override ISqlGenerator GetSqlGenerator(SqlQuery sqlQuery) {
+			return new MSJetGenerator(sqlQuery);
+		}
 
         #region SQL Scripters
 
