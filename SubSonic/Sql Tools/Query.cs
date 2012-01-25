@@ -290,12 +290,14 @@ namespace SubSonic
 
             if(comp != Comparison.Blank)
             {
-                int comparisonStart = GetComparisonIndex(expression, GetComparisonOperator(comp));
-                string columnName = expression.Substring(0, comparisonStart).Trim();
                 string comparisonOperator = GetComparisonOperator(comp).Trim();
+				int comparisonStart = expression.IndexOf(comparisonOperator, StringComparison.InvariantCultureIgnoreCase);
+				int comparisonEnd = comparisonStart + comparisonOperator.Length;
 
-                string paramValue = Utility.FastReplace(Utility.FastReplace(expression, columnName, String.Empty), comparisonOperator, String.Empty).Trim();
-                result = new Where
+				string columnName = expression.Substring(0, comparisonStart).Trim();
+				string paramValue = expression.Substring(comparisonEnd).Trim();
+		
+				result = new Where
                              {
                                  ColumnName = columnName,
                                  Comparison = comp,
@@ -357,17 +359,6 @@ namespace SubSonic
                     break;
             }
             return sOut;
-        }
-
-        /// <summary>
-        /// Gets the index of the comparison.
-        /// </summary>
-        /// <param name="sourceString">The source string.</param>
-        /// <param name="searchString">The search string.</param>
-        /// <returns></returns>
-        private static int GetComparisonIndex(string sourceString, string searchString)
-        {
-            return sourceString.IndexOf(searchString.Trim(), StringComparison.InvariantCultureIgnoreCase);
         }
     }
 

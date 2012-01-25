@@ -322,25 +322,33 @@ namespace SubSonic.Tests
             Assert.AreEqual(5, counter, "Nope - it's " + counter);
         }
 
-        /// <summary>
-        /// Query_s the O r_ moderate with expressions.
-        /// </summary>
-        [Test]
-        public void Query_OR_ModerateWithExpressions()
-        {
-            int counter = 0;
-            using(
-                IDataReader rdr =
-                    new Query("Products").WHERE("CategoryID = 5").AND("UnitPrice > 50").OR("CategoryID = 1").AND(
-                        "UnitPrice > 50").ExecuteReader())
-            {
-                while(rdr.Read())
-                    counter++;
-            }
-            Assert.AreEqual(5, counter, "Nope - it's " + counter);
-        }
+		/// <summary>
+		/// Query_s the O r_ moderate with expressions.
+		/// </summary>
+		[Test]
+		public void Query_OR_ModerateWithExpressions() {
+			int counter = 0;
+			using (
+				IDataReader rdr =
+					new Query("Products").WHERE("CategoryID = 5").AND("UnitPrice > 50").OR("CategoryID = 1").AND(
+						"UnitPrice > 50").ExecuteReader()) {
+				while (rdr.Read())
+					counter++;
+			}
+			Assert.AreEqual(5, counter, "Nope - it's " + counter);
+		}
 
-        /// <summary>
+		/// <summary>
+		/// Query_s the O r_ moderate with expressions.
+		/// </summary>
+		[Test]
+		public void Query_WhereExpressionContainsColumnName() {
+			Query q = new Query("Products").SetSelectList("ProductID").WHERE("ProductName = ProductName77").WHERE("ProductName",Comparison.Like,"%u%");
+			string s = q.Wheres[0].ParameterValue.ToString();
+			Assert.AreEqual("ProductName77", s, "ParameterValue=" + s);
+		}
+
+		/// <summary>
         /// Query_s the O r_ between.
         /// </summary>
         [Test]
