@@ -190,7 +190,7 @@ namespace SubSonic
                 if(pkVal != null)
                 {
                     if(pkVal.GetType() == typeof(decimal))
-                        pkVal = Convert.ToInt32(pkVal);
+                        pkVal = Convert.ToInt64(pkVal);
 
                     // set the primaryKey, only if an auto-increment
                     if(BaseSchema.PrimaryKey.AutoIncrement || BaseSchema.PrimaryKey.DataType == DbType.Guid)
