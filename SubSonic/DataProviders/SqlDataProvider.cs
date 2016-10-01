@@ -518,7 +518,17 @@ ORDER BY OrdinalPosition ASC";
             if(UseExtendedProperties)
             {
                 DataRow[] drTableProps = null;
-                if(Utility.IsSql2005(this))
+                if (Utility.IsSql2014(this))
+                {
+                    LoadExtendedPropertyDataSet();
+                    drTableProps = dsExtendedProperties.Tables[Name].Select(String.Format("TABLE_NAME ='{0}' AND COLUMN_NAME IS NULL", tblSchema.TableName));
+                }
+                else if (Utility.IsSql2008(this))
+                {
+                    LoadExtendedPropertyDataSet();
+                    drTableProps = dsExtendedProperties.Tables[Name].Select(String.Format("TABLE_NAME ='{0}' AND COLUMN_NAME IS NULL", tblSchema.TableName));
+                }
+                else if (Utility.IsSql2005(this))
                 {
                     LoadExtendedPropertyDataSet();
                     drTableProps = dsExtendedProperties.Tables[Name].Select(String.Format("TABLE_NAME ='{0}' AND COLUMN_NAME IS NULL", tblSchema.TableName));
@@ -1185,11 +1195,15 @@ ORDER BY OrdinalPosition ASC";
 
         public override ISqlGenerator GetSqlGenerator(SqlQuery sqlQuery)
         {
-            if(Utility.IsSql2005(this))
-                return new Sql2005Generator(sqlQuery);
-            if(Utility.IsSql2008(this))
+            if (Utility.IsSql2014(this))
+                return new Sql2014Generator(sqlQuery);
+            if (Utility.IsSql2008(this))
                 return new Sql2008Generator(sqlQuery);
-            return new Sql2000Generator(sqlQuery);
+            if (Utility.IsSql2005(this))
+                return new Sql2005Generator(sqlQuery);
+            if (Utility.IsSql2000(this))
+                return new Sql2000Generator(sqlQuery);
+            return new MSSqlGenerator(sqlQuery);
         }
 
         #endregion

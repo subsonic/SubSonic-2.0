@@ -432,7 +432,7 @@ FROM  INFORMATION_SCHEMA.COLUMNS";
             if(UseExtendedProperties)
             {
                 DataRow[] drTableProps = null;
-                if(Utility.IsSql2005(this))
+                if (Utility.IsSql2005(this) || Utility.IsSql2008(this) || Utility.IsSql2014(this))
                 {
                     LoadExtendedPropertyDataSet();
                     drTableProps = dsExtendedProperties.Tables[Name].Select("TABLE_NAME ='" + tblSchema.TableName + "' AND COLUMN_NAME IS NULL");
@@ -462,10 +462,10 @@ FROM  INFORMATION_SCHEMA.COLUMNS";
         /// <param name="tableColumn">The table column.</param>
         private void SetExtendedColumnProperties(TableSchema.AbstractTableSchema tableSchema, TableSchema.TableColumn tableColumn)
         {
-            if(UseExtendedProperties && Utility.IsSql2005(this))
+            if(UseExtendedProperties && (Utility.IsSql2005(this) || Utility.IsSql2008(this) || Utility.IsSql2014(this)))
             {
                 DataRow[] drColumnProps = null;
-                if(Utility.IsSql2005(this))
+                if (Utility.IsSql2005(this) || Utility.IsSql2008(this) || Utility.IsSql2014(this))
                 {
                     LoadExtendedPropertyDataSet();
                     drColumnProps = dsExtendedProperties.Tables[Name].Select("TABLE_NAME ='" + tableSchema.TableName + "' AND COLUMN_NAME = '" + tableColumn.ColumnName + "'");

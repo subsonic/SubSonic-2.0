@@ -201,6 +201,19 @@ namespace SubSonic.Utilities
         }
 
         /// <summary>
+        /// Determines whether the specified provider is SQL2014.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns>
+        /// 	<c>true</c> if the specified provider is SQL2014; otherwise, <c>false</c>.
+        /// </returns>
+
+        public static bool IsSql2014(DataProvider provider)
+        {
+            return provider.DatabaseVersion.Contains("SQL Server 2014");
+        }
+
+        /// <summary>
         /// Determines whether the passed column name is a logical delete column, per the SubSonic naming conventions.
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
