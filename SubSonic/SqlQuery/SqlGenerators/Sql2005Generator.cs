@@ -23,7 +23,7 @@ namespace SubSonic
     {
         private const string PAGING_SQL =
             @"
-SELECT {7} FROM (
+SELECT {8} FROM (
 SELECT ROW_NUMBER() OVER ({1}) AS Row, 
 {0} 
 {2}
