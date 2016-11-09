@@ -249,7 +249,7 @@ ORDER BY OrdinalPosition ASC";
                         sqlParam.Precision = Convert.ToByte(param.Precision);
 
                     //fix for NULLs as parameter values
-                    if(param.ParameterValue == null )
+                    if(param.ParameterValue == null || Utility.IsMatch(param.ParameterValue.ToString(), "null"))
                         sqlParam.Value = DBNull.Value;
                     else if(param.DataType == DbType.Guid)
                     {
